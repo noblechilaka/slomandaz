@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Noden® — Contact</title>
+    <link rel="stylesheet" href="styles/styles.css" />
+    <!-- Fonts (best-effort match) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  </head>
+
+  <body>
+    <!-- CURSOR ELEMENTS -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-outline"></div>
+      <header class="global-nav" role="banner" aria-label="Primary navigation">
+      <div class="mini-logo">Noden<sup>®</sup></div>
+
+      <nav class="link-matrix" aria-label="Site links">
+        <div class="link-col">
+          <a class="navlink" href="index.html">Home</a>
+          <a href="about.html" class="navlink">About</a>
+          <a class="navlink" href="products.html">Catalog</a>
+          <a class="navlink" href="contact.html">Contact</a>
+        </div>
+      </nav>
+
+      <!-- <div class="hero__tools" aria-label="Tools">
+        <a class="tool" href="#search">Search</a>
+        <a class="tool" href="#cart">Cart</a>
+      </div> -->
+    </header>
+    <div class="page">
+      <!-- Contact hero -->
+      <section class="contact-hero" id="contact">
+        <div class="container">
+          <div class="contact-hero__grid">
+            <div>
+              <div class="kicker">CONTACT</div>
+              <h1 class="about-title">Let's Talk</h1>
+              <p class="contact-lead">
+                Tell us what you're looking for—an original Danish silhouette, a
+                restored Scandinavian classic, or a curated piece that fits your
+                space with quiet confidence.
+              </p>
+
+              <div class="sigLine">
+                <span class="sigPlus" aria-hidden="true">+</span>
+                <span>QUICK CHAT</span>
+              </div>
+            </div>
+
+            <div class="" style="align-self: end">
+              <p class="contact-lead" style="max-width: 420px">
+                We reply with care. For appointments, include your preferred
+                timeline and the type of piece you’re collecting. We’ll suggest
+                the most suitable archive options.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main -->
+      <section class="main">
+        <div class="container">
+          <div class="main__grid">
+            <!-- Contact tiles (replaces image tiles) -->
+            <div class="collage">
+              <div class="collage__grid">
+                <div class="contactTile contactTile--a" data-speed="1.05">
+                  <div class="contactTile__label">PHONE</div>
+                  <div class="contactTile__value">+234 800 000 0000</div>
+                  <div class="contactTile__meta">
+                    Appointments by request • Private viewing only
+                  </div>
+                </div>
+
+                <div class="contactTile contactTile--b" data-speed="0.85">
+                  <div class="contactTile__label">EMAIL</div>
+                  <div class="contactTile__value">hello@noden.com</div>
+                  <div class="contactTile__meta">
+                    Replies within 1–2 business days
+                  </div>
+                </div>
+
+                <div class="contactTile contactTile--c" data-speed="1.0">
+                  <div class="contactTile__label">ADDRESS / HOURS</div>
+                  <div class="contactTile__value">
+                    Victoria Island, Lagos • Nigeria
+                  </div>
+                  <div class="contactTile__meta">
+                    Mon–Sat · 10:00–18:00<br />
+                    Closed Sundays & Public Holidays
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form -->
+            <div class="formWrap">
+              <form class="" id="contactForm" autocomplete="on">
+                <div class="field">
+                  <label for="name">Name</label>
+                  <input
+                    id="name"
+                    class="underlineInput"
+                    type="text"
+                    name="name"
+                    placeholder="Your name"
+                    required
+                  />
+                </div>
+
+                <div class="field">
+                  <label for="email">Email</label>
+                  <input
+                    id="email"
+                    class="underlineInput"
+                    type="email"
+                    name="email"
+                    placeholder="@email.com"
+                    required
+                  />
+                </div>
+
+                <div class="field">
+                  <label for="phone">Phone</label>
+                  <input
+                    id="phone"
+                    class="underlineInput"
+                    type="tel"
+                    name="phone"
+                    placeholder="+234 — optional"
+                  />
+                </div>
+
+                <div class="field">
+                  <label for="message">Message</label>
+                  <textarea
+                    id="message"
+                    class="underlineInput"
+                    name="message"
+                    placeholder="Tell us about the piece, size, and timeline."
+                    required
+                  ></textarea>
+                </div>
+
+                <div class="consentRow">
+                  <input id="consent" type="checkbox" required />
+                  <label for="consent" style="margin: 0">
+                    I agree to be contacted about my inquiry. (No marketing
+                    noise—only relevant updates.)
+                  </label>
+                </div>
+
+                <div class="submitRow">
+                  <button class="circleCta" type="submit">
+                    REQUEST APPOINTMENT
+                  </button>
+                  <div class="submitHelper">
+                    Press to send your request.<br />
+                    We’ll respond within 1–2 business days.
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="container">
+         <div class="footer-grid">
+    <div class="footer-column">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Process</a></li>
+        <li><a href="#">Journal</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Curation</a></li>
+        <li><a href="#">Interior Design</a></li>
+        <li><a href="#">Bespoke</a></li>
+        <li><a href="#">Procurement</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Pinterest</a></li>
+        <li><a href="#">LinkedIn</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="copyright">© Noden® 2024</span>
+  </div>
+        </div>
+      </footer>
+    </div>
+    <script src="js/cursor.js"></script>
+    <script src="js/previews.js"></script>
+  </body>
+</html>
