@@ -16,7 +16,7 @@ const getScrollAmount = () => {
 };
 
 let mainScrollTrigger; // Store reference to main scroll trigger
-let mainTween; // Store reference to main tween
+let mainTween; // Store reference to main animation tween
 
 // Initialize the main horizontal scroll
 function initMainHorizontalScroll() {
@@ -25,31 +25,32 @@ function initMainHorizontalScroll() {
     mainScrollTrigger.kill();
   }
   
-  // Update the tween with the new track dimensions
-  gsap.set(track, {x: 0}); // Reset position before calculating
-  
-  const scrollAmount = getScrollAmount();
-  mainTween = gsap.to(track, {
-    x: scrollAmount,
-    ease: "none", // Linear is crucial for direct scroll mapping
-    duration: 1,  // Duration doesn't matter much with ScrollTrigger scrub
-    onUpdate: () => {
-      // Update any ongoing calculations if needed
-    }
-  });
+  // Wait for the next frame to ensure layout is complete
+  setTimeout(() => {
+    // Update the tween with the new track dimensions
+    gsap.set(track, {x: 0}); // Reset position before calculating
+    
+    const scrollAmount = getScrollAmount();
+    mainTween = gsap.to(track, {
+      x: scrollAmount,
+      ease: "none", // Linear is crucial for direct scroll mapping
+      duration: 1,  // Duration doesn't matter much with ScrollTrigger scrub
+      onUpdate: () => {
+        // Update any ongoing calculations if needed
+      }
+    });
 
-  mainScrollTrigger = ScrollTrigger.create({
-    trigger: "#archive",
-    start: "top top",
-    end: () => `+=${Math.abs(scrollAmount)}`, // Make scroll distance match movement
-    pin: ".archive-sticky",
-    animation: mainTween,
-    scrub: 1, // Smoothness (1s lag). Higher = smoother but less direct.
-    invalidateOnRefresh: true, // Recalculate on resize
-    anticipatePin: 1
-  });
-  
-  return mainTween;
+    mainScrollTrigger = ScrollTrigger.create({
+      trigger: "#archive",
+      start: "top top",
+      end: () => `+=${Math.abs(scrollAmount)}`, // Make scroll distance match movement
+      pin: ".archive-sticky",
+      animation: mainTween,
+      scrub: 1, // Smoothness (1s lag). Higher = smoother but less direct.
+      invalidateOnRefresh: true, // Recalculate on resize
+      anticipatePin: 1
+    });
+  }, 100);
 }
 
 // ==========================================
@@ -65,35 +66,29 @@ function setupCardAnimations() {
     }
   });
 
-  // Wait a bit to ensure main scroll trigger is set up
-  setTimeout(() => {
-    const cards = document.querySelectorAll('.product-card');
+  const cards = document.querySelectorAll('.product-card');
+  
+  // We use ScrollTrigger for each card individually to detect when it hits center
+  cards.forEach((card) => {
+    const mask = card.querySelector('.card-reveal-mask');
     
-    // Verify that we have a main scroll trigger and tween
-    const animationToUse = mainTween;
+    // Reset mask initially
+    gsap.set(mask, { x: '-100%' });
+    // Note: We don't remove the 'revealed' class since we always show the card info
     
-    // We use ScrollTrigger for each card individually to detect when it hits center
-    cards.forEach((card) => {
-      const mask = card.querySelector('.card-reveal-mask');
-      
-      // Reset mask initially
-      gsap.set(mask, { x: '-100%' });
-      // Note: We don't remove the 'revealed' class since we always show the card info
-      
-      if (animationToUse) {
-        ScrollTrigger.create({
-          trigger: card,
-          animation: animationToUse, // Use the main animation
-          start: "left center",      // When left edge of card hits center of viewport
-          end: "right center",       // When right edge leaves center
-          onEnter: () => revealCard(card, mask),
-          onEnterBack: () => revealCard(card, mask),
-          onLeave: () => hideCard(card, mask),
-          onLeaveBack: () => hideCard(card, mask)
-        });
-      }
-    });
-  }, 50);
+    if (mainScrollTrigger && mainTween) {
+      ScrollTrigger.create({
+        trigger: card,
+        containerAnimation: mainTween, // Use the main tween directly
+        start: "left center",      // When left edge of card hits center of viewport
+        end: "right center",       // When right edge leaves center
+        onEnter: () => revealCard(card, mask),
+        onEnterBack: () => revealCard(card, mask),
+        onLeave: () => hideCard(card, mask),
+        onLeaveBack: () => hideCard(card, mask)
+      });
+    }
+  });
 }
 
 function revealCard(card, mask) {
@@ -161,29 +156,29 @@ async function initializeArchiveTabs() {
   // Initialize with new arrival products since that tab is active by default
   updateReelWithProductsAndCTA(track, newProducts);
   
-  // Update the product cards with actual product data
-  const productCards = track.querySelectorAll('.product-card');
-  productCards.forEach((card, idx) => {
-    const product = newProducts[idx];
-    
-    if (product) {
-      card.querySelector('.card-image').src = product.image;
-      card.querySelector('.card-image').alt = product.alt;
-      card.querySelector('.product-name').textContent = product.name;
-      
-      // Update status based on the product's condition
-      const statusElement = card.querySelector('.product-status');
-      statusElement.textContent = product.condition.charAt(0).toUpperCase() + product.condition.slice(1);
-      statusElement.className = 'product-status'; // Reset classes
-      statusElement.classList.add(product.condition);
-    }
-  });
-  
   // Initialize the main horizontal scroll AFTER content is added
   initMainHorizontalScroll();
   
   // Wait a bit for layout to settle, then set up animations for the initial cards
   setTimeout(() => {
+    // Update the product cards with actual product data after scroll is initialized
+    const productCards = track.querySelectorAll('.product-card');
+    productCards.forEach((card, idx) => {
+      const product = newProducts[idx];
+      
+      if (product) {
+        card.querySelector('.card-image').src = product.image;
+        card.querySelector('.card-image').alt = product.alt;
+        card.querySelector('.product-name').textContent = product.name;
+        
+        // Update status based on the product's condition
+        const statusElement = card.querySelector('.product-status');
+        statusElement.textContent = product.condition.charAt(0).toUpperCase() + product.condition.slice(1);
+        statusElement.className = 'product-status'; // Reset classes
+        statusElement.classList.add(product.condition);
+      }
+    });
+    
     setupCardAnimations();
     
     // Refresh the main scroll trigger after initial setup
@@ -258,34 +253,34 @@ function setupTabListeners(newProducts, bestsellers, discounted) {
       // Update the reel with products and CTA
       updateReelWithProductsAndCTA(track, productsToShow);
       
-      // Update the product cards with actual product data
-      const productCards = track.querySelectorAll('.product-card');
-      productCards.forEach((card, idx) => {
-        const product = productsToShow[idx];
-        
-        if (product) {
-          card.querySelector('.card-image').src = product.image;
-          card.querySelector('.card-image').alt = product.alt;
-          card.querySelector('.product-name').textContent = product.name;
-          
-          // Update status based on the product's condition
-          const statusElement = card.querySelector('.product-status');
-          statusElement.textContent = product.condition.charAt(0).toUpperCase() + product.condition.slice(1);
-          statusElement.className = 'product-status'; // Reset classes
-          statusElement.classList.add(product.condition);
-        }
-      });
-      
       // Refresh the main horizontal scroll after content changes
       initMainHorizontalScroll();
       
-      // Refresh animations for the new cards
+      // Wait for the new content and scroll to be ready, then set up animations
       setTimeout(() => {
+        // Update the product cards with actual product data after scroll is re-initialized
+        const productCards = track.querySelectorAll('.product-card');
+        productCards.forEach((card, idx) => {
+          const product = productsToShow[idx];
+          
+          if (product) {
+            card.querySelector('.card-image').src = product.image;
+            card.querySelector('.card-image').alt = product.alt;
+            card.querySelector('.product-name').textContent = product.name;
+            
+            // Update status based on the product's condition
+            const statusElement = card.querySelector('.product-status');
+            statusElement.textContent = product.condition.charAt(0).toUpperCase() + product.condition.slice(1);
+            statusElement.className = 'product-status'; // Reset classes
+            statusElement.classList.add(product.condition);
+          }
+        });
+        
         setupCardAnimations();
-      }, 100);
-      
-      // Final refresh to ensure everything is properly positioned
-      ScrollTrigger.refresh();
+        
+        // Final refresh to ensure everything is properly positioned
+        ScrollTrigger.refresh();
+      }, 200);
     });
   });
 }

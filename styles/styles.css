@@ -326,7 +326,7 @@ body.cursor-product-details .cursor-outline::before {
   position: relative;
   padding-top: 90px;
   min-height: 62vh;
-  height: 100vh;
+  height: 90vh;
   overflow: hidden;
   background: #6f6a63; /* fallback if image fails */
 }
