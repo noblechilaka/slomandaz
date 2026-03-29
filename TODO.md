@@ -17,3 +17,26 @@
 - [ ] attempt_completion()
 
 **Next: Edit js/scripts.js**
+# 1. Initialize git if needed
+git init
+
+# 2. Add your new GitHub repo as remote (replace URL)
+git remote add origin https://github.com/your-username/your-repo.git
+
+# 3. Add all files and commit
+git add .
+git commit -m "Initial commit"
+
+# 4. Push to the new repo (main branch)
+git push -u origin main# 1. Initialize git if needed
+git init
+
+# 2. Add your new GitHub repo as remote (replace URL)
+git remote add origin https://github.com/your-username/your-repo.git
+
+# 3. Add all files and commit
+git add .
+git commit -m "Initial commit"
+
+# 4. Push to the new repo (main branch)
+git push -u origin main
