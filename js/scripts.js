@@ -1,45 +1,35 @@
-// Lenis smooth scroll initialization
-function initLenis() {
+// Global Utils & Smooth Scroll
+const initLenis = () => {
   const lenis = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    direction: 'vertical',
-    gestureDirection: 'vertical',
     smooth: true,
-    mouseMultiplier: 1,
-    smoothTouch: false,
-    touchMultiplier: 2,
-    infinite: false,
   });
 
+  // Single loop for everything
   function raf(time) {
     lenis.raf(time);
     requestAnimationFrame(raf);
   }
-
   requestAnimationFrame(raf);
-}
 
-gsap.utils.toArray(".noden-about__stats [data-count]").forEach((el) => {
-  const target = Number(el.getAttribute("data-count"));
-  const holder = el.closest(".noden-about__stats");
-
-  let obj = { v: 0 };
-  ScrollTrigger.create({
-    trigger: holder,
-    start: "top 80%",
-    once: true,
-    onEnter: () => {
-      gsap.to(obj, {
-        v: target,
-        duration: 2.3,
-        ease: "power1.out",
-        onUpdate: () => {
-          el.textContent = Math.round(obj.v);
-        },
-      });
-    },
+  // Sync ScrollTrigger
+  lenis.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add((time) => {
+    lenis.raf(time * 1000);
   });
-});
+  gsap.ticker.lagSmoothing(0);
+};
 
-document.addEventListener('DOMContentLoaded', initLenis);
+// Data Loader (Shared by everyone)
+window.ProductsLib = {
+  data: [],
+  async init() {
+    if (this.data.length > 0) return this.data;
+    const res = await fetch("data/products.json");
+    this.data = await res.json();
+    return this.data;
+  },
+};
+
+document.addEventListener("DOMContentLoaded", initLenis);

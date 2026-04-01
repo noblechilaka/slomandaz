@@ -1,85 +1,170 @@
-// Cart page logic
-document.addEventListener('DOMContentLoaded', () => {
-  updateCartDisplay();
-  
-  document.getElementById('placeOrderBtn').addEventListener('click', placeOrder);
-});
+// js/cart.js - SLIDE IN CART & WHATSAPP CHECKOUT
 
-function updateCartDisplay() {
-  const cart = JSON.parse(localStorage.getItem('nodenCart') || '[]');
-  const cartItemsEl = document.getElementById('cartItems');
-  const cartTotalEl = document.getElementById('cartTotal');
-  const cartBadgeEl = document.getElementById('cartBadge');
-  const placeOrderBtn = document.getElementById('placeOrderBtn');
-  
-  cartBadgeEl.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
-  
-  if (cart.length === 0) {
-    cartItemsEl.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Your cart is empty</p>';
-    cartTotalEl.style.display = 'none';
-    placeOrderBtn.style.display = 'none';
-    return;
+document.addEventListener("DOMContentLoaded", () => {
+  // --- SELECTORS ---
+  const drawer = document.getElementById("cartDrawer");
+  const overlay = document.getElementById("cartOverlay");
+  const btnOpen = document.getElementById("cartBtn");
+  const btnClose = document.getElementById("closeCartBtn");
+  const itemsContainer = document.getElementById("cartItemsContainer");
+  const totalEl = document.getElementById("cartTotal");
+  const countBadge = document.getElementById("cartCount");
+  const checkoutBtn = document.getElementById("checkoutBtn");
+  const emptyState = document.getElementById("emptyState");
+
+  let isOpen = false;
+  let cart = JSON.parse(localStorage.getItem("nodenCart")) || [];
+
+  // --- INIT ---
+  updateCartUI();
+
+  // --- EVENTS ---
+
+  // Open/Close
+  btnOpen.onclick = toggleCart;
+  btnClose.onclick = closeCart;
+  overlay.onclick = closeCart;
+
+  // Toggle Function
+  function toggleCart() {
+    isOpen = !isOpen;
+    if (isOpen) openCart();
+    else closeCart();
   }
-  
-  let total = 0;
-  cartItemsEl.innerHTML = cart.map((item, index) => {
-    total += item.price * item.qty;
-    return `
-      <div class="cart-item" style="display: flex; gap: 20px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--divider);">
-        <img src="${item.image || ''}" alt="${item.name}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 4px;">
-        <div style="flex: 1;">
-          <h3 style="margin: 0 0 4px 0; font-size: 18px;">${item.name}</h3>
-          <p style="margin: 0 0 4px 0; color: var(--text-muted);">Color: ${item.color}</p>
-          <div style="display: flex; gap: 12px; align-items: center;">
-            <span style="font-weight: 500;">$${item.price.toLocaleString()}</span>
-            <span>Qty: ${item.qty}</span>
-            <button onclick="removeFromCart(${index})" style="background: none; border: 1px solid var(--divider); padding: 4px 12px; border-radius: 4px; cursor: pointer;">Remove</button>
+
+  function openCart() {
+    drawer.style.right = "0";
+    overlay.style.opacity = "1";
+    overlay.style.pointerEvents = "auto";
+    gsap.to([drawer, overlay], { autoAlpha: 1, duration: 0 }); // GSAP help for clean entry
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeCart() {
+    drawer.style.right = "-100%";
+    overlay.style.opacity = "0";
+    overlay.style.pointerEvents = "none";
+    setTimeout(() => (document.body.style.overflow = ""), 400);
+  }
+
+  // Global Expose for Products Modal
+  window.addToCart = (productIndex) => {
+    const product = window.allProducts[productIndex];
+
+    // Simple check if product already exists
+    const existing = cart.find((item) => item.id === product.id);
+    if (existing) return; // Prevent duplicates in simple logic
+
+    cart.push({
+      id: product.id,
+      name: product.name,
+      price: parseFloat(product.price),
+      image: product.image,
+      condition: product.condition,
+    });
+
+    saveAndRefresh();
+
+    // If modal is open, maybe show small confirmation?
+    // For now, we just update storage.
+  };
+
+  // Remove Item
+  window.removeFromCart = (indexToRemove) => {
+    cart.splice(indexToRemove, 1);
+    saveAndRefresh();
+  };
+
+  function saveAndRefresh() {
+    localStorage.setItem("nodenCart", JSON.stringify(cart));
+    updateCartUI();
+  }
+
+  // Render UI
+  function updateCartUI() {
+    // Count Badge
+    if (cart.length > 0) {
+      countBadge.style.display = "block";
+      countBadge.textContent = cart.length;
+      checkoutBtn.disabled = false;
+      checkoutBtn.style.background = "#1a1a1a";
+      checkoutBtn.style.cursor = "pointer";
+    } else {
+      countBadge.style.display = "none";
+      checkoutBtn.disabled = true;
+      checkoutBtn.style.background = "#ccc";
+      checkoutBtn.style.cursor = "not-allowed";
+    }
+
+    // Items List
+    itemsContainer.innerHTML = "";
+
+    if (cart.length === 0) {
+      itemsContainer.appendChild(emptyState);
+      emptyState.style.display = "block";
+      totalEl.textContent = "$0";
+      return;
+    }
+
+    emptyState.style.display = "none";
+    let total = 0;
+
+    cart.forEach((item, index) => {
+      total += item.price;
+
+      const el = document.createElement("div");
+      el.style.cssText =
+        "display:flex; gap:16px; margin-bottom:20px; align-items:flex-start; animation: fadeIn 0.3s ease forwards;";
+
+      el.innerHTML = `
+        <img src="${
+          item.image
+        }" style="width:60px; height:60px; object-fit:cover; border-radius:2px;">
+        <div style="flex:1;">
+          <div style="font-size:14px; font-weight:500; margin-bottom:4px; line-height:1.3;">${
+            item.name
+          }</div>
+          <div style="font-size:12px; color:#888; margin-bottom:8px;">Condition: ${
+            item.condition
+          }</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-weight:600;">$${item.price.toLocaleString()}</span>
+            <button onclick="removeFromCart(${index})" style="border:none; background:none; color:#d9534f; font-size:12px; cursor:pointer; text-decoration:underline;">Remove</button>
           </div>
         </div>
-      </div>
-    `;
-  }).join('');
-  
-  cartTotalEl.innerHTML = `<strong>Total: $${total.toLocaleString()}</strong>`;
-  cartTotalEl.style.display = 'block';
-  placeOrderBtn.style.display = 'block';
-}
+      `;
+      itemsContainer.appendChild(el);
+    });
 
-function removeFromCart(index) {
-  let cart = JSON.parse(localStorage.getItem('nodenCart') || '[]');
-  cart.splice(index, 1);
-  localStorage.setItem('nodenCart', JSON.stringify(cart));
-  updateCartDisplay();
-}
+    totalEl.textContent = `$${total.toLocaleString()}`;
+  }
 
-function placeOrder() {
-  const cart = JSON.parse(localStorage.getItem('nodenCart') || '[]');
-  if (cart.length === 0) return;
-  
-  // Compile order message
-  const lines = cart.map(item => {
-    const subtotal = item.price * item.qty;
-    return `${item.qty}x ${item.name} (${item.color}) - $${subtotal.toLocaleString()}`;
-  });
-  
-  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const message = `*NEW ORDER — NODEN®*
+  // WHATSAPP GENERATION
+  checkoutBtn.onclick = () => {
+    const companyPhone = "2348000000000"; // REPLACE WITH REAL NUMBER
 
-${lines.join('\n\n')}
+    const lines = cart
+      .map((item) => {
+        return `• ${item.name} ($${item.price.toLocaleString()}) [${
+          item.condition
+        }]`;
+      })
+      .join("\n");
 
-*Total: $${total.toLocaleString()}*
+    const total = cart.reduce((sum, i) => sum + i.price, 0);
 
-Send to company WhatsApp.`.replace(/\n/g, '%0A');
-  
-  const whatsappUrl = `https://wa.me/1234567890?text=${encodeURIComponent(message)}`; // Replace with real number
-  window.open(whatsappUrl, '_blank');
-  
-  // Clear cart
-  localStorage.removeItem('nodenCart');
-  
-  // Show confirmation
-  document.getElementById('orderConfirm').style.display = 'block';
-  document.getElementById('cartItems').innerHTML = '<p style="text-align: center; color: var(--text-muted);">Order placed successfully!</p>';
-  updateCartDisplay();
-}
+    const message = `*NEW ORDER REQUEST — NODEN®*\n\n${lines}\n\n*TOTAL: $${total.toLocaleString()}*\n\nI would like to proceed with this selection.`;
 
+    const url = `https://wa.me/${companyPhone}?text=${encodeURIComponent(
+      message
+    )}`;
+
+    window.open(url, "_blank");
+
+    // Optional: Clear cart after sending
+    // cart = [];
+    // localStorage.removeItem('nodenCart');
+    // updateCartUI();
+    // closeCart();
+  };
+});

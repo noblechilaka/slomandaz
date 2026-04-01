@@ -367,3 +367,23 @@ document.addEventListener("click", (e) => {
   // Dispatch custom event to update cart badge if exists
   window.dispatchEvent(new Event('cartUpdated'));
 });
+
+// INSIDE js/products.js -> click listener of #addToCartBtn
+
+modal.querySelector('#addToCartBtn').onclick = () => {
+  // ... previous code to set state/color ...
+
+  // Call the new centralized cart function instead of pushing directly
+  if(window.addToCart) {
+     window.addToCart(currentProductIndex);
+     
+     // Visual feedback in modal
+     const btn = modal.querySelector('#addToCartBtn');
+     btn.textContent = "Added!";
+     btn.classList.add('added');
+     setTimeout(() => {
+       btn.textContent = "Add to Cart";
+       btn.classList.remove('added');
+     }, 2000);
+  }
+};

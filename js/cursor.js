@@ -1,91 +1,200 @@
-// File: js/cursor.js
+// js/cursor.js — CURSOR SYSTEM ONLY
+// Handles: Dot, Outline, Service Preview
 
-// GSAP and Lenis should be initialized before this script runs.
-gsap.registerPlugin(ScrollTrigger);
+(function () {
+  "use strict";
 
-document.addEventListener("DOMContentLoaded", () => {
-  const cursorDot = document.querySelector(".cursor-dot");
-  const cursorOutline = document.querySelector(".cursor-outline");
-  const body = document.body;
+  // Exit for touch devices
+  if ("ontouchstart" in window || navigator.maxTouchPoints > 0) return;
 
-  // Hide cursor on touch devices
-  if ("ontouchstart" in window) {
-    cursorDot.style.display = "none";
-    cursorOutline.style.display = "none";
-    return; // Exit script if touch device
+  // Wait for GSAP
+  if (typeof gsap === "undefined") {
+    setTimeout(() => arguments.callee(), 100);
+    return;
   }
 
-  let mouseX = 0,
-    mouseY = 0;
-  let dotX = 0,
-    dotY = 0;
-  let outlineX = 0,
-    outlineY = 0;
+  document.addEventListener("DOMContentLoaded", () => {
+    const dot = document.querySelector(".cursor-dot");
+    const outline = document.querySelector(".cursor-outline");
 
-  // 1. MOUSE POSITION LISTENER
-  window.addEventListener("mousemove", (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
+    if (!dot || !outline) return;
 
-  // 2. THE RENDER LOOP (The engine for the buttery effect)
-  const render = () => {
-    // Dot position (snappy)
-    dotX += (mouseX - dotX) * 0.6;
-    dotY += (mouseY - dotY) * 0.6;
-    gsap.set(cursorDot, { x: dotX, y: dotY });
+    // Create preview element for services
+    const preview = document.createElement("div");
+    preview.className = "service-preview";
+    preview.innerHTML =
+      '<img class="preview-img" src="" alt=""><span class="preview-label"></span>';
+    document.body.appendChild(preview);
 
-    // Outline position (buttery lag)
-    outlineX += (mouseX - outlineX) * 0.1;
-    outlineY += (mouseY - outlineY) * 0.1;
-    gsap.set(cursorOutline, { x: outlineX, y: outlineY });
+    const previewImg = preview.querySelector(".preview-img");
+    const previewLabel = preview.querySelector(".preview-label");
 
-    requestAnimationFrame(render);
-  };
-  requestAnimationFrame(render);
+    // Mouse position
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let dotX = mouseX,
+      dotY = mouseY;
+    let outlineX = mouseX,
+      outlineY = mouseY;
+    let previewX = mouseX,
+      previewY = mouseY;
 
-  // 3. STATE CHANGE HANDLERS (The brain)
-  const addState = (state) => body.classList.add(state);
-  const removeState = (state) => body.classList.remove(state);
-
-  // --- Pointer State ---
-  const pointerElements = document.querySelectorAll(
-    "a, button, .tab, .product-card, .category-item, .quiet-exit-cta, .navlink, .tool, .hero-cta, .archive-cta, .process-cta, .contact-cta"
-  );
-  pointerElements.forEach((el) => {
-    el.addEventListener("mouseenter", () => addState("cursor-pointer"));
-    el.addEventListener("mouseleave", () => removeState("cursor-pointer"));
-  });
-
-  // --- Text State ---
-  const textElements = document.querySelectorAll(
-    "p, h1, h2, h3, h4, h5, h6, .hero__descriptor, .product-name, .copyright"
-  );
-  textElements.forEach((el) => {
-    el.addEventListener("mouseenter", () => addState("cursor-text"));
-    el.addEventListener("mouseleave", () => removeState("cursor-text"));
-  });
-
-  // --- Drag State ---
-  const dragElement = document.querySelector(".reel-wrapper");
-  if (dragElement) {
-    dragElement.addEventListener("mouseenter", () => addState("cursor-drag"));
-    dragElement.addEventListener("mouseleave", () =>
-      removeState("cursor-drag")
-    );
-  }
-
-  // --- Service Section Special Preview ---
-  // This ensures your previous cursor logic takes priority
-  const serviceRows = document.querySelectorAll(".service-row");
-  if (serviceRows.length > 0) {
-    serviceRows.forEach((row) => {
-      row.addEventListener("mouseenter", () => addState("cursor-services"));
-      row.addEventListener("mouseleave", () => removeState("cursor-services"));
+    document.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
     });
 
-    // Make sure to adapt your existing services cursor JS to use the .cursor-preview element
-    // and hide the global one, as we've done in the CSS with `body.cursor-services`.
-    // Your original services JS for the preview image will still work perfectly alongside this.
-  }
-});
+    // Render loop
+    function render() {
+      dotX += (mouseX - dotX) * 0.4;
+      dotY += (mouseY - dotY) * 0.4;
+      outlineX += (mouseX - outlineX) * 0.12;
+      outlineY += (mouseY - outlineY) * 0.12;
+      previewX += (mouseX - previewX) * 0.08;
+      previewY += (mouseY - previewY) * 0.08;
+
+      gsap.set(dot, { x: dotX, y: dotY });
+      gsap.set(outline, { x: outlineX, y: outlineY });
+      gsap.set(preview, { x: previewX + 90, y: previewY - 60 });
+
+      requestAnimationFrame(render);
+    }
+    render();
+
+    // Interactive elements
+    const interactiveSelectors = [
+      "a",
+      "button",
+      ".navlink",
+      ".tab",
+      ".filter",
+      ".category-item",
+      ".hero-cta",
+      ".archive-cta",
+      ".services-cta",
+      ".process-cta",
+      ".contact-cta",
+      ".learn-more",
+      ".footer-column a",
+      ".mini-logo",
+    ].join(", ");
+
+    // Text elements
+    const textSelectors = "p, h1, h2, h3, h4, h5, h6, .hero__descriptor";
+
+    // Event delegation
+    document.addEventListener("mouseover", (e) => {
+      // Check for service row (preview)
+      const serviceRow = e.target.closest(".service-row");
+      if (serviceRow) {
+        const src = serviceRow.dataset.preview;
+        const label = serviceRow.dataset.label || "";
+        previewImg.src = src;
+        previewLabel.textContent = label;
+        gsap.to(preview, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          ease: "power3.out",
+        });
+        gsap.to(dot, {
+          scale: 2.5,
+          backgroundColor: "#B87333",
+          duration: 0.35,
+        });
+        gsap.to(outline, { opacity: 0, duration: 0.3 });
+        return;
+      }
+
+      // Check for interactive
+      if (e.target.closest(interactiveSelectors)) {
+        gsap.to(dot, { opacity: 0, duration: 0.2 });
+        gsap.to(outline, {
+          width: 56,
+          height: 56,
+          borderColor: "rgba(184, 115, 51, 0.5)",
+          backgroundColor: "rgba(184, 115, 51, 0.08)",
+          duration: 0.4,
+          ease: "power3.out",
+        });
+        return;
+      }
+
+      // Check for text
+      if (e.target.closest(textSelectors)) {
+        gsap.to(dot, { opacity: 0, duration: 0.2 });
+        gsap.to(outline, {
+          width: 3,
+          height: 24,
+          borderRadius: "2px",
+          borderColor: "#141414",
+          backgroundColor: "#141414",
+          duration: 0.3,
+        });
+        return;
+      }
+
+      // Default
+      resetCursor();
+    });
+
+    document.addEventListener("mouseout", (e) => {
+      // Hide preview when leaving service row
+      if (e.target.closest(".service-row")) {
+        gsap.to(preview, {
+          opacity: 0,
+          scale: 0.92,
+          duration: 0.35,
+          ease: "power2.inOut",
+        });
+        gsap.to(dot, { scale: 1, backgroundColor: "#141414", duration: 0.3 });
+      }
+
+      // Reset when leaving interactive or text
+      if (
+        e.target.closest(interactiveSelectors) ||
+        e.target.closest(textSelectors)
+      ) {
+        resetCursor();
+      }
+    });
+
+    function resetCursor() {
+      gsap.to(dot, {
+        opacity: 1,
+        scale: 1,
+        backgroundColor: "#141414",
+        duration: 0.3,
+      });
+      gsap.to(outline, {
+        width: 40,
+        height: 40,
+        borderRadius: "50%",
+        borderColor: "rgba(20, 20, 20, 0.15)",
+        backgroundColor: "transparent",
+        opacity: 0.6,
+        duration: 0.4,
+        ease: "power3.out",
+      });
+    }
+
+    // Hide cursor when leaving window
+    document.addEventListener("mouseleave", () => {
+      gsap.to(dot, { opacity: 0, duration: 0.2 });
+      gsap.to(outline, { opacity: 0, duration: 0.2 });
+    });
+
+    document.addEventListener("mouseenter", () => {
+      gsap.to(dot, { opacity: 1, duration: 0.2 });
+      gsap.to(outline, { opacity: 0.6, duration: 0.2 });
+    });
+
+    // Hide default cursor
+    document.body.style.cursor = "none";
+    const style = document.createElement("style");
+    style.textContent = "*, *::before, *::after { cursor: none !important; }";
+    document.head.appendChild(style);
+
+    console.log("✓ Cursor initialized");
+  });
+})();
