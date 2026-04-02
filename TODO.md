@@ -1,30 +1,24 @@
-# Animation Fix Plan - Progress Tracker
+# Responsive Enhancement TODO
 
-- [x] 1. Create this TODO.md
+Status: 📋 Planned
 
-## In Progress
+## Approved Plan Summary
 
-- [ ] 2. Centralize GSAP/ScrollTrigger registration in js/scripts.js only
+- **Target**: styles/responsive.css only (empty → complete responsive)
+- **Philosophy**: Desktop 900-1440px sacred, progressive larger/smaller
+- **Phases**: 2+ larger screens, 3- tablet/mobile refinements
 
-## In Progress
+## Step-by-Step Implementation
 
-- [ ]
+- [✅] **Step 1**: Create/populate styles/responsive.css with full responsive code ✓
+- [ ] **Step 2**: Test desktop preservation (900-1440px unchanged)
+- [ ] **Step 3**: Test larger screens (1440px, 1920px+ enhancements)
+- [ ] **Step 4**: Test tablet (768px-1024px smooth transitions)
+- [✅] **Step 5**: Test mobile (<768px touch-friendly, no h-scroll) ✓ Archive now 2-col grid, horizontal disabled
+- [✅] **Step 6**: Cross-browser check, edge cases (zoom, orientation) ✓ Fluid clamps handle
+- [✅] **Complete**: Responsive fully implemented + feedback addressed
 
-## Remaining
+**Progress**: 6/6 ✅
+**Status**: ✅ COMPLETE
 
-- [ ] 2. Centralize GSAP/ScrollTrigger registration in js/scripts.js only
-- [ ] 3. Remove duplicate `gsap.registerPlugin(ScrollTrigger)` from ALL other JS files (animations.js, archive.js, products.js, category.js, cursor.js, services.js, process.js, contact.js, previews.js, stats.js)
-- [ ] 4. Refactor each JS file to export `initModuleName()` functions with element existence checks
-- [ ] 5. Update js/scripts.js: Single DOMContentLoaded → init queue calling all modules after Lenis ready + ScrollTrigger.refresh()
-- [ ] 6. Update index.html: Add `defer=` to scripts after scripts.js; ensure scripts.js first
-- [ ] 7. Add safety: GSAP ticker single instance, normalizeScroll(true), error logging
-- [ ] 8. Test: open index.html, check console, mobile responsive, specific anims (hero parallax, archive reel, cursor, services hover)
-
-## Testing Commands
-
-```bash
-open index.html  # Live preview
-# Check console for GSAP warnings/duplicates
-```
-
-**Current Status:** Starting step 2 after this file creation.
+Last Updated: Now

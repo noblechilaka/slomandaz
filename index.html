@@ -23,6 +23,7 @@
  
     <link rel="stylesheet" href="styles/styles.css" />
     <link rel="stylesheet" href="styles/archive.css" />
+    <link rel="stylesheet" href="styles/responsive.css">
   </head>
 
   <body>
@@ -112,122 +113,32 @@
     <!-- =========================
        PRODUCT ARCHIVE SECTION
   ========================= -->
-    <section class="archive-section" id="archive">
-      <a href="#archive" class="hero-cta">Explore Archive</a>
-      <div class="archive-sticky">
-        <header class="archive-header">
-          <span class="section-label">Products</span>
-          <div class="tabs-container">
-            <div class="tab active">New arrival <sup>(12)</sup></div>
-            <div class="tab">Bestsellers <sup>(08)</sup></div>
-            <div class="tab">Discounted <sup>(04)</sup></div>
-          </div>
-        </header>
-
-
+<!-- Archive Section (replace existing) -->
+<section class="archive-section" id="archive">
   
-        <div class="reel-wrapper">
-          <div class="reel-track" id="reelTrack">
-            <!-- Product 1 -->
-            <article class="product-card">
-              <div class="card-image-mask">
-                <div class="card-reveal-mask"></div>
-                <img
-                  src="https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=800&auto=format&fit=crop"
-                  alt="Chair"
-                  class="card-image"
-                />
-              </div>
-              <div class="card-info">
-                <span class="product-name">Danish Sideboard</span>
-                <span class="product-status">Available</span>
-              </div>
-            </article>
+  <!-- Tabs -->
+  <div class="archive-header">
+    <span class="section-label">Products</span>
+    <div class="tabs-container">
+      <div class="tab active" data-tab="new">New Arrivals <sup>(12)</sup></div>
+      <div class="tab" data-tab="best">Bestsellers <sup>(08)</sup></div>
+      <div class="tab" data-tab="sale">Discounted <sup>(04)</sup></div>
+    </div>
+  </div>
 
-            <!-- Product 2 -->
-            <article class="product-card">
-              <div class="card-image-mask">
-                <div class="card-reveal-mask"></div>
-                <img
-                  src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=800&auto=format&fit=crop"
-                  alt="Cabinet"
-                  class="card-image"
-                />
-              </div>
-              <div class="card-info">
-                <span class="product-name">GE 290A Easy Chair</span>
-                <span class="product-status">Sold</span>
-              </div>
-            </article>
+  <!-- Grid -->
+  <div class="archive-grid" id="archiveGrid">
+    <!-- Products injected here by JS -->
+  </div>
 
-            <!-- Product 3 -->
-            <article class="product-card">
-              <div class="card-image-mask">
-                <div class="card-reveal-mask"></div>
-                <img
-                  src="https://images.unsplash.com/photo-1532372320572-cda25653a26d?q=80&w=800&auto=format&fit=crop"
-                  alt="Lamp"
-                  class="card-image"
-                />
-              </div>
-              <div class="card-info">
-                <span class="product-name">Arne Jacobsen Lamp</span>
-                <span class="product-status">Available</span>
-              </div>
-            </article>
+  <!-- CTA -->
+  <div class="archive-footer">
+    <a href="products.html" class="archive-cta">
+      <span>+</span> View Catalogue
+    </a>
+  </div>
 
-            <!-- Product 4 -->
-            <article class="product-card">
-              <div class="card-image-mask">
-                <div class="card-reveal-mask"></div>
-                <img
-                  src="https://images.unsplash.com/photo-1519947486511-46149fa0a254?q=80&w=800&auto=format&fit=crop"
-                  alt="Table"
-                  class="card-image"
-                />
-              </div>
-              <div class="card-info">
-                <span class="product-name">Teak Coffee Table</span>
-                <span class="product-status">Discounted</span>
-              </div>
-            </article>
-
-            <!-- Product 5 -->
-            <article class="product-card">
-              <div class="card-image-mask">
-                <div class="card-reveal-mask"></div>
-                <img
-                  src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=800&auto=format&fit=crop"
-                  alt="Sofa"
-                  class="card-image"
-                />
-              </div>
-              <div class="card-info">
-                <span class="product-name">Velvet Sofa</span>
-                <span class="product-status">Available</span>
-              </div>
-            </article>
-
-            <!-- Product 6 -->
-            <article class="product-card">
-              <div class="card-image-mask">
-                <div class="card-reveal-mask"></div>
-                <img
-                  src="https://images.unsplash.com/photo-1506439773649-6e0eb8cfb237?q=80&w=800&auto=format&fit=crop"
-                  alt="Flower"
-                  class="card-image"
-                />
-              </div>
-              <div class="card-info">
-                <span class="product-name">Ceramic Vase Set</span>
-                <span class="product-status">Available</span>
-              </div>
-            </article>
-            <a href="" class="archive-cta">View Catalogue</a>
-          </div>
-        </div>
-      </div>
-    </section>
+</section>
     <section class="category-section">
   
   <!-- LEFT IMAGE CONTAINER -->
@@ -384,8 +295,7 @@
   <ul class="services-list" id="servicesList">
 
     <li class="service-row"
-        data-preview="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80"
-        data-label="Material Sourcing">
+        
       <div class="service-row-inner">
         <span class="service-num">01</span>
         <span class="service-title">Custom Furniture making</span>
@@ -395,8 +305,7 @@
     </li>
 
     <li class="service-row"
-        data-preview="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=400&q=80"
-        data-label="Space Planning">
+     
       <div class="service-row-inner">
         <span class="service-num">02</span>
         <span class="service-title">Interior Design</span>
@@ -417,8 +326,7 @@
     </li> -->
 
     <li class="service-row"
-        data-preview="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&q=80"
-        data-label="Styling Process">
+       
       <div class="service-row-inner">
         <span class="service-num">04</span>
         <span class="service-title">3D Illustrations </span>
