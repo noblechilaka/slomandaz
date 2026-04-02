@@ -1492,63 +1492,103 @@ body.cursor-product-details .cursor-outline::before {
 }
 
 /* ─── RESPONSIVE ─── */
+/* --- RESPONSIVE SERVICES SECTION FIX --- */
 @media (max-width: 768px) {
-  */
 
+  /* 1. Adjust Container Padding */
+  .services-section {
+    padding: 80px var(--pad-x-mobile) 60px;
+    overflow-x: hidden;
+  }
+
+  /* 2. Stack Header Vertically */
   .services-header {
     flex-direction: column;
+    align-items: center; /* Center everything for symmetry */
+    text-align: center;
     gap: 24px;
     margin-bottom: 48px;
   }
 
   .services-headline {
-    text-align: left;
+    max-width: 100%; /* Remove width constraints */
+    text-align: center !important;
   }
 
+  /* 3. Change Row Layout Logic */
+  .service-row {
+    border-top: 1px solid var(--divider); /* Move border to top on mobile */
+    min-height: 140px; /* Force height for better readability */
+    display: flex;
+    align-items: center;
+  }
+
+  .service-row::after {
+    /* Remove the hover glow animation on mobile for stability */
+    display: none; 
+  }
+
+  /* 4. Simplify Inner Grid to Stacking */
   .service-row-inner {
-    grid-template-columns: 40px 1fr;
+    grid-template-columns: auto 1fr; /* Only Two Columns Left */
     grid-template-rows: auto auto;
-    gap: 30px;
-    padding: 44px 0;
+    gap: 12px 24px;
+    padding: 24px 0;
+    width: 100%;
+    align-items: start;
   }
 
+  /* Positioning Items */
   .service-num {
-    grid-row: 1;
+    grid-column: 1 / 2;
+    font-size: 9px;
+    opacity: 1; /* Always visible on mobile */
+    color: var(--copper); /* Highlight number */
   }
 
   .service-title {
-    font-size: 36px;
-    display: block;
-    margin-bottom: 10px;
+    grid-column: 2 / 3;
+    font-size: 24px !important; /* Hard cap size on phone */
+    opacity: 1 !important; /* Always visible */
+    line-height: 1.2;
+    letter-spacing: -0.01em;
   }
 
+  /* Stack Tag and Description underneath Title */
   .service-tag {
-    grid-column: 2;
+    grid-column: 2 / 3; /* Push under title */
+    opacity: 1 !important; /* Always show tag on mobile */
     display: inline-block;
-    margin-right: 100%;
-    justify-self: start;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+    border-color: rgba(184, 115, 51, 0.3); /* Subtle border */
+    background: rgba(184, 115, 51, 0.05);
   }
 
   .service-desc {
-    grid-column: 1 / -1;
+    grid-column: 2 / 3;
+    opacity: 1 !important;
+    transform: translate(0);
+    margin-left: 0;
     text-align: left;
+    max-width: 100%;
+    font-size: 13px; /* Slightly larger for legibility */
   }
 
-  .section-counter {
-    display: none;
-  }
-
+  /* 5. Footer Adjustments */
   .services-footer {
     flex-direction: column;
-    gap: 24px;
     align-items: flex-start;
+    gap: 20px;
+  }
+
+  .services-cta {
+    padding-inline: 30px;
   }
 }
 
 /* ── PROCESS-SECTION ── */
 .process {
-  padding-block: 180px;
+  
   position: relative;
   overflow: hidden;
 }

@@ -12,24 +12,26 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=shopping_bag" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=shopping_bag"
+    />
 
     <!-- GSAP (KEEP) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<!-- Lenis Smooth Scroll -->
+    <!-- Lenis Smooth Scroll -->
     <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 
- 
     <link rel="stylesheet" href="styles/styles.css" />
     <link rel="stylesheet" href="styles/archive.css" />
-    <link rel="stylesheet" href="styles/responsive.css">
+    <link rel="stylesheet" href="styles/responsive.css" />
   </head>
 
   <body>
-      <!-- CURSOR ELEMENTS -->
-  <div class="cursor-dot"></div>
-  <div class="cursor-outline"></div>
+    <!-- CURSOR ELEMENTS -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
     <header class="global-nav" role="banner" aria-label="Primary navigation">
       <div class="mini-logo">Noden<sup>®</sup></div>
@@ -44,18 +46,17 @@
       </nav>
 
       <div class="hero__tools" aria-label="Tools">
-       <!-- CART ICON (Place inside your header/nav) -->
-<button id="cartBtn" aria-label="Open Cart" class="cart-button">
- <span class="material-symbols-outlined">shopping_bag</span>
- <sup id="cartCount" class="cart-count-sup">0</sup>
-</button>
+        <!-- CART ICON (Place inside your header/nav) -->
+        <button id="cartBtn" aria-label="Open Cart" class="cart-button">
+          <span class="material-symbols-outlined">shopping_bag</span>
+          <sup id="cartCount" class="cart-count-sup">0</sup>
+        </button>
       </div>
     </header>
 
     <!-- THE SLIDE-IN DRAWER (Fixed Position) - Moved outside header to avoid mix-blend-mode -->
     <div id="cartOverlay"></div>
     <div id="cartDrawer">
-      
       <!-- Drawer Header -->
       <div class="cart-drawer-header">
         <h3>Your Selection</h3>
@@ -77,10 +78,10 @@
           <span>Total</span>
           <span id="cartTotal">$0</span>
         </div>
-        <button id="checkoutBtn" disabled>
-          Send via WhatsApp
-        </button>
-        <p class="checkout-info">By sending, you authorize us to contact you regarding your order.</p>
+        <button id="checkoutBtn" disabled>Send via WhatsApp</button>
+        <p class="checkout-info">
+          By sending, you authorize us to contact you regarding your order.
+        </p>
       </div>
     </div>
 
@@ -103,455 +104,526 @@
 
       <div class="hero__brand">Slomandaz<sup>®</sup></div>
       <div class="hero__descriptor">
-       SLOMANDAZ offers custom-made pieces and expert interior design services to bring timeless style to your space.
-       </div>
-
-
+        SLOMANDAZ offers custom-made pieces and expert interior design services
+        to bring timeless style to your space.
+      </div>
     </section>
-
 
     <!-- =========================
        PRODUCT ARCHIVE SECTION
   ========================= -->
-<!-- Archive Section (replace existing) -->
-<section class="archive-section" id="archive">
-  <a href="#archive" class="hero-cta">Talk with us</a>
-  <!-- Tabs -->
-  <div class="archive-header">
-    <span class="section-label">Products</span>
-    <div class="tabs-container">
-      <div class="tab active" data-tab="new">New Arrivals <sup>(12)</sup></div>
-      <div class="tab" data-tab="best">Bestsellers <sup>(08)</sup></div>
-      <div class="tab" data-tab="sale">Discounted <sup>(04)</sup></div>
-    </div>
-  </div>
+    <!-- Archive Section (replace existing) -->
+    <section class="archive-section" id="archive">
+      <a href="#archive" class="hero-cta">Talk with us</a>
+      <!-- Tabs -->
+      <div class="archive-header">
+        <span class="section-label">Products</span>
+        <div class="tabs-container">
+          <div class="tab active" data-tab="new">
+            New Arrivals <sup>(12)</sup>
+          </div>
+          <div class="tab" data-tab="best">Bestsellers <sup>(08)</sup></div>
+          <div class="tab" data-tab="sale">Discounted <sup>(04)</sup></div>
+        </div>
+      </div>
 
-  <!-- Grid -->
-  <div class="archive-grid" id="archiveGrid">
-    <!-- Products injected here by JS -->
-  </div>
+      <!-- Grid -->
+      <div class="archive-grid" id="archiveGrid">
+        <!-- Products injected here by JS -->
+      </div>
 
-  <!-- CTA -->
-  <div class="archive-footer">
-    <a href="products.html" class="archive-cta">
-      <span>+</span> View Catalogue
-    </a>
-  </div>
-
-</section>
+      <!-- CTA -->
+      <div class="archive-footer">
+        <a href="products.html" class="archive-cta">
+          <span>+</span> View Catalogue
+        </a>
+      </div>
+    </section>
     <section class="category-section">
-  
-  <!-- LEFT IMAGE CONTAINER -->
-  <div class="fixed-frame frame-left">
-    <div class="layer active"><img src="https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=600&auto=format&fit=crop" alt=""></div>
-    <div class="layer"><img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=600&auto=format&fit=crop" alt=""></div>
-    <div class="layer"><img src="https://images.unsplash.com/photo-1519947486511-46149fa0a254?q=80&w=600&auto=format&fit=crop" alt=""></div>
-    <div class="layer"><img src="https://images.unsplash.com/photo-1532372320572-cda25653a26d?q=80&w=600&auto=format&fit=crop" alt=""></div>
-    <div class="layer"><img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=600&auto=format&fit=crop" alt=""></div>
-  </div>
+      <!-- LEFT IMAGE CONTAINER -->
+      <div class="fixed-frame frame-left">
+        <div class="layer active">
+          <img
+            src="https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=600&auto=format&fit=crop"
+            alt=""
+          />
+        </div>
+        <div class="layer">
+          <img
+            src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=600&auto=format&fit=crop"
+            alt=""
+          />
+        </div>
+        <div class="layer">
+          <img
+            src="https://images.unsplash.com/photo-1519947486511-46149fa0a254?q=80&w=600&auto=format&fit=crop"
+            alt=""
+          />
+        </div>
+        <div class="layer">
+          <img
+            src="https://images.unsplash.com/photo-1532372320572-cda25653a26d?q=80&w=600&auto=format&fit=crop"
+            alt=""
+          />
+        </div>
+        <div class="layer">
+          <img
+            src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=600&auto=format&fit=crop"
+            alt=""
+          />
+        </div>
+      </div>
 
-  <!-- RIGHT IMAGE CONTAINER -->
-  <div class="fixed-frame frame-right">
-    <div class="layer active"><img src="https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=600&auto=format&fit=crop" alt=""></div>
-    <div class="layer"><img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=600&auto=format&fit=crop" alt=""></div>
-    <div class="layer"><img src="https://images.unsplash.com/photo-1519947486511-46149fa0a254?q=80&w=600&auto=format&fit=crop" alt=""></div>
-    <div class="layer"><img src="https://images.unsplash.com/photo-1532372320572-cda25653a26d?q=80&w=600&auto=format&fit=crop" alt=""></div>
-    <div class="layer"><img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=600&auto=format&fit=crop" alt=""></div>
-  </div>
+      <!-- RIGHT IMAGE CONTAINER -->
+      <div class="fixed-frame frame-right">
+        <div class="layer active">
+          <img
+            src="https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=600&auto=format&fit=crop"
+            alt=""
+          />
+        </div>
+        <div class="layer">
+          <img
+            src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=600&auto=format&fit=crop"
+            alt=""
+          />
+        </div>
+        <div class="layer">
+          <img
+            src="https://images.unsplash.com/photo-1519947486511-46149fa0a254?q=80&w=600&auto=format&fit=crop"
+            alt=""
+          />
+        </div>
+        <div class="layer">
+          <img
+            src="https://images.unsplash.com/photo-1532372320572-cda25653a26d?q=80&w=600&auto=format&fit=crop"
+            alt=""
+          />
+        </div>
+        <div class="layer">
+          <img
+            src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=600&auto=format&fit=crop"
+            alt=""
+          />
+        </div>
+      </div>
 
+      <!-- CENTER TEXT -->
+      <div class="spine-container">
+        <span class="section-label">Categories</span>
 
-  <!-- CENTER TEXT -->
-  <div class="spine-container">
-    <span class="section-label">Categories</span>
-    
-    <ul class="category-list">
-      <li class="category-item" data-cat="singles">
-        <span class="category-text">Singles <sup class="category-count">(25)</sup></span>
-        <span class="strike-line"></span>
-      </li>
-      
-      <li class="category-item" data-cat="complimentary">
-        <span class="category-text">Complimentary <sup class="category-count">(14)</sup></span>
-        <span class="strike-line"></span>
-      </li>
-      
-      <!-- Active Default -->
-      <li class="category-item is-active" data-cat="sofas">
-        <span class="category-text">Sofas <sup class="category-count">(29)</sup></span>
-        <span class="strike-line"></span>
-      </li>
-      
-      <li class="category-item" data-cat="beds">
-        <span class="category-text">Beds <sup class="category-count">(08)</sup></span>
-        <span class="strike-line"></span>
-      </li>
-      
-      <li class="category-item" data-cat="fittings">
-        <span class="category-text">Fittings <sup class="category-count">(12)</sup></span>
-        <span class="strike-line"></span>
-      </li>
-    </ul>
-  </div>
+        <ul class="category-list">
+          <li class="category-item" data-cat="singles">
+            <span class="category-text"
+              >Singles <sup class="category-count">(25)</sup></span
+            >
+            <span class="strike-line"></span>
+          </li>
 
-</section>
-<section class="noden-about" aria-label="About Us">
-  <div class="noden-about__grid">
+          <li class="category-item" data-cat="complimentary">
+            <span class="category-text"
+              >Complimentary <sup class="category-count">(14)</sup></span
+            >
+            <span class="strike-line"></span>
+          </li>
 
-    <!-- Row 1 -->
-    <h2 class="noden-about__title">About Us</h2>
+          <!-- Active Default -->
+          <li class="category-item is-active" data-cat="sofas">
+            <span class="category-text"
+              >Sofas <sup class="category-count">(29)</sup></span
+            >
+            <span class="strike-line"></span>
+          </li>
 
-    <p class="noden-about__intro">
-      Our product and furniture designs evolve through a data driven process in close collaboration with our clients combined
-      with our passion and dedication for design.
-    </p>
+          <li class="category-item" data-cat="beds">
+            <span class="category-text"
+              >Beds <sup class="category-count">(08)</sup></span
+            >
+            <span class="strike-line"></span>
+          </li>
 
-    <!-- Row 2 -->
-    <figure class="noden-about__img noden-about__img--1">
-      <img src="https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=900&auto=format&fit=crop"
-           alt="Interior detail 1" />
-    </figure>
+          <li class="category-item" data-cat="fittings">
+            <span class="category-text"
+              >Fittings <sup class="category-count">(12)</sup></span
+            >
+            <span class="strike-line"></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <section class="noden-about" aria-label="About Us">
+      <div class="noden-about__grid">
+        <!-- Row 1 -->
+        <h2 class="noden-about__title">About Us</h2>
 
-    <figure class="noden-about__img noden-about__img--2">
-      <img src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=600&auto=format&fit=crop"
-           alt="Interior detail 2" />
-    </figure>
+        <p class="noden-about__intro">
+          Our product and furniture designs evolve through a data driven process
+          in close collaboration with our clients combined with our passion and
+          dedication for design.
+        </p>
 
-    <!-- col-3 intentionally empty in Row 2 -->
-    <div class="noden-about__empty" aria-hidden="true">     <div class="noden-about__stats" aria-label="About statistics">
-  <div class="noden-about__stat">
-    <div class="noden-about__statNum"><span data-count="12">0</span><span class="noden-about__plus">+</span></div>
-    <div class="noden-about__statLbl">Years of Material Study</div>
-  </div>
+        <!-- Row 2 -->
+        <figure class="noden-about__img noden-about__img--1">
+          <img
+            src="https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=900&auto=format&fit=crop"
+            alt="Interior detail 1"
+          />
+        </figure>
 
-  <div class="noden-about__statDivider" aria-hidden="true"></div>
+        <figure class="noden-about__img noden-about__img--2">
+          <img
+            src="https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?q=80&w=600&auto=format&fit=crop"
+            alt="Interior detail 2"
+          />
+        </figure>
 
-  <div class="noden-about__stat">
-    <div class="noden-about__statNum"><span data-count="300">0</span><span class="noden-about__plus">+</span></div>
-    <div class="noden-about__statLbl">Spaces Restored</div>
-  </div>
+        <!-- col-3 intentionally empty in Row 2 -->
+        <div class="noden-about__empty" aria-hidden="true">
+          <div class="noden-about__stats" aria-label="About statistics">
+            <div class="noden-about__stat">
+              <div class="noden-about__statNum">
+                <span data-count="12">0</span
+                ><span class="noden-about__plus">+</span>
+              </div>
+              <div class="noden-about__statLbl">Years of Material Study</div>
+            </div>
 
-  <div class="noden-about__statDivider" aria-hidden="true"></div>
+            <div class="noden-about__statDivider" aria-hidden="true"></div>
 
-  <div class="noden-about__stat">
-    <div class="noden-about__statNum"><span data-count="6">0</span></div>
-    <div class="noden-about__statLbl">International Awards</div>
-  </div>
-</div></div>
+            <div class="noden-about__stat">
+              <div class="noden-about__statNum">
+                <span data-count="300">0</span
+                ><span class="noden-about__plus">+</span>
+              </div>
+              <div class="noden-about__statLbl">Spaces Restored</div>
+            </div>
 
-    <figure class="noden-about__img noden-about__img--3">
-      <img src="https://images.unsplash.com/photo-1519947486511-46149fa0a254?q=80&w=600&auto=format&fit=crop"
-           alt="Interior detail 3" />
-    </figure>
+            <div class="noden-about__statDivider" aria-hidden="true"></div>
 
-    <!-- Row 3 -->
-    <p class="noden-about__goal">
-      Our goal is to improve what surrounds people, as well
-      as to develop and create products that will last a lifetime.
-    </p>
+            <div class="noden-about__stat">
+              <div class="noden-about__statNum">
+                <span data-count="6">0</span>
+              </div>
+              <div class="noden-about__statLbl">International Awards</div>
+            </div>
+          </div>
+        </div>
 
-    <!-- col-2 left intentionally blank in Row 3 to keep the asymmetry -->
-    <div class="noden-about__blank" aria-hidden="true"></div>
+        <figure class="noden-about__img noden-about__img--3">
+          <img
+            src="https://images.unsplash.com/photo-1519947486511-46149fa0a254?q=80&w=600&auto=format&fit=crop"
+            alt="Interior detail 3"
+          />
+        </figure>
 
-    <!-- col-3 gets the image directly under the empty col-3 from Row 2 -->
-   
-     
+        <!-- Row 3 -->
+        <p class="noden-about__goal">
+          Our goal is to improve what surrounds people, as well as to develop
+          and create products that will last a lifetime.
+        </p>
 
+        <!-- col-2 left intentionally blank in Row 3 to keep the asymmetry -->
+        <div class="noden-about__blank" aria-hidden="true"></div>
 
-    <!-- col-4 intentionally blank in Row 3 -->
-    <div class="noden-about__blank" aria-hidden="true"></div>
+        <!-- col-3 gets the image directly under the empty col-3 from Row 2 -->
 
-  </div>
+        <!-- col-4 intentionally blank in Row 3 -->
+        <div class="noden-about__blank" aria-hidden="true"></div>
+      </div>
+    </section>
 
-  
-</section>
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" id="cursorDot"></div>
 
+    <!-- FLOATING TEXTURE PREVIEW -->
+    <div class="cursor-preview" id="cursorPreview">
+      <img src="" alt="" id="previewImg" />
+      <div class="cursor-preview-label" id="previewLabel"></div>
+    </div>
 
-<!-- CUSTOM CURSOR -->
-<div class="cursor-dot" id="cursorDot"></div>
-
-<!-- FLOATING TEXTURE PREVIEW -->
-<div class="cursor-preview" id="cursorPreview">
-  <img src="" alt="" id="previewImg">
-  <div class="cursor-preview-label" id="previewLabel"></div>
-</div>
-
-<!-- ════════════════════════════════════════
+    <!-- ════════════════════════════════════════
      SERVICES SECTION
 ════════════════════════════════════════ -->
-<section class="services-section" id="services">
+    <section class="services-section" id="services">
+      <div class="ambient-grain"></div>
+      <!-- Optional Counter -->
+      <!-- <div class="section-counter">05 — Services</div> -->
 
-  <div class="ambient-grain"></div>
-
-
-  <!-- Header -->
-  <div class="services-header">
-    <span class="services-eyebrow">What We Do</span>
-    <h1 class="services-headline">
-      Services we offer
-    </h1>
-  </div>
-
-  <!-- Service List -->
-  <ul class="services-list" id="servicesList">
-
-    <li class="service-row"
-        
-      <div class="service-row-inner">
-        <span class="service-num">01</span>
-        <span class="service-title">Custom Furniture making</span>
-        <span class="service-tag">Signature</span>
-        <span class="service-desc">Handpicked objects, each carrying a provenance worth knowing.</span>
+      <!-- Header -->
+      <div class="services-header">
+        <span class="services-eyebrow">What We Do</span>
+        <h1 class="services-headline">Services we offer</h1>
       </div>
-    </li>
 
-    <li class="service-row"
-     
-      <div class="service-row-inner">
-        <span class="service-num">02</span>
-        <span class="service-title">Interior Design</span>
-        <span class="service-tag">Full-Service</span>
-        <span class="service-desc">Spaces shaped around how you actually live, not a mood board.</span>
+      <!-- Service List -->
+      <ul class="services-list" id="servicesList">
+        <!-- Service 01 -->
+        <li class="service-row">
+          <div class="service-row-inner">
+            <span class="service-num">01</span>
+            <span class="service-title">Custom Furniture Making</span>
+            <span class="service-tag">Signature</span>
+            <span class="service-desc"
+              >Handpicked objects, each carrying a provenance worth
+              knowing.</span
+            >
+          </div>
+        </li>
+
+        <!-- Service 02 -->
+        <li class="service-row">
+          <div class="service-row-inner">
+            <span class="service-num">02</span>
+            <span class="service-title">Interior Design</span>
+            <span class="service-tag">Full-Service</span>
+            <span class="service-desc"
+              >Spaces shaped around how you actually live, not a mood
+              board.</span
+            >
+          </div>
+        </li>
+
+        <!-- Service 03 -->
+        <li class="service-row">
+          <div class="service-row-inner">
+            <span class="service-num">03</span>
+            <span class="service-title">Bespoke Joinery</span>
+            <span class="service-tag">Made-to-Order</span>
+            <span class="service-desc"
+              >Custom commissions in timber, metal, and woven textiles.</span
+            >
+          </div>
+        </li>
+
+        <!-- Service 04 -->
+        <li class="service-row">
+          <div class="service-row-inner">
+            <span class="service-num">04</span>
+            <span class="service-title">3D Illustrations</span>
+            <span class="service-tag">Editorial</span>
+            <span class="service-desc"
+              >Still-life compositions for homes, shoots, and showrooms.</span
+            >
+          </div>
+        </li>
+      </ul>
+
+      <!-- Footer Bar -->
+      <div class="services-footer">
+        <span class="services-footer-note"
+          >All services available globally</span
+        >
+        <a href="#contact" class="services-cta">Start a Project</a>
       </div>
-    </li>
+   
 
-    <!-- <li class="service-row"
-        data-preview="https://images.unsplash.com/photo-1538688525198-9b88f6f53126?w=400&q=80"
-        data-label="Joinery & Craft">
-      <div class="service-row-inner">
-        <span class="service-num">03</span>
-        <span class="service-title">Bespoke</span>
-        <span class="service-tag">Made-to-Order</span>
-        <span class="service-desc">Custom commissions in timber, metal, and woven textiles.</span>
-      </div>
-    </li> -->
-
-    <li class="service-row"
-       
-      <div class="service-row-inner">
-        <span class="service-num">04</span>
-        <span class="service-title">3D Illustrations </span>
-        <span class="service-tag">Editorial</span>
-        <span class="service-desc">Still-life compositions for homes, shoots, and showrooms.</span>
-      </div>
-    </li>
-
-    <!-- <li class="service-row"
-        data-preview="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=400&q=80"
-        data-label="Global Logistics">
-      <div class="service-row-inner">
-        <span class="service-num">05</span>
-        <span class="service-title">Procurement</span>
-        <span class="service-tag">Worldwide</span>
-        <span class="service-desc">Sourcing rare pieces across Europe, Japan, and Scandinavia.</span>
-      </div>
-    </li> -->
-
-  </ul>
-
-  <!-- Footer Bar -->
-  <div class="services-footer">
-    <span class="services-footer-note">All services available globally</span>
-    <a href="#contact" class="services-cta">
-      Start a Project
-
-    </a>
-  </div>
-
-  <section class="process" id="process">
-
-  <div class="process-header">
+    <section class="process" id="process">
+      <div class="process-header">
         <h1 class="process-title">Our Work Process</h1>
-    <span class="process-label">how we work</span>
-
-  </div>
-
-
-  <div class="steps">
-
-    <div class="step">
-      <div class="step-image">
-        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&q=85" alt="Discovery">
+        <span class="process-label">how we work</span>
       </div>
-      <div class="step-body">
-        <div class="step-meta">
-          <span class="step-num">01</span>
-          <span class="step-line"></span>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-image">
+            <img
+              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&q=85"
+              alt="Discovery"
+            />
+          </div>
+          <div class="step-body">
+            <div class="step-meta">
+              <span class="step-num">01</span>
+              <span class="step-line"></span>
+            </div>
+            <h3 class="step-name">Discovery</h3>
+            <p class="step-desc">
+              A single conversation that calibrates everything. We listen before
+              we look.
+            </p>
+            <span class="step-plus">+</span>
+          </div>
         </div>
-        <h3 class="step-name">Discovery</h3>
-        <p class="step-desc">A single conversation that calibrates everything. We listen before we look.</p>
-        <span class="step-plus">+</span>
-      </div>
-    </div>
 
-    <div class="step">
-      <div class="step-image">
-        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=700&q=85" alt="Sourcing">
-      </div>
-      <div class="step-body">
-        <div class="step-meta">
-          <span class="step-num">02</span>
-          <span class="step-line"></span>
+        <div class="step">
+          <div class="step-image">
+            <img
+              src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=700&q=85"
+              alt="Sourcing"
+            />
+          </div>
+          <div class="step-body">
+            <div class="step-meta">
+              <span class="step-num">02</span>
+              <span class="step-line"></span>
+            </div>
+            <h3 class="step-name">Sourcing</h3>
+            <p class="step-desc">
+              Markets in Copenhagen, workshops in Kyoto. Each piece arrives with
+              a story.
+            </p>
+            <span class="step-plus">+</span>
+          </div>
         </div>
-        <h3 class="step-name">Sourcing</h3>
-        <p class="step-desc">Markets in Copenhagen, workshops in Kyoto. Each piece arrives with a story.</p>
-        <span class="step-plus">+</span>
-      </div>
-    </div>
 
-    <div class="step">
-      <div class="step-image">
-        <img src="https://images.unsplash.com/photo-1538688525198-9b88f6f53126?w=700&q=85" alt="Restoration">
-      </div>
-      <div class="step-body">
-        <div class="step-meta">
-          <span class="step-num">03</span>
-          <span class="step-line"></span>
+        <div class="step">
+          <div class="step-image">
+            <img
+              src="https://images.unsplash.com/photo-1538688525198-9b88f6f53126?w=700&q=85"
+              alt="Restoration"
+            />
+          </div>
+          <div class="step-body">
+            <div class="step-meta">
+              <span class="step-num">03</span>
+              <span class="step-line"></span>
+            </div>
+            <h3 class="step-name">Restoration</h3>
+            <p class="step-desc">
+              We restore the maker's intention. Never imposing. Always
+              revealing.
+            </p>
+            <span class="step-plus">+</span>
+          </div>
         </div>
-        <h3 class="step-name">Restoration</h3>
-        <p class="step-desc">We restore the maker's intention. Never imposing. Always revealing.</p>
-        <span class="step-plus">+</span>
-      </div>
-    </div>
 
-    <div class="step">
-      <div class="step-image">
-        <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=700&q=85" alt="Placement">
-      </div>
-      <div class="step-body">
-        <div class="step-meta">
-          <span class="step-num">04</span>
-          <span class="step-line"></span>
+        <div class="step">
+          <div class="step-image">
+            <img
+              src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=700&q=85"
+              alt="Placement"
+            />
+          </div>
+          <div class="step-body">
+            <div class="step-meta">
+              <span class="step-num">04</span>
+              <span class="step-line"></span>
+            </div>
+            <h3 class="step-name">Placement</h3>
+            <p class="step-desc">
+              Light, axis, silence. The decisions that make a room breathe.
+            </p>
+            <span class="step-plus">+</span>
+          </div>
         </div>
-        <h3 class="step-name">Placement</h3>
-        <p class="step-desc">Light, axis, silence. The decisions that make a room breathe.</p>
-        <span class="step-plus">+</span>
-      </div>
-    </div>
-
-  </div>
-
- 
-  <div class="process-footer">
-    <p class="process-footer-quote">
-      The result is never a room.<br>
-      It is a <em>position</em>.
-    </p>
-    <a href="#contact" class="process-cta">Send Inquiry</a>
-  </div>
-
-</section>
- 
-
-<section class="contact">
-
-  <div class="contact-inner">
-
-    <!-- LEFT -->
-    <div class="contact-headline">
-      <span>Start a</span>
-      <span>Dialogue.</span>
-    </div>
-
-    <!-- RIGHT -->
-    <form class="contact-form">
-
-      <div class="form-group">
-        <input class="form-input" type="text" placeholder="Your Name">
-        <div class="form-line"></div>
-        <div class="form-accent"></div>
       </div>
 
-      <div class="form-group">
-        <input class="form-input" type="email" placeholder="Email Address">
-        <div class="form-line"></div>
-        <div class="form-accent"></div>
+      <div class="process-footer">
+        <p class="process-footer-quote">
+          The result is never a room.<br />
+          It is a <em>position</em>.
+        </p>
+        <a href="#contact" class="process-cta">Send Inquiry</a>
       </div>
+    </section>
 
-      <div class="form-group">
-        <input class="form-input" type="text" placeholder="Tell us about your project">
-        <div class="form-line"></div>
-        <div class="form-accent"></div>
+    <section class="contact">
+      <div class="contact-inner">
+        <!-- LEFT -->
+        <div class="contact-headline">
+          <span>Start a</span>
+          <span>Dialogue.</span>
+        </div>
+
+        <!-- RIGHT -->
+        <form class="contact-form">
+          <div class="form-group">
+            <input class="form-input" type="text" placeholder="Your Name" />
+            <div class="form-line"></div>
+            <div class="form-accent"></div>
+          </div>
+
+          <div class="form-group">
+            <input
+              class="form-input"
+              type="email"
+              placeholder="Email Address"
+            />
+            <div class="form-line"></div>
+            <div class="form-accent"></div>
+          </div>
+
+          <div class="form-group">
+            <input
+              class="form-input"
+              type="text"
+              placeholder="Tell us about your project"
+            />
+            <div class="form-line"></div>
+            <div class="form-accent"></div>
+          </div>
+
+          <button type="submit" class="contact-cta">Send Inquiry</button>
+        </form>
       </div>
+    </section>
 
-      <button type="submit" class="contact-cta">
-        Send Inquiry 
-      </button>
-
-
-    </form>
-
-  </div>
-
-</section>
-
-<!-- FINAL FOOTER -->
-<footer class="site-footer">
-  <div class="footer-grid">
-    <div class="footer-column">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Process</a></li>
-        <li><a href="#">Journal</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <h4>Services</h4>
-      <ul>
-        <li><a href="#">Curation</a></li>
-        <li><a href="#">Interior Design</a></li>
-        <li><a href="#">Bespoke</a></li>
-        <li><a href="#">Procurement</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <h4>Connect</h4>
-      <ul>
-        <li><a href="#">Instagram</a></li>
-        <li><a href="#">Pinterest</a></li>
-        <li><a href="#">LinkedIn</a></li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <h4>Legal</h4>
-      <ul>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms of Service</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span class="copyright">© Noden® 2024</span>
-  </div>
-</footer>
-
-
+    <!-- FINAL FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div class="footer-column">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Process</a></li>
+            <li><a href="#">Journal</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#">Curation</a></li>
+            <li><a href="#">Interior Design</a></li>
+            <li><a href="#">Bespoke</a></li>
+            <li><a href="#">Procurement</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Pinterest</a></li>
+            <li><a href="#">LinkedIn</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="copyright">© Noden® 2024</span>
+      </div>
+    </footer>
 
     <script src="js/scripts.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/archive.js"></script>
     <script src="js/products.js"></script>
 
-<script src="js/category.js"></script>
+    <script src="js/category.js"></script>
 
     <script src="js/cart.js"></script>
     <script src="js/cursor.js"></script>
-    <script src="js/previews.js"></script> 
+    <script src="js/previews.js"></script>
     <script>
       // Category sync for index.html
-      document.addEventListener('DOMContentLoaded', async () => {
+      document.addEventListener("DOMContentLoaded", async () => {
         await window.ProductsLib.loadProducts();
         window.ProductsLib.updateCategoryCounts();
 
         // Category click → filter + redirect to products
-        const categoryItems = document.querySelectorAll('.category-item');
-        categoryItems.forEach(item => {
-          item.addEventListener('click', () => {
+        const categoryItems = document.querySelectorAll(".category-item");
+        categoryItems.forEach((item) => {
+          item.addEventListener("click", () => {
             const cat = item.dataset.cat;
             if (cat) {
-              localStorage.setItem('activeFilter', cat);
-              window.location.href = 'products.html';
+              localStorage.setItem("activeFilter", cat);
+              window.location.href = "products.html";
             }
           });
         });
