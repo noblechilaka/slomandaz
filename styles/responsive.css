@@ -280,6 +280,17 @@
     width: 180px;
     font-size: 9px;
   }
+  .hero-cta{
+    display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 500;
+  padding: 16px 33px;
+  }
   
   /* ── CATEGORY SECTION ── */
   .spine-container {
@@ -335,7 +346,7 @@
     display: none;
   }
   
-  /* ── SERVICES ── */
+  ── SERVICES ──
   .services-section {
     padding: 100px 40px 80px;
   }
@@ -350,7 +361,7 @@
     text-align: left;
     font-size: clamp(36px, 8vw, 64px);
   }
-  
+
   /* ── PROCESS ── */
   .process {
     padding: 100px 40px;
@@ -573,7 +584,7 @@
   }
   
   .services-cta {
-    padding: 16px 28px;
+    padding: 16px 33px;
     font-size: 11px;
   }
   
@@ -596,6 +607,18 @@
   
   .process-footer-quote {
     font-size: clamp(18px, 4vw, 28px);
+  }
+
+  .process-cta{
+    display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 500;
+  padding: 20px 44px;
   }
   
   /* ── CONTACT ── */
