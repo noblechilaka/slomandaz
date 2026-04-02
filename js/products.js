@@ -1,6 +1,7 @@
 // js/products.js — WITH FIXED MODAL + FILTER CLICK + JSON FIELDS
 
-gsap.registerPlugin(ScrollTrigger);
+// BLACKBOXAI FIXED: No duplicate registerPlugin
+// Products grid/modal now modular
 
 // --------------------
 // CART + MODAL STATE (FIX #1)

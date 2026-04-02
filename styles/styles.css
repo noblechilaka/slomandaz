@@ -37,6 +37,32 @@
   margin: 0;
   padding: 0;
 }
+
+html {
+  scroll-behavior: smooth;
+  /* Allow Lenis to handle scroll on mobile */
+  overscroll-behavior: none;
+  /* Enable touch scrolling for Lenis on mobile */
+  touch-action: pan-y pinch-zoom;
+}
+
+/* Mobile-specific scroll handling */
+@media (max-width: 768px) {
+  html {
+    /* Better touch handling for mobile */
+    touch-action: manipulation;
+  }
+
+  body {
+    /* Prevent scroll bounce and pull-to-refresh */
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+    /* Enable hardware-accelerated scrolling */
+    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
+  }
+}
+
 body {
   font-family: var(--font-sans);
   background: var(--bone-2);
@@ -323,6 +349,40 @@ body.cursor-product-details .cursor-outline::before {
 /* ════════════════════════════════════════
    CART DRAWER (Exempt from blend mode)
 ════════════════════════════════════════ */
+
+/* =========================
+     CART COUNT
+  ========================= */
+#cartCount {
+  position: absolute;
+  top: 25px;
+  right: 50px;
+  background: #ffffff;
+  color: black;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+/* .cart-count-sup {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 9px;
+  background: var(--copper);
+  color: #fff;
+  padding: 2px 5px;
+  border-radius: 10px;
+  display: inline-block;
+  min-width: 14px;
+  text-align: center;
+  line-height: 1.2;
+} */
 #cartOverlay {
   position: fixed;
   inset: 0;
@@ -1284,6 +1344,7 @@ body.cursor-product-details .cursor-outline::before {
   color: var(--ink-grey);
   letter-spacing: -0.01em;
   line-height: 1;
+  min-width: max-content;
   opacity: 0.28;
   transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
     letter-spacing 0.5s cubic-bezier(0.16, 1, 0.3, 1);

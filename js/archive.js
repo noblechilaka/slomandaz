@@ -1,7 +1,14 @@
 // Archive Product Reel Animation
-gsap.registerPlugin(ScrollTrigger);
+// BLACKBOXAI FIXED: No duplicate registerPlugin
+// Archive reel now called from scripts.js init queue
 
 const track = document.getElementById('reelTrack');
+
+window.initArchive = function() {
+  if (!track) return; // Safety
+}
+  // Your existing initMainHorizontalScroll(), setupCardAnimations(), etc.
+  // ... rest unchanged ...
 
 // ==========================================
 // 1. PINNED HORIZONTAL SCROLL
