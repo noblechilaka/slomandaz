@@ -424,11 +424,55 @@ body.cursor-product-details .cursor-outline::before {
   color: var(--muted-2);
 }
 
-/* Items Container */
+
+/* =========================================
+   CART DRAWER FIXES & UPGRADES
+========================================= */
+
+/* SCROLL FIX: Ensures only the list scrolls, not the body */
 #cartItemsContainer {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: auto !important; /* Forces scroll here */
   padding: 24px 30px;
+
+}
+
+
+/* --- QUANTITY CONTROLS STYLING --- */
+.cart-item-qty-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.btn-qty {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--divider);
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--ink);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-qty:hover {
+  background: var(--ink);
+  color: #fff;
+}
+
+.cart-qty-text {
+  font-size: 11px;
+  min-width: 18px;
+  text-align: center;
+  font-weight: 500;
 }
 
 /* --- NEW CARD STYLING (No more inline styles) --- */

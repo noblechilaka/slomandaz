@@ -1,6 +1,7 @@
-// js/cart.js - FIXED & UPGRADED
+// js/cart.js - COMPLETE REWRITE WITH SMART LOGIC
+
 document.addEventListener("DOMContentLoaded", () => {
-  // --- SELECTORS ---
+  // Selectors
   const drawer = document.getElementById("cartDrawer");
   const overlay = document.getElementById("cartOverlay");
   const btnOpen = document.getElementById("cartBtn");
@@ -12,26 +13,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const emptyState = document.getElementById("emptyState");
 
   let isOpen = false;
-  // Load once from storage
   let cart = JSON.parse(localStorage.getItem("nodenCart")) || [];
 
-  // --- CORE FUNCTIONS ---
+  // --- 1. CORE FUNCTIONS ---
 
   function updateCartUI() {
-    // Calculate Total Quantity & Price
     const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
     const totalPrice = cart.reduce(
       (acc, item) => acc + item.price * item.qty,
       0
     );
 
-    // Update Badge
+    // Badge
     if (countBadge) {
       countBadge.textContent = totalQty;
       countBadge.style.display = totalQty > 0 ? "flex" : "none";
     }
 
-    // Enable/Disable Checkout
+    // Checkout State
     if (cart.length === 0) {
       checkoutBtn.disabled = true;
       checkoutBtn.style.background = "rgba(20, 20, 20, 0.2)";
@@ -59,20 +58,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = document.createElement("div");
       card.className = "cart-item-card";
 
-      // Logic: Subtotal per item line
       const subtotal = item.price * item.qty;
 
+      // New Structure with +/- Buttons
       card.innerHTML = `
         <img src="${item.image}" alt="${item.name}" class="cart-item-img">
         <div class="cart-item-details">
           <div>
             <div class="cart-item-name">${item.name}</div>
-            <!-- NEW: Show Color If Available -->
             ${
               item.color
                 ? `<div class="cart-item-meta">Color: ${item.color}</div>`
                 : ""
-            } 
+            }
             ${
               item.condition
                 ? `<div class="cart-item-meta">Condition: ${item.condition}</div>`
@@ -81,9 +79,18 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
           
           <div class="cart-item-actions">
+             <!-- Subtotal -->
              <span class="cart-item-price">₦${subtotal.toLocaleString()}</span>
              
-             <button onclick="removeFromCart(${index})" class="btn-remove">Remove</button>
+             <!-- Qty Controls -->
+             <div class="cart-item-qty-wrapper">
+               <button onclick="updateCartItemQty(${index}, -1)" class="btn-qty">-</button>
+               <span class="cart-qty-text">${item.qty}</span>
+               <button onclick="updateCartItemQty(${index}, 1)" class="btn-qty">+</button>
+             </div>
+
+             <!-- Remove Btn moved here -->
+             <button onclick="removeFromCart(${index})" class="btn-remove" style="margin-left: auto;">Remove</button>
           </div>
         </div>
       `;
@@ -93,39 +100,54 @@ document.addEventListener("DOMContentLoaded", () => {
     totalEl.textContent = `₦${totalPrice.toLocaleString()}`;
   }
 
-  // --- GLOBAL EXPOSED FUNCTION (Called by Products.js) ---
+  // Global Add Function
   window.addToCart = (productData) => {
-    // Check if this specific item (ID + Color) exists
+    // Find matching ID AND Color
     const existing = cart.find(
       (item) =>
         item.id === productData.id && item.color === productData.selectedColor
     );
 
     if (existing) {
-      // If exists, just increment quantity
+      // Increment Qty
       existing.qty++;
     } else {
-      // If new, add object
+      // Push new object with qty: 1
       cart.push({
         id: productData.id,
         name: productData.name,
         price: parseFloat(productData.price),
         image: productData.image,
-        color: productData.selectedColor,
+        color: productData.selectedColor || "Standard",
         condition: productData.condition || "New",
-        qty: 1, // Initial Qty
+        qty: 1,
       });
     }
 
     saveAndRefresh();
-    // Optional: Open cart immediately?
+    // Optional: Open cart immediately
     // if(!isOpen) toggleCart();
   };
 
-  // Exposed Remove Function
+  // Global Remove Function
   window.removeFromCart = (indexToRemove) => {
     cart.splice(indexToRemove, 1);
     saveAndRefresh();
+  };
+
+  // Global Update Quantity Function (+ / -)
+  window.updateCartItemQty = (index, change) => {
+    const item = cart[index];
+    if (!item) return;
+
+    const newQty = item.qty + change;
+
+    if (newQty <= 0) {
+      removeFromCart(index); // Remove if zero
+    } else {
+      item.qty = newQty;
+      saveAndRefresh();
+    }
   };
 
   function saveAndRefresh() {
@@ -160,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // WhatsApp Generation
   checkoutBtn.onclick = () => {
-    const companyPhone = "2348000000000";
+    const companyPhone = "2348034550910";
 
     const lines = cart
       .map((item) => {
@@ -173,14 +195,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
 
-    const message = `*NEW ORDER — NODEN®*\n\n${lines}\n\n*TOTAL: ₦${total.toLocaleString()}*\n\nI would like to proceed.`;
+    const message = `*NEW ORDER — SLOMANDAZ*\n\n${lines}\n\n*TOTAL: ₦${total.toLocaleString()}*\n\nI would like to proceed.`;
 
     const url = `https://wa.me/${companyPhone}?text=${encodeURIComponent(
       message
     )}`;
     window.open(url, "_blank");
-
-    // Clear cart logic here if desired
   };
 
   updateCartUI();
