@@ -197,72 +197,7 @@
     font-size: 15px;
   }
   
-  /* ── NAVIGATION ── */
-  .global-nav {
-    padding: var(--pad-y) var(--pad-x);
-  }
-  
-  .link-matrix {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 280px;
-    height: 100vh;
-    background: var(--bone);
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 80px 40px;
-    gap: 24px;
-    z-index: 10001;
-    transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: -10px 0 40px rgba(0,0,0,0.1);
-  }
-  
-  .link-matrix.is-open {
-    right: 0;
-  }
-  
-  .link-matrix .navlink {
-    color: var(--ink);
-    font-size: 24px;
-  }
-  
-  .link-col {
-    gap: 20px;
-  }
-  
-  /* Mobile menu toggle button */
-  .nav-toggle {
-    display: flex !important;
-    flex-direction: column;
-    gap: 5px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 8px;
-    z-index: 10002;
-  }
-  
-  .nav-toggle span {
-    width: 24px;
-    height: 2px;
-    background: var(--bone);
-    transition: all 0.3s ease;
-  }
-  
-  .nav-toggle.is-active span:nth-child(1) {
-    transform: rotate(45deg) translateY(7px);
-  }
-  
-  .nav-toggle.is-active span:nth-child(2) {
-    opacity: 0;
-  }
-  
-  .nav-toggle.is-active span:nth-child(3) {
-    transform: rotate(-45deg) translateY(-7px);
-  }
-  
+ 
   /* ── HERO ── */
   .hero {
     height: 80vh;
@@ -502,11 +437,7 @@
     padding-left: 20px;
     padding-right: 20px;
   }
-  
-  /* ── NAV ── */
-  .link-matrix {
-    width: 100%;
-  }
+ 
   
   /* ── HERO ── */
   .hero {
@@ -893,7 +824,7 @@
   }
   
   /* Larger touch targets */
-  .navlink,
+  
   .tab,
   .filter {
     min-height: 44px;
