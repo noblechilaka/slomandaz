@@ -1,5 +1,4 @@
-// js/cart.js - SLIDE IN CART & WHATSAPP CHECKOUT
-
+// js/cart.js - FIXED & UPGRADED
 document.addEventListener("DOMContentLoaded", () => {
   // --- SELECTORS ---
   const drawer = document.getElementById("cartDrawer");
@@ -13,63 +12,117 @@ document.addEventListener("DOMContentLoaded", () => {
   const emptyState = document.getElementById("emptyState");
 
   let isOpen = false;
+  // Load once from storage
   let cart = JSON.parse(localStorage.getItem("nodenCart")) || [];
 
-  // --- INIT ---
-  updateCartUI();
+  // --- CORE FUNCTIONS ---
 
-  // --- EVENTS ---
+  function updateCartUI() {
+    // Calculate Total Quantity & Price
+    const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
+    const totalPrice = cart.reduce(
+      (acc, item) => acc + item.price * item.qty,
+      0
+    );
 
-  // Open/Close
-  btnOpen.onclick = toggleCart;
-  btnClose.onclick = closeCart;
-  overlay.onclick = closeCart;
+    // Update Badge
+    if (countBadge) {
+      countBadge.textContent = totalQty;
+      countBadge.style.display = totalQty > 0 ? "flex" : "none";
+    }
 
-  // Toggle Function
-  function toggleCart() {
-    isOpen = !isOpen;
-    if (isOpen) openCart();
-    else closeCart();
-  }
+    // Enable/Disable Checkout
+    if (cart.length === 0) {
+      checkoutBtn.disabled = true;
+      checkoutBtn.style.background = "rgba(20, 20, 20, 0.2)";
+      checkoutBtn.style.cursor = "not-allowed";
+    } else {
+      checkoutBtn.disabled = false;
+      checkoutBtn.style.background = "var(--ink)";
+      checkoutBtn.style.color = "#fff";
+      checkoutBtn.style.cursor = "pointer";
+    }
 
-  function openCart() {
-    drawer.style.right = "0";
-    overlay.style.opacity = "1";
-    overlay.style.pointerEvents = "auto";
-    gsap.to([drawer, overlay], { autoAlpha: 1, duration: 0 }); // GSAP help for clean entry
-    document.body.style.overflow = "hidden";
-  }
+    // Render List
+    itemsContainer.innerHTML = "";
 
-  function closeCart() {
-    drawer.style.right = "-100%";
-    overlay.style.opacity = "0";
-    overlay.style.pointerEvents = "none";
-    setTimeout(() => (document.body.style.overflow = ""), 400);
-  }
+    if (cart.length === 0) {
+      itemsContainer.appendChild(emptyState);
+      emptyState.style.display = "block";
+      totalEl.textContent = "₦0";
+      return;
+    }
 
-  // Global Expose for Products Modal
-  window.addToCart = (productIndex) => {
-    const product = window.allProducts[productIndex];
+    emptyState.style.display = "none";
 
-    // Simple check if product already exists
-    const existing = cart.find((item) => item.id === product.id);
-    if (existing) return; // Prevent duplicates in simple logic
+    cart.forEach((item, index) => {
+      const card = document.createElement("div");
+      card.className = "cart-item-card";
 
-    cart.push({
-      id: product.id,
-      name: product.name,
-      price: parseFloat(product.price),
-      image: product.image,
-      condition: product.condition,
+      // Logic: Subtotal per item line
+      const subtotal = item.price * item.qty;
+
+      card.innerHTML = `
+        <img src="${item.image}" alt="${item.name}" class="cart-item-img">
+        <div class="cart-item-details">
+          <div>
+            <div class="cart-item-name">${item.name}</div>
+            <!-- NEW: Show Color If Available -->
+            ${
+              item.color
+                ? `<div class="cart-item-meta">Color: ${item.color}</div>`
+                : ""
+            } 
+            ${
+              item.condition
+                ? `<div class="cart-item-meta">Condition: ${item.condition}</div>`
+                : ""
+            }
+          </div>
+          
+          <div class="cart-item-actions">
+             <span class="cart-item-price">₦${subtotal.toLocaleString()}</span>
+             
+             <button onclick="removeFromCart(${index})" class="btn-remove">Remove</button>
+          </div>
+        </div>
+      `;
+      itemsContainer.appendChild(card);
     });
 
-    saveAndRefresh();
+    totalEl.textContent = `₦${totalPrice.toLocaleString()}`;
+  }
 
-    // If modal is open, maybe show small confirmation?
-    // For now, we just update storage.
+  // --- GLOBAL EXPOSED FUNCTION (Called by Products.js) ---
+  window.addToCart = (productData) => {
+    // Check if this specific item (ID + Color) exists
+    const existing = cart.find(
+      (item) =>
+        item.id === productData.id && item.color === productData.selectedColor
+    );
+
+    if (existing) {
+      // If exists, just increment quantity
+      existing.qty++;
+    } else {
+      // If new, add object
+      cart.push({
+        id: productData.id,
+        name: productData.name,
+        price: parseFloat(productData.price),
+        image: productData.image,
+        color: productData.selectedColor,
+        condition: productData.condition || "New",
+        qty: 1, // Initial Qty
+      });
+    }
+
+    saveAndRefresh();
+    // Optional: Open cart immediately?
+    // if(!isOpen) toggleCart();
   };
 
-  // Remove Item
+  // Exposed Remove Function
   window.removeFromCart = (indexToRemove) => {
     cart.splice(indexToRemove, 1);
     saveAndRefresh();
@@ -80,91 +133,55 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCartUI();
   }
 
-  // Render UI
-  function updateCartUI() {
-    // Count Badge
-    if (cart.length > 0) {
-      countBadge.style.display = "block";
-      countBadge.textContent = cart.length;
-      checkoutBtn.disabled = false;
-      checkoutBtn.style.background = "#1a1a1a";
-      checkoutBtn.style.cursor = "pointer";
-    } else {
-      countBadge.style.display = "none";
-      checkoutBtn.disabled = true;
-      checkoutBtn.style.background = "#ccc";
-      checkoutBtn.style.cursor = "not-allowed";
-    }
+  // --- EVENTS ---
+  btnOpen.onclick = toggleCart;
+  btnClose.onclick = closeCart;
+  overlay.onclick = closeCart;
 
-    // Items List
-    itemsContainer.innerHTML = "";
-
-    if (cart.length === 0) {
-      itemsContainer.appendChild(emptyState);
-      emptyState.style.display = "block";
-      totalEl.textContent = "$0";
-      return;
-    }
-
-    emptyState.style.display = "none";
-    let total = 0;
-
-    cart.forEach((item, index) => {
-      total += item.price;
-
-      const el = document.createElement("div");
-      el.style.cssText =
-        "display:flex; gap:16px; margin-bottom:20px; align-items:flex-start; animation: fadeIn 0.3s ease forwards;";
-
-      el.innerHTML = `
-        <img src="${
-          item.image
-        }" style="width:60px; height:60px; object-fit:cover; border-radius:2px;">
-        <div style="flex:1;">
-          <div style="font-size:14px; font-weight:500; margin-bottom:4px; line-height:1.3;">${
-            item.name
-          }</div>
-          <div style="font-size:12px; color:#888; margin-bottom:8px;">Condition: ${
-            item.condition
-          }</div>
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span style="font-weight:600;">$${item.price.toLocaleString()}</span>
-            <button onclick="removeFromCart(${index})" style="border:none; background:none; color:#d9534f; font-size:12px; cursor:pointer; text-decoration:underline;">Remove</button>
-          </div>
-        </div>
-      `;
-      itemsContainer.appendChild(el);
-    });
-
-    totalEl.textContent = `$${total.toLocaleString()}`;
+  function toggleCart() {
+    isOpen = !isOpen;
+    if (isOpen) openCart();
+    else closeCart();
   }
 
-  // WHATSAPP GENERATION
+  function openCart() {
+    drawer.style.right = "0";
+    overlay.style.opacity = "1";
+    overlay.style.pointerEvents = "auto";
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeCart() {
+    drawer.style.right = "-100%";
+    overlay.style.opacity = "0";
+    overlay.style.pointerEvents = "none";
+    setTimeout(() => (document.body.style.overflow = ""), 400);
+  }
+
+  // WhatsApp Generation
   checkoutBtn.onclick = () => {
-    const companyPhone = "2348000000000"; // REPLACE WITH REAL NUMBER
+    const companyPhone = "2348000000000";
 
     const lines = cart
       .map((item) => {
-        return `• ${item.name} ($${item.price.toLocaleString()}) [${
+        const sub = item.price * item.qty;
+        return `• ${item.name} (x${item.qty})\n   ₦${sub.toLocaleString()} [${
           item.condition
         }]`;
       })
       .join("\n");
 
-    const total = cart.reduce((sum, i) => sum + i.price, 0);
+    const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
 
-    const message = `*NEW ORDER REQUEST — NODEN®*\n\n${lines}\n\n*TOTAL: $${total.toLocaleString()}*\n\nI would like to proceed with this selection.`;
+    const message = `*NEW ORDER — NODEN®*\n\n${lines}\n\n*TOTAL: ₦${total.toLocaleString()}*\n\nI would like to proceed.`;
 
     const url = `https://wa.me/${companyPhone}?text=${encodeURIComponent(
       message
     )}`;
-
     window.open(url, "_blank");
 
-    // Optional: Clear cart after sending
-    // cart = [];
-    // localStorage.removeItem('nodenCart');
-    // updateCartUI();
-    // closeCart();
+    // Clear cart logic here if desired
   };
+
+  updateCartUI();
 });
