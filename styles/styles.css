@@ -3249,29 +3249,170 @@ textarea.underlineInput {
       }
 
 
-      /* ═══════════════════════════════════════════════════════════
-   ENTRANCE ANIMATION SUPPORT
-═════════════════════════════════════════════════════════ */
+/* ============================================
+   RESPONSIVE ENHANCEMENTS — ABOUT PAGE
+   Target: Tablets & Mobile (< 900px)
+   ============================================ */
 
-/* Word animation base styles */
-.word {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
+@media (max-width: 900px) {
 
-/* Reduce motion */
-@media (prefers-reduced-motion: reduce) {
-  .word {
-    opacity: 1;
-    transform: none;
+  /* --- GLOBAL CONTAINER ADJUSTMENT --- */
+  :root {
+    --pad-x-desktop: 24px; /* Reduce side padding on mobile */
   }
   
-  /* Kill all animations */
-  * {
-    animation: none !important;
-    transition: none !important;
+  .container {
+    width: auto; /* Allow container to fill width */
+    padding-left: var(--pad-x-desktop);
+    padding-right: var(--pad-x-desktop);
+  }
+
+
+  /* -----------------------------------------------------------
+     SECTION: ABOUT TOP + MOSAIC
+     Strategy: Collapse all 4 columns into a single stack.
+     ----------------------------------------------------------- */
+
+  /* Stack Title and Intro Text */
+  .about-top__grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .about-title {
+    font-size: clamp(2rem, 5vw, 3rem); /* Fluid sizing */
+  }
+  
+  .about-intro {
+    justify-self: center;
+    text-align: center;
+    margin-top: 20px;
+    max-width: 100%;
+  }
+
+  /* Override Mosaic Grid to Single Column */
+  .mosaic__grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* Force ALL tiles to take full width */
+  .tile--a, .tile--b, .tile--c, .tile--d {
+    grid-column: span 1 !important;
+    height: auto; /* Auto height prevents stretching issues */
+    aspect-ratio: 4/3; /* Keep consistent shape */
+  }
+
+  /* Goal Text: Move to top or bottom, ensure readability */
+  .mosaic__goal {
+    grid-column: span 1 !important;
+    text-align: center;
+    margin: 30px 0;
+    max-width: 100%;
+  }
+
+  /* -----------------------------------------------------------
+     SECTION: EXCEPTIONAL SAVOIR
+     Strategy: Stack left/right text columns vertically.
+     ----------------------------------------------------------- */
+  
+  .savoir__grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    text-align: center;
+  }
+  
+  .savoir__left, .savoir__right {
+    width: 100%;
+    max-width: 400px; /* Limit text line length for readability */
+  }
+
+  /* Wide Image: Take full viewport width */
+  .wide-image {
+    width: calc(100% - (var(--pad-x-desktop) * 2));
+    height: 400px; /* Taller image for impact on small screens */
+    margin: 0;
+  }
+
+  /* -----------------------------------------------------------
+     SECTION: ATTENTION TO DETAILS
+     Strategy: Complete restructuring of complex grid layouts.
+     ----------------------------------------------------------- */
+
+  /* Main split becomes single column */
+  .details__grid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+
+  /* Left Side Content: Stack internally */
+  .details__left {
+    width: 100%;
+  }
+
+  /* Small Photos Grid: Stack vertically */
+  .details__leftGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* Individual Photos: Full Width */
+  .small-photo, .small-photo--tall {
+    grid-column: span 1 !important;
+    height: 300px; /* Uniform height */
+    min-height: 300px;
+  }
+
+  /* Big Photo: Full Width */
+  .details__right {
+    width: 100%;
+  }
+  
+  .details__bigPhoto {
+    height: 400px;
+    width: 100%;
+  }
+
+  /* Caption: Center align */
+  .details__caption {
+    text-align: center;
+    max-width: 100%;
+  }
+
+  /* -----------------------------------------------------------
+     FOOTER
+     Strategy: 4 cols → 2 cols → 1 col based on space.
+     ----------------------------------------------------------- */
+
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 Columns on Tablet/Portrait */
+    gap: 40px;
+  }
+
+  .copyright {
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Tiny Mobile Fix */
+  @media (max-width: 480px) {
+    .footer-grid {
+      grid-template-columns: 1fr; /* Single column on Phone */
+      text-align: center;
+    }
+    
+    .link-col {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+   
+    .services-headline, .about-title, h1, h2 {
+      font-size: 2rem;
+    }
   }
 }
 
