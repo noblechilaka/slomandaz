@@ -32,7 +32,8 @@ window.ProductsLib = {
       const globalIndex = this.products.indexOf(product);
 
       const card = document.createElement("article");
-      card.className = `p-card ${product.span} ${product.height} reveal`;
+      // Change this line in generateGridProducts():
+      card.className = `archive-item ${product.span} ${product.height} reveal`;
       card.dataset.cat = product.category.toLowerCase();
       card.dataset.previewText = `${
         product.name
@@ -45,17 +46,15 @@ window.ProductsLib = {
       }
 
       card.innerHTML = `
-        <div class="p-card__media">
-          <img alt="${product.alt}" src="${product.image}" loading="lazy" />
+        <div class="archive-item-img">
+          <img src="${product.image}" alt="${product.alt}" loading="lazy" />
+          <button class="archive-add-btn" onclick="quickAddToCart('${product.id}')">
+            Add to Bag
+          </button>
         </div>
-        <div class="p-card__caption">
-          <span class="p-card__name">${product.name}</span>
-          <div>
-            <span class="p-card__price">₦${product.price.toLocaleString()}</span>
-            <span class="product-status ${product.condition || "new"}">${
-        product.condition || "new"
-      }</span>
-          </div>
+        <div class="archive-item-info">
+          <span class="archive-item-name">${product.name}</span>
+          <span class="archive-item-price">₦${product.price.toLocaleString()}</span>
         </div>
       `;
       gridEl.appendChild(card);
@@ -86,7 +85,7 @@ window.ProductsLib = {
           (p) => p.category.toLowerCase() === filterLower
         );
 
-      gsap.to(gridEl.querySelectorAll(".p-card"), {
+      gsap.to(gridEl.querySelectorAll(".archive-item"), {
         opacity: 0,
         scale: 0.95,
         duration: 0.4,
@@ -97,7 +96,7 @@ window.ProductsLib = {
             window.openProductModal?.(globalIndex)
           );
           gsap.fromTo(
-            gridEl.querySelectorAll(".p-card"),
+            gridEl.querySelectorAll(".archive-item"),
             { opacity: 0, y: 30, scale: 0.95 },
             {
               opacity: 1,
