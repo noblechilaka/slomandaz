@@ -1,31 +1,32 @@
 // js/products.js
-// Removed duplicate registerPlugin call
-
 // Global state references
 let currentProductIndex = -1;
 let selectedColor = null; // Stores the clicked color name
 
-// Products Library Logic
-// Products Library Logic - merged with scripts.js
-window.ProductsLib.loadProducts = window.ProductsLib.loadProducts || async function() {
-  if (this.data && this.data.length > 0) {
-    this.products = this.data;
-    return this.products;
-  }
-  try {
-    const response = await fetch("data/products.json");
-    const data = await response.json();
-    this.products = data;
-    this.data = data;
-    window.allProducts = data;
-    return data;
-  } catch (error) {
-    console.error("Failed to load products:", error);
-    return [];
-  }
-};
+// Initialize ProductsLib as a complete object
+window.ProductsLib = window.ProductsLib || { data: [], products: [] };
 
-window.ProductsLib.generateGridProducts = window.ProductsLib.generateGridProducts || function(gridEl, products = null, onCardClick = null) {
+// Extend the ProductsLib with the necessary functions
+Object.assign(window.ProductsLib, {
+  async loadProducts() {
+    if (this.data && this.data.length > 0) {
+      this.products = this.data;
+      return this.products;
+    }
+    try {
+      const response = await fetch("data/products.json");
+      const data = await response.json();
+      this.products = data;
+      this.data = data;
+      window.allProducts = data;
+      return data;
+    } catch (error) {
+      console.error("Failed to load products:", error);
+      return [];
+    }
+  },
+
+  generateGridProducts: function (gridEl, products = null, onCardClick = null) {
     const prods = products || this.products;
     gridEl.innerHTML = "";
 
@@ -33,7 +34,6 @@ window.ProductsLib.generateGridProducts = window.ProductsLib.generateGridProduct
       const globalIndex = this.products.indexOf(product);
 
       const card = document.createElement("article");
-      // Change this line in generateGridProducts():
       card.className = `archive-item ${product.span} ${product.height} reveal`;
       card.dataset.cat = product.category.toLowerCase();
       card.dataset.previewText = `${
@@ -49,7 +49,9 @@ window.ProductsLib.generateGridProducts = window.ProductsLib.generateGridProduct
       card.innerHTML = `
         <div class="archive-item-img">
           <img src="${product.image}" alt="${product.alt}" loading="lazy" />
-          <button class="archive-add-btn" onclick="quickAddToCart('${product.id}')">
+          <button class="archive-add-btn" onclick="quickAddToCart('${
+            product.id
+          }')">
             Add to Bag
           </button>
         </div>
@@ -62,8 +64,7 @@ window.ProductsLib.generateGridProducts = window.ProductsLib.generateGridProduct
     });
   },
 
-  initFilters(gridEl, filtersSelector = ".filter") {
-    // ... (Keep your existing filter logic exactly as it was) ...
+  initFilters: function (gridEl, filtersSelector = ".filter") {
     const filters = Array.from(document.querySelectorAll(filtersSelector));
 
     window.setActiveFilter = (filterKey) => {
@@ -128,7 +129,7 @@ window.ProductsLib.generateGridProducts = window.ProductsLib.generateGridProduct
       });
     });
   },
-};
+});
 
 // Modal Logic
 function ensureModalExists() {
