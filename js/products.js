@@ -7,17 +7,20 @@ let selectedColor = null; // Stores the clicked color name
 
 // Products Library Logic
 window.ProductsLib = {
-  products: [],
+  data: [],
 
   async loadProducts() {
+    if (this.data && this.data.length > 0) {
+      this.products = this.data;
+      return this.products;
+    }
     try {
       const response = await fetch("data/products.json");
-      this.products = await response.json();
-
-      // Create an indexed lookup for easier access later
-      window.allProducts = this.products;
-
-      return this.products;
+      const data = await response.json();
+      this.products = data;
+      this.data = data;
+      window.allProducts = data;
+      return data;
     } catch (error) {
       console.error("Failed to load products:", error);
       return [];
@@ -62,7 +65,6 @@ window.ProductsLib = {
   },
 
   initFilters(gridEl, filtersSelector = ".filter") {
-    // ... (Keep your existing filter logic exactly as it was) ...
     const filters = Array.from(document.querySelectorAll(filtersSelector));
 
     window.setActiveFilter = (filterKey) => {
@@ -126,7 +128,7 @@ window.ProductsLib = {
         if (e.key === "Enter") window.setActiveFilter(f.dataset.filter);
       });
     });
-  },
+  }
 };
 
 // Modal Logic

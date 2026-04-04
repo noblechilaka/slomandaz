@@ -204,7 +204,8 @@
         );
 
         window.ProductsLib.initFilters(grid);
-        window.ProductsLib.initAnimations();
+        // initAnimations not defined, skip
+        window.ProductsLib.initFilters = window.ProductsLib.initFilters || (() => {}); // noop
 
         // Deep link filter
         const urlParams = new URLSearchParams(window.location.search);
