@@ -2068,7 +2068,7 @@ body.menu-open .cart-button {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 180px var(--pad-x);
+  padding-block: 180px;
   position: relative;
   border-top: 1px solid var(--line);
 }
@@ -2078,8 +2078,6 @@ body.menu-open .cart-button {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   width: 100%;
-  max-width: var(--container);
-  margin: 0 auto;
   gap: 80px;
 }
 
@@ -3674,7 +3672,7 @@ textarea.underlineInput {
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
+  border-radius: 20px;
   max-width: 680px;
   max-height: 85vh;
   width: 100%;
@@ -3750,7 +3748,7 @@ textarea.underlineInput {
 }
 
 .send-popup__actions {
-  padding: 10px 36px 36px;
+  padding: 0 36px 36px;
   display: flex;
   gap: 16px;
 }
@@ -3758,8 +3756,7 @@ textarea.underlineInput {
 .send-btn {
   flex: 1;
   padding: 20px 32px;
-
-  border-radius: 10px;
+  border-radius: 14px;
   text-decoration: none;
   font-weight: 500;
   font-size: 15px;
@@ -3788,13 +3785,13 @@ textarea.underlineInput {
 }
 
 .send-btn.whatsapp {
-  background: green;
+  background: var(--copper);
   color: white;
   border-color: rgba(184, 115, 51, 0.2);
 }
 
 .send-btn.whatsapp:hover {
-  background:lighter;
+  background: #a8642b;
   transform: translateY(-2px);
   box-shadow: 0 12px 28px rgba(184, 115, 51, 0.3);
 }
