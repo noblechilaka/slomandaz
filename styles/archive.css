@@ -213,7 +213,7 @@
 /* ── Mobile Responsive ── */
 @media (max-width: 768px) {
   .archive-section {
-    padding: 60px 20px 80px;
+    padding: 60px 20px 0px;
   }
   
   .archive-grid {
