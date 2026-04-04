@@ -5,27 +5,30 @@
 let currentProductIndex = -1;
 let selectedColor = null; // Stores the clicked color name
 
-// Products Library Logic
-// Products Library Logic - merged with scripts.js
-window.ProductsLib.loadProducts = window.ProductsLib.loadProducts || async function() {
-  if (this.data && this.data.length > 0) {
-    this.products = this.data;
-    return this.products;
-  }
-  try {
-    const response = await fetch("data/products.json");
-    const data = await response.json();
-    this.products = data;
-    this.data = data;
-    window.allProducts = data;
-    return data;
-  } catch (error) {
-    console.error("Failed to load products:", error);
-    return [];
-  }
-};
+// Extend ProductsLib with additional functionality
+window.ProductsLib = window.ProductsLib || { data: [], products: [] };
 
-window.ProductsLib.generateGridProducts = window.ProductsLib.generateGridProducts || function(gridEl, products = null, onCardClick = null) {
+// Add or update specific methods without replacing the whole object
+Object.assign(window.ProductsLib, {
+  async loadProducts() {
+    if (this.data && this.data.length > 0) {
+      this.products = this.data;
+      return this.products;
+    }
+    try {
+      const response = await fetch("data/products.json");
+      const data = await response.json();
+      this.products = data;
+      this.data = data;
+      window.allProducts = data;
+      return data;
+    } catch (error) {
+      console.error("Failed to load products:", error);
+      return [];
+    }
+  },
+
+  generateGridProducts: function(gridEl, products = null, onCardClick = null) {
     const prods = products || this.products;
     gridEl.innerHTML = "";
 
@@ -33,7 +36,6 @@ window.ProductsLib.generateGridProducts = window.ProductsLib.generateGridProduct
       const globalIndex = this.products.indexOf(product);
 
       const card = document.createElement("article");
-      // Change this line in generateGridProducts():
       card.className = `archive-item ${product.span} ${product.height} reveal`;
       card.dataset.cat = product.category.toLowerCase();
       card.dataset.previewText = `${
@@ -62,8 +64,7 @@ window.ProductsLib.generateGridProducts = window.ProductsLib.generateGridProduct
     });
   },
 
-  initFilters(gridEl, filtersSelector = ".filter") {
-    // ... (Keep your existing filter logic exactly as it was) ...
+  initFilters: function(gridEl, filtersSelector = ".filter") {
     const filters = Array.from(document.querySelectorAll(filtersSelector));
 
     window.setActiveFilter = (filterKey) => {
@@ -127,151 +128,5 @@ window.ProductsLib.generateGridProducts = window.ProductsLib.generateGridProduct
         if (e.key === "Enter") window.setActiveFilter(f.dataset.filter);
       });
     });
-  },
-};
-
-// Modal Logic
-function ensureModalExists() {
-  let backdrop = document.querySelector(".modal-backdrop");
-  if (backdrop) return backdrop;
-
-  backdrop = document.createElement("div");
-  backdrop.className = "modal-backdrop";
-  backdrop.innerHTML = `
-    <div class="modal-container" role="dialog" aria-modal="true">
-      <div class="modal-left">
-        <img id="modalHeroImg" src="" alt="">
-      </div>
-      <div class="modal-right">
-        <div class="modal-top">
-          <div>
-            <div class="modal-title" id="modalTitle"></div>
-            <div class="modal-price" id="modalPrice"></div>
-          </div>
-          <button class="modal-close" type="button" aria-label="Close">&times;</button>
-        </div>
-        <div class="modal-grid">
-          <div class="modal-field"><div class="modal-label">Size</div><div class="modal-value" id="modalSize"></div></div>
-          <div class="modal-field"><div class="modal-label">Dimensions</div><div class="modal-value" id="modalDimensions"></div></div>
-        </div>
-        <div class="modal-colors-title">Available Colours</div>
-        <div class="modal-colors" id="modalColors"></div>
-        <button class="modal-cta" type="button" id="addToCartBtn">Add to Cart</button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(backdrop);
-  return backdrop;
-}
-
-function setModalOpen(open) {
-  const backdrop = ensureModalExists();
-  if (open) backdrop.classList.add("active");
-  else backdrop.classList.remove("active");
-}
-
-window.closeProductModal = () => {
-  setModalOpen(false);
-  currentProductIndex = -1;
-  selectedColor = null;
-};
-
-window.openProductModal = (index) => {
-  const products = window.allProducts; // Use the global populated array
-  const product = products[index];
-  if (!product) return;
-
-  currentProductIndex = index;
-  const backdrop = ensureModalExists();
-
-  backdrop.querySelector("#modalHeroImg").src = product.image;
-  backdrop.querySelector("#modalTitle").textContent = product.name;
-  backdrop.querySelector(
-    "#modalPrice"
-  ).textContent = `₦${product.price.toLocaleString()}`;
-  backdrop.querySelector("#modalSize").textContent = product.size || "";
-  backdrop.querySelector("#modalDimensions").textContent =
-    product.dimensions || "";
-
-  const colorsWrap = backdrop.querySelector("#modalColors");
-  colorsWrap.innerHTML = "";
-
-  // Default first color or empty
-  selectedColor = (product.colors && product.colors[0]) || "Standard";
-
-  (product.colors || []).forEach((c, i) => {
-    const chip = document.createElement("div");
-    chip.className = "color-chip" + (i === 0 ? " active" : "");
-    chip.textContent = c;
-    chip.addEventListener("click", () => {
-      colorsWrap.querySelector(".active")?.classList.remove("active");
-      chip.classList.add("active");
-      selectedColor = c;
-    });
-    colorsWrap.appendChild(chip);
-  });
-
-  const btn = backdrop.querySelector("#addToCartBtn");
-  btn.textContent = "Add to Cart";
-  btn.classList.remove("added");
-  setModalOpen(true);
-
-  gsap.fromTo(
-    backdrop.querySelector(".modal-container"),
-    { y: 10, opacity: 0, scale: 0.98 },
-    { y: 0, opacity: 1, scale: 1, duration: 0.35, ease: "power2.out" }
-  );
-};
-
-// Wire listeners
-document.addEventListener("click", (e) => {
-  const backdrop = document.querySelector(".modal-backdrop.active");
-  if (!backdrop) return;
-  if (e.target.closest(".modal-close") || e.target === backdrop)
-    window.closeProductModal();
-});
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") window.closeProductModal();
-});
-
-// --- CRITICAL FIX FOR ADD TO CART ---
-document.addEventListener("click", async (e) => {
-  const btn = e.target.closest("#addToCartBtn");
-  if (!btn) return;
-  if (currentProductIndex < 0) return;
-
-  const products = window.allProducts;
-  if (!products) await window.ProductsLib.loadProducts();
-
-  const product = products[currentProductIndex];
-  if (!product) return;
-
-  if (!product.inStock || product.stockCount <= 0) {
-    alert("Out of Stock.");
-    return;
-  }
-
-  // FIX: Send full object including the currently selected color
-  if (window.addToCart) {
-    window.addToCart({
-      ...product,
-      selectedColor: selectedColor,
-    });
-
-    // Feedback Animation
-    btn.textContent = "Added!";
-    btn.classList.add("added");
-    gsap.fromTo(
-      btn,
-      { scale: 1 },
-      { scale: 0.98, duration: 0.1, yoyo: true, repeat: 1 }
-    );
-
-    // FIX: Auto-Close Modal
-    setTimeout(() => {
-      window.closeProductModal();
-      btn.textContent = "Add to Cart";
-      btn.classList.remove("added");
-    }, 1000);
   }
 });

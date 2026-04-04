@@ -32,14 +32,22 @@ window.initCategoryAnimations = initCategoryAnimations || (() => {
   if (typeof initCategoryAnimations === 'function') initCategoryAnimations();
 });
 
-// ── PRODUCTS LIBRARY (Unified API) ──
-window.ProductsLib = {
-  data: [],
+// ── EXTEND PRODUCTS LIBRARY (Only add/update specific methods) ──
+window.ProductsLib = window.ProductsLib || { data: [] };
+
+// Add or update specific methods without replacing the whole object
+Object.assign(window.ProductsLib, {
   async loadProducts() {
     if (this.data.length > 0) return this.data;
     try {
       const res = await fetch("data/products.json");
       this.data = await res.json();
+      // Also update the products property that products.js uses
+      if (!this.hasOwnProperty('products')) {
+        this.products = this.data;
+      } else {
+        this.products = this.data;
+      }
       return this.data;
     } catch (err) {
       console.error("Failed to load products:", err);
@@ -65,4 +73,4 @@ window.ProductsLib = {
       }
     });
   }
-};
+});
