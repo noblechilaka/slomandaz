@@ -1,0 +1,30 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "products"
+    label: "Products"
+    file: "data/products.json"
+    format: "json"
+    fields:
+      - {label: "ID", name: "id", widget: "number"}
+      - {label: "Name", name: "name", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - {label: "Price", name: "price", widget: "number"}
+      - {label: "Currency", name: "currency", widget: "string", default: "NGN"}
+      - {label: "Image", name: "image", widget: "image"}
+      - {label: "Alt Text", name: "alt", widget: "string"}
+      - {label: "Category", name: "category", widget: "select", options: ["Sofas","Fittings","Singles","Complimentary"]}
+      - {label: "Condition", name: "condition", widget: "select", options: ["new","bestseller","discounted"]}
+      - {label: "Span", name: "span", widget: "select", options: ["span-1","span-2"]}
+      - {label: "Height", name: "height", widget: "select", options: ["h-380","h-640"]}
+      - {label: "Size", name: "size", widget: "string"}
+      - {label: "Dimensions", name: "dimensions", widget: "string"}
+      - {label: "Colors", name: "colors", widget: "list"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "In Stock", name: "inStock", widget: "boolean", default: true}
+      - {label: "Stock Count", name: "stockCount", widget: "number"}
