@@ -38,30 +38,7 @@
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-  /* Allow Lenis to handle scroll on mobile */
-  overscroll-behavior: none;
-  /* Enable touch scrolling for Lenis on mobile */
-  touch-action: pan-y pinch-zoom;
-}
 
-/* Mobile-specific scroll handling */
-@media (max-width: 768px) {
-  html {
-    /* Better touch handling for mobile */
-    touch-action: manipulation;
-  }
-
-  body {
-    /* Remove properties that prevent pull-to-refresh */
-    /* Allow natural overscroll behavior for pull-to-refresh */
-    overscroll-behavior-y: auto;
-    /* Enable hardware-accelerated scrolling */
-    -webkit-overflow-scrolling: touch;
-    overflow-x: hidden;
-  }
-}
 
 body {
   font-family: var(--font-sans);
