@@ -41,6 +41,17 @@ function initCategoryAnimations() {
         l.classList.toggle("active", idx === catIndex);
       });
     });
+
+    // Click handler: filter + redirect
+    item.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const cat = item.getAttribute("data-cat");
+      if (cat) {
+        localStorage.setItem("activeFilter", cat);
+        window.location.href = "products.html";
+      }
+    });
   });
 
   // Mouse parallax

@@ -613,22 +613,16 @@
     <script src="js/cursor.js"></script>
     <script src="js/previews.js"></script>
     <script>
-      // Category sync for index.html
+      // Category sync for index.html - simplified
       document.addEventListener("DOMContentLoaded", async () => {
+        // Load products and update counts
         await window.ProductsLib.loadProducts();
         window.ProductsLib.updateCategoryCounts();
-
-        // Category click → filter + redirect to products
-        const categoryItems = document.querySelectorAll(".category-item");
-        categoryItems.forEach((item) => {
-          item.addEventListener("click", () => {
-            const cat = item.dataset.cat;
-            if (cat) {
-              localStorage.setItem("activeFilter", cat);
-              window.location.href = "products.html";
-            }
-          });
-        });
+        
+        // Init category animations (now includes clicks)
+        if (window.initCategoryAnimations) {
+          window.initCategoryAnimations();
+        }
       });
     </script>
   </body>

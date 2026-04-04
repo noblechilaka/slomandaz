@@ -27,6 +27,11 @@ gsap.ticker.add((time) => {
 
 gsap.ticker.lagSmoothing(0);
 
+window.initCategoryAnimations = initCategoryAnimations || (() => {
+  // Auto-init if function exists globally
+  if (typeof initCategoryAnimations === 'function') initCategoryAnimations();
+});
+
 // ── PRODUCTS LIBRARY (Unified API) ──
 window.ProductsLib = {
   data: [],
@@ -41,4 +46,23 @@ window.ProductsLib = {
       return [];
     }
   },
+
+  updateCategoryCounts() {
+    // Map data-cat to category (lowercase match products.json)
+    const catMap = {
+      'singles': 'singles',
+      'complimentary': 'complimentary', 
+      'sofas': 'sofas',
+      'beds': 'beds',
+      'fittings': 'fittings'
+    };
+    
+    Object.entries(catMap).forEach(([dataCat, catLower]) => {
+      const count = this.data.filter(p => p.category.toLowerCase() === catLower).length;
+      const countEl = document.querySelector(`[data-cat="${dataCat}"] .category-count`);
+      if (countEl) {
+        countEl.textContent = `(${count})`;
+      }
+    });
+  }
 };
