@@ -2068,7 +2068,7 @@ body.menu-open .cart-button {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding-block: 180px;
+  padding: 180px var(--pad-x);
   position: relative;
   border-top: 1px solid var(--line);
 }
@@ -2078,6 +2078,8 @@ body.menu-open .cart-button {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
   gap: 80px;
 }
 
@@ -3785,13 +3787,13 @@ textarea.underlineInput {
 }
 
 .send-btn.whatsapp {
-  background: var(--copper);
+  background: green;
   color: white;
   border-color: rgba(184, 115, 51, 0.2);
 }
 
 .send-btn.whatsapp:hover {
-  background: #a8642b;
+  background:lighter;
   transform: translateY(-2px);
   box-shadow: 0 12px 28px rgba(184, 115, 51, 0.3);
 }
