@@ -54,9 +54,9 @@ html {
   }
 
   body {
-    /* Prevent scroll bounce and pull-to-refresh */
-    overscroll-behavior: none;
-    overscroll-behavior-y: none;
+    /* Remove properties that prevent pull-to-refresh */
+    /* Allow natural overscroll behavior for pull-to-refresh */
+    overscroll-behavior-y: auto;
     /* Enable hardware-accelerated scrolling */
     -webkit-overflow-scrolling: touch;
     overflow-x: hidden;
@@ -70,6 +70,8 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
 }
+
+
 a {
   color: inherit;
   text-decoration: none;
