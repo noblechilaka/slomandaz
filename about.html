@@ -193,7 +193,59 @@
         </div>
       </div>
     </section>
+<section class="contact">
+  <div class="contact-inner">
+    <!-- LEFT -->
+    <div class="contact-headline">
+      <span>Start a</span>
+      <span>Dialogue.</span>
+    </div>
 
+    <!-- RIGHT - FIXED FORM -->
+    <form class="contact-form" id="quickContactForm">
+      <div class="form-group">
+        <input 
+          class="form-input" 
+          id="quickName"
+          name="name"
+          type="text" 
+          placeholder="Your Name"
+          required 
+        />
+        <div class="form-line"></div>
+        <div class="form-accent"></div>
+      </div>
+
+      <div class="form-group">
+        <input 
+          class="form-input"
+          id="quickEmail" 
+          name="email"
+          type="email"
+          placeholder="Email Address"
+          required 
+        />
+        <div class="form-line"></div>
+        <div class="form-accent"></div>
+      </div>
+
+      <div class="form-group">
+        <input 
+          class="form-input"
+          id="quickMessage"
+          name="message" 
+          type="text"
+          placeholder="Tell us about your project"
+          required 
+        />
+        <div class="form-line"></div>
+        <div class="form-accent"></div>
+      </div>
+
+      <button type="submit" class="contact-cta">request appointment</button>
+    </form>
+  </div>
+</section>
 
 
     <!-- =========================
@@ -245,8 +297,21 @@
 
     <script src="js/scripts.js"></script>
     <script src="js/animations.js"></script>
+    <script src="js/contact-form.js"></script>
     <script src="js/cart.js"></script>
  <script src="js/cursor.js"></script>
  <script src="js/previews.js"></script>
  <script src="js/entrance.js"></script>
+ <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialize ALL forms on page
+    window.FormCompiler.init('contactForm', {
+      pageTitle: 'Contact Page'
+    });
+    
+    window.FormCompiler.init('quickContactForm', {
+      pageTitle: 'Homepage Quick Contact'
+    });
+  });
+</script>
 </body>

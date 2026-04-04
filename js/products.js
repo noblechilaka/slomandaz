@@ -6,28 +6,26 @@ let currentProductIndex = -1;
 let selectedColor = null; // Stores the clicked color name
 
 // Products Library Logic
-window.ProductsLib = {
-  data: [],
+// Products Library Logic - merged with scripts.js
+window.ProductsLib.loadProducts = window.ProductsLib.loadProducts || async function() {
+  if (this.data && this.data.length > 0) {
+    this.products = this.data;
+    return this.products;
+  }
+  try {
+    const response = await fetch("data/products.json");
+    const data = await response.json();
+    this.products = data;
+    this.data = data;
+    window.allProducts = data;
+    return data;
+  } catch (error) {
+    console.error("Failed to load products:", error);
+    return [];
+  }
+};
 
-  async loadProducts() {
-    if (this.data && this.data.length > 0) {
-      this.products = this.data;
-      return this.products;
-    }
-    try {
-      const response = await fetch("data/products.json");
-      const data = await response.json();
-      this.products = data;
-      this.data = data;
-      window.allProducts = data;
-      return data;
-    } catch (error) {
-      console.error("Failed to load products:", error);
-      return [];
-    }
-  },
-
-  generateGridProducts(gridEl, products = null, onCardClick = null) {
+window.ProductsLib.generateGridProducts = window.ProductsLib.generateGridProducts || function(gridEl, products = null, onCardClick = null) {
     const prods = products || this.products;
     gridEl.innerHTML = "";
 
@@ -65,6 +63,7 @@ window.ProductsLib = {
   },
 
   initFilters(gridEl, filtersSelector = ".filter") {
+    // ... (Keep your existing filter logic exactly as it was) ...
     const filters = Array.from(document.querySelectorAll(filtersSelector));
 
     window.setActiveFilter = (filterKey) => {
@@ -128,7 +127,7 @@ window.ProductsLib = {
         if (e.key === "Enter") window.setActiveFilter(f.dataset.filter);
       });
     });
-  }
+  },
 };
 
 // Modal Logic

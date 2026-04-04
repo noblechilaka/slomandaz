@@ -519,47 +519,59 @@
       </div>
     </section>
 
-    <section class="contact">
-      <div class="contact-inner">
-        <!-- LEFT -->
-        <div class="contact-headline">
-          <span>Start a</span>
-          <span>Dialogue.</span>
-        </div>
+<section class="contact">
+  <div class="contact-inner">
+    <!-- LEFT -->
+    <div class="contact-headline">
+      <span>Start a</span>
+      <span>Dialogue.</span>
+    </div>
 
-        <!-- RIGHT -->
-        <form class="contact-form">
-          <div class="form-group">
-            <input class="form-input" type="text" placeholder="Your Name" />
-            <div class="form-line"></div>
-            <div class="form-accent"></div>
-          </div>
-
-          <div class="form-group">
-            <input
-              class="form-input"
-              type="email"
-              placeholder="Email Address"
-            />
-            <div class="form-line"></div>
-            <div class="form-accent"></div>
-          </div>
-
-          <div class="form-group">
-            <input
-              class="form-input"
-              type="text"
-              placeholder="Tell us about your project"
-            />
-            <div class="form-line"></div>
-            <div class="form-accent"></div>
-          </div>
-
-          <button type="submit" class="contact-cta">Send Inquiry</button>
-        </form>
+    <!-- RIGHT - FIXED FORM -->
+    <form class="contact-form" id="quickContactForm">
+      <div class="form-group">
+        <input 
+          class="form-input" 
+          id="quickName"
+          name="name"
+          type="text" 
+          placeholder="Your Name"
+          required 
+        />
+        <div class="form-line"></div>
+        <div class="form-accent"></div>
       </div>
-    </section>
 
+      <div class="form-group">
+        <input 
+          class="form-input"
+          id="quickEmail" 
+          name="email"
+          type="email"
+          placeholder="Email Address"
+          required 
+        />
+        <div class="form-line"></div>
+        <div class="form-accent"></div>
+      </div>
+
+      <div class="form-group">
+        <input 
+          class="form-input"
+          id="quickMessage"
+          name="message" 
+          type="text"
+          placeholder="Tell us about your project"
+          required 
+        />
+        <div class="form-line"></div>
+        <div class="form-accent"></div>
+      </div>
+
+      <button type="submit" class="contact-cta">request appointment</button>
+    </form>
+  </div>
+</section>
     <!-- FINAL FOOTER -->
     <footer class="site-footer">
       <div class="footer-grid">
@@ -608,7 +620,7 @@
     <script src="js/products.js"></script>
 
     <script src="js/category.js"></script>
-
+<script src="js/contact-form.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/cursor.js"></script>
     <script src="js/previews.js"></script>
@@ -625,5 +637,18 @@
         }
       });
     </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialize ALL forms on page
+    window.FormCompiler.init('contactForm', {
+      pageTitle: 'Contact Page'
+    });
+    
+    window.FormCompiler.init('quickContactForm', {
+      pageTitle: 'Homepage Quick Contact'
+    });
+  });
+</script>
   </body>
 </html>

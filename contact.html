@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Noden® — Contact</title>
     <link rel="stylesheet" href="styles/styles.css" />
+    <link rel="stylesheet" href="styles/contact-form.css">
     <!-- Fonts (best-effort match) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -216,6 +217,22 @@
             </div>
           </div>
         </div>
+        <!-- -------------- CONFIRM MODAL (hidden by default) -------------- -->
+<div class="confirm-modal" id="confirmModal" aria-hidden="true" role="dialog" aria-labelledby="confirmTitle" aria-modal="true">
+  <div class="confirm-modal__overlay" tabindex="-1"></div>
+  <div class="confirm-modal__card" role="document">
+    <!-- <h2 class="confirm-modal__title" id="confirmTitle">How would you like to continue?</h2> -->
+
+    <p class="confirm-modal__text" id="confirmMessage">
+      <!-- Filled by JS -->
+    </p>
+
+    <!-- <div class="confirm-modal__actions">
+<a href="..." class="send-btn whatsapp">Send via WhatsApp</a>
+<a href="..." class="send-btn email">Send via Email</a>
+    </div> -->
+  </div>
+</div>
       </section>
 
       <!-- Footer -->
@@ -267,6 +284,29 @@
     <script src="js/animations.js"></script>
     <script src="js/cursor.js"></script>
     <script src="js/cart.js"></script>
+    <script src="js/contact-form.js"></script>
     <script src="js/previews.js"></script>
+    <script src="js/forms.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialize contact form
+    window.FormCompiler.init('contactForm', {
+      pageTitle: 'Contact Form - Noden®'
+    });
+    
+    // Form success feedback
+    const form = document.getElementById('contactForm');
+    const btn = form.querySelector('button[type="submit"]');
+    
+    form.addEventListener('submit', () => {
+      gsap.to(btn, {
+        scale: 0.95,
+        duration: 0.1,
+        yoyo: true,
+        repeat: 1
+      });
+    });
+  });
+</script>
   </body>
 </html>
