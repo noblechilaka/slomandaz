@@ -228,9 +228,7 @@
   }
   
   /* ── CATEGORY SECTION ── */
-  .spine-container {
-    padding-top: 120px;
-  }
+
   
   .category-text {
     font-size: clamp(36px, 10vw, 60px);
@@ -456,13 +454,9 @@
   }
   
   /* ── CATEGORY ── */
-  .category-section {
-    padding: 60px 20px;
-  }
   
-  .spine-container {
-    padding-top: 80px;
-  }
+  
+ 
   
   .category-text {
     font-size: clamp(32px, 12vw, 52px);

@@ -50,15 +50,15 @@ html {
 @media (max-width: 768px) {
   html {
     /* Better touch handling for mobile */
-    /* touch-action: manipulation; */
+    touch-action: manipulation;
   }
 
   body {
     /* Prevent scroll bounce and pull-to-refresh */
-    /* overscroll-behavior: none;
-    overscroll-behavior-y: none; */
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
     /* Enable hardware-accelerated scrolling */
-    /* -webkit-overflow-scrolling: touch; */
+    -webkit-overflow-scrolling: touch;
     overflow-x: hidden;
   }
 }
