@@ -9,19 +9,85 @@ window.ProductsLib = window.ProductsLib || { data: [], products: [] };
 // Extend the ProductsLib with the necessary functions
 Object.assign(window.ProductsLib, {
   async loadProducts() {
-    if (this.data && this.data.length > 0) {
-      this.products = this.data;
-      return this.products;
-    }
+    // ⚠️ PASTE YOUR KEYS HERE
+    const SPACE = "msu81v2q0bom";
+    const TOKEN = "PtLVHaTuvyaqqizfEjyaYtio7Mj-fwzkGpZH60pbE9Q";
+
+    // Include parameter fetches linked assets (like images) in the same request
+    const url = `https://cdn.contentful.com/spaces/${SPACE}/environments/master/entries?access_token=${TOKEN}&content_type=product&include=10`;
+
     try {
-      const response = await fetch("data/products.json");
-      const data = await response.json();
-      this.products = data;
-      this.data = data;
-      window.allProducts = data;
-      return data;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      // Process each product and handle images
+      const processedProducts = [];
+
+      for (const item of data.items) {
+        const f = item.fields;
+
+        // Handle Image URL - attempt to get from included assets first
+        let imageUrl = "";
+
+        if (
+          f.image &&
+          f.image.fields &&
+          f.image.fields.file &&
+          f.image.fields.file.url
+        ) {
+          // Image data is already included
+          imageUrl = `https:${f.image.fields.file.url}`;
+        } else if (f.image && f.image.sys) {
+          // Need to fetch asset details separately
+          const assetId = f.image.sys.id;
+          const assetUrl = `https://cdn.contentful.com/spaces/${SPACE}/environments/master/assets/${assetId}?access_token=${TOKEN}`;
+
+          try {
+            const assetRes = await fetch(assetUrl);
+            const assetData = await assetRes.json();
+
+            if (
+              assetData.fields &&
+              assetData.fields.file &&
+              assetData.fields.file.url
+            ) {
+              imageUrl = `https:${assetData.fields.file.url}`;
+            }
+          } catch (assetError) {
+            console.error(`Failed to fetch asset ${assetId}:`, assetError);
+          }
+        }
+
+        processedProducts.push({
+          id: item.sys.id, // Contentful auto-ID
+          name: f.name || "",
+          slug: f.slug || "",
+          price: f.price || 0,
+          currency: f.currency || "NGN",
+          image: imageUrl,
+          alt: f.alt || f.name || "",
+          category: f.category || "",
+          condition: f.condition || "new",
+          span: f.span || "span-1",
+          height: f.height || "h-380",
+          size: f.size || "",
+          dimensions: f.dimensions || "",
+          colors: Array.isArray(f.colors)
+            ? f.colors
+            : f.colors
+            ? [f.colors]
+            : [],
+          description: f.description || "",
+          inStock: f.inStock ?? true,
+          stockCount: f.stockCount ?? 0,
+        });
+      }
+
+      this.products = processedProducts;
+      window.allProducts = this.products;
+      return this.products;
     } catch (error) {
-      console.error("Failed to load products:", error);
+      console.error("Failed to load products from Contentful:", error);
       return [];
     }
   },

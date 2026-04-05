@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Noden® — Vintage Scandinavian Furniture</title>
+    <title>Slomandaz Furnitures</title>
 
     <!-- Font (closest practical match) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,7 +34,7 @@
     <div class="cursor-outline"></div>
 
     <header class="global-nav" role="banner" aria-label="Primary navigation">
-      <div class="mini-logo">Noden<sup>®</sup></div>
+      <div class="mini-logo">Slomandaz<sup>®</sup></div>
 
       <nav class="link-matrix" aria-label="Site links">
         <div class="link-col">
@@ -610,7 +610,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span class="copyright">© Noden® 2024</span>
+        <span class="copyright">© Slomandaz 2026</span>
       </div>
     </footer>
 
@@ -632,9 +632,9 @@
         await window.ProductsLib.loadProducts();
         window.ProductsLib.updateCategoryCounts();
         
-        // Init category animations (now includes clicks)
-        if (window.initCategoryAnimations) {
-          window.initCategoryAnimations();
+        // Init category section (defined in category.js)
+        if (window.initCategorySection) {
+          window.initCategorySection();
         }
       });
     </script>
@@ -651,5 +651,5 @@
     });
   });
 </script>
-  </body>
+</body>
 </html>
