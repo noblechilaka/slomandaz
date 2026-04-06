@@ -1711,7 +1711,7 @@ body.menu-open .cart-button {
 
   /* 1. Adjust Container Padding */
   .services-section {
-    padding: 80px var(--pad-x-mobile) 60px;
+    padding: 80px var(--pad-x) 60px;
     overflow-x: hidden;
   }
 
@@ -3032,7 +3032,7 @@ textarea.underlineInput {
       .container {
         max-width: var(--container);
         margin: 0 auto;
-        padding: 0 auto;
+        padding: 0 var(--pad-x);
       }
 
       /* Header */
