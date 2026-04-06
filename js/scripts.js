@@ -38,7 +38,7 @@ Object.assign(window.ProductsLib, {
       // Load products from Contentful instead of local JSON
       const SPACE = "msu81v2q0bom";
       const TOKEN = "PtLVHaTuvyaqqizfEjyaYtio7Mj-fwzkGpZH60pbE9Q";
-      
+
       // Include parameter fetches linked assets (like images) in the same request
       const url = `https://cdn.contentful.com/spaces/${SPACE}/environments/master/entries?access_token=${TOKEN}&content_type=product&include=10`;
 
@@ -46,47 +46,65 @@ Object.assign(window.ProductsLib, {
       const data = await res.json();
 
       // Transform Contentful response → Your Exact JSON Format
-      const productsFromContentful = data.items.map(item => {
+      const productsFromContentful = data.items.map((item) => {
         const f = item.fields;
 
         // Handle Image URL with multiple fallback options
-        let imageUrl = '';
-        
+        let imageUrl = "";
+
         // Option 1: Standard Contentful asset structure (with includes)
-        if (f.image && f.image.fields && f.image.fields.file && f.image.fields.file.url) {
+        if (
+          f.image &&
+          f.image.fields &&
+          f.image.fields.file &&
+          f.image.fields.file.url
+        ) {
           imageUrl = `https:${f.image.fields.file.url}`;
-        } 
+        }
         // Option 2: Check if image is an array (multiple assets)
-        else if (f.image && Array.isArray(f.image) && f.image[0] && f.image[0].fields && f.image[0].fields.file && f.image[0].fields.file.url) {
+        else if (
+          f.image &&
+          Array.isArray(f.image) &&
+          f.image[0] &&
+          f.image[0].fields &&
+          f.image[0].fields.file &&
+          f.image[0].fields.file.url
+        ) {
           imageUrl = `https:${f.image[0].fields.file.url}`;
         }
         // Option 3: Check if image has a direct URL property (if stored differently)
-        else if (f.image && typeof f.image === 'object' && f.image.url) {
-          imageUrl = f.image.url.startsWith('http') ? f.image.url : `https:${f.image.url}`;
+        else if (f.image && typeof f.image === "object" && f.image.url) {
+          imageUrl = f.image.url.startsWith("http")
+            ? f.image.url
+            : `https:${f.image.url}`;
         }
         // Option 4: Direct URL as string (less common but possible)
-        else if (typeof f.image === 'string') {
-          imageUrl = f.image.startsWith('http') ? f.image : `https:${f.image}`;
+        else if (typeof f.image === "string") {
+          imageUrl = f.image.startsWith("http") ? f.image : `https:${f.image}`;
         }
 
         return {
-          id: item.sys.id,            // Contentful auto-ID
-          name: f.name || '',
-          slug: f.slug || '',
+          id: item.sys.id, // Contentful auto-ID
+          name: f.name || "",
+          slug: f.slug || "",
           price: f.price || 0,
-          currency: f.currency || 'NGN',
+          currency: f.currency || "NGN",
           image: imageUrl,
-          alt: f.alt || f.name || '',
-          category: f.category || '', 
-          condition: f.condition || 'new',
-          span: f.span || 'span-1',
-          height: f.height || 'h-380',
-          size: f.size || '',
-          dimensions: f.dimensions || '',
-          colors: Array.isArray(f.colors) ? f.colors : (f.colors ? [f.colors] : []),
-          description: f.description || '',
+          alt: f.alt || f.name || "",
+          category: f.category || "",
+          condition: f.condition || "new",
+          span: f.span || "span-1",
+          height: f.height || "h-380",
+          size: f.size || "",
+          dimensions: f.dimensions || "",
+          colors: Array.isArray(f.colors)
+            ? f.colors
+            : f.colors
+            ? [f.colors]
+            : [],
+          description: f.description || "",
           inStock: f.inStock ?? true,
-          stockCount: f.stockCount ?? 0
+          stockCount: f.stockCount ?? 0,
         };
       });
 
@@ -95,7 +113,7 @@ Object.assign(window.ProductsLib, {
       this.products = this.data;
       window.allProducts = this.data;
       console.log("Products loaded in scripts.js:", this.data); // Debug log
-      
+
       return this.data;
     } catch (err) {
       console.error("Failed to load products:", err);
@@ -103,16 +121,16 @@ Object.assign(window.ProductsLib, {
     }
   },
 
-  updateCategoryCounts: function() {
+  updateCategoryCounts: function () {
     console.log("Updating category counts"); // Debug log
     // Use the products array that's consistent with the rest of the app
     const productsToCount = window.allProducts || this.products || this.data;
     console.log("Data used for counting:", productsToCount); // Debug log
-    
+
     // Map data-cat to category (case-insensitive match)
     const catMap = {
       singles: "singles",
-      complimentary: "complimentary", 
+      complimentary: "complimentary",
       sofas: "sofas",
       beds: "beds",
       fittings: "fittings",
@@ -124,12 +142,12 @@ Object.assign(window.ProductsLib, {
         (p) => p.category?.toLowerCase() === catLower
       ).length;
       console.log(`Count for ${dataCat}: ${count}`); // Debug log
-      
+
       const countEl = document.querySelector(
         `[data-cat="${dataCat}"] .category-count`
       );
       console.log(`Element for ${dataCat}:`, countEl); // Debug log
-      
+
       if (countEl) {
         countEl.textContent = `(${count})`;
         console.log(`${dataCat} category count: ${count}`); // Debug log

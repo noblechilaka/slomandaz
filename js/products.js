@@ -25,8 +25,9 @@ Object.assign(window.ProductsLib, {
 
       for (const item of data.items) {
         const f = item.fields;
+        console.log(`Processing product: ${f.name}`, f.image); // Debug log
 
-        // Handle Image URL - attempt to get from included assets first
+        // Initialize imageUrl to empty string for each product
         let imageUrl = "";
 
         if (
@@ -37,10 +38,13 @@ Object.assign(window.ProductsLib, {
         ) {
           // Image data is already included
           imageUrl = `https:${f.image.fields.file.url}`;
+          console.log(`Direct image URL for ${f.name}: ${imageUrl}`); // Debug log
         } else if (f.image && f.image.sys) {
           // Need to fetch asset details separately
           const assetId = f.image.sys.id;
           const assetUrl = `https://cdn.contentful.com/spaces/${SPACE}/environments/master/assets/${assetId}?access_token=${TOKEN}`;
+
+          console.log(`Fetching separate asset for ${f.name}: ${assetId}`); // Debug log
 
           try {
             const assetRes = await fetch(assetUrl);
@@ -52,10 +56,15 @@ Object.assign(window.ProductsLib, {
               assetData.fields.file.url
             ) {
               imageUrl = `https:${assetData.fields.file.url}`;
+              console.log(
+                `Separate fetch image URL for ${f.name}: ${imageUrl}`
+              ); // Debug log
             }
           } catch (assetError) {
             console.error(`Failed to fetch asset ${assetId}:`, assetError);
           }
+        } else {
+          console.log(`No image found for product: ${f.name}`); // Debug log
         }
 
         processedProducts.push({
@@ -85,6 +94,7 @@ Object.assign(window.ProductsLib, {
 
       this.products = processedProducts;
       window.allProducts = this.products;
+      console.log("Final products array:", this.products); // Debug log
       return this.products;
     } catch (error) {
       console.error("Failed to load products from Contentful:", error);
