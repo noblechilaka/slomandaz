@@ -22,6 +22,7 @@ function initAnimations() {
   initProcessReveal();
   initContactReveal();
   initFooterReveal();
+  initAboutPageAnimations(); // Added new function for about page animations
 }
 
 // ────────────────────────────────────────────────
@@ -148,6 +149,145 @@ function initAboutReveal() {
       { y: 30, opacity: 0, duration: 1, stagger: 0.15, ease: "power2.out" },
       "-=0.6"
     );
+}
+
+// ────────────────────────────────────────────────
+// NEW FUNCTION: ABOUT PAGE ANIMATIONS
+// ────────────────────────────────────────────────
+function initAboutPageAnimations() {
+  // Check if we're on the about page by looking for about-specific elements
+  const isAboutPage = document.querySelector('.about-top') || 
+                     document.querySelector('.mosaic') || 
+                     document.querySelector('.savoir') || 
+                     document.querySelector('.details');
+  
+  if (!isAboutPage) return; // Only run on about page
+
+  // Apply inset style animations to containers in the about page
+  // Targeting mosaic containers, wide image container, and detail image containers
+  const mosaicContainers = document.querySelectorAll('.tile');
+  const wideImageContainers = document.querySelectorAll('.wide-image');
+  const detailImageContainers = document.querySelectorAll('.small-photo, .details__bigPhoto');
+
+  // Apply inset animations to mosaic containers
+  mosaicContainers.forEach((container, i) => {
+    gsap.from(container, {
+      clipPath: "inset(100% 0 0 0)",
+      duration: 1.2,
+      ease: "expo.inOut",
+      scrollTrigger: {
+        trigger: container,
+        start: "top 85%",
+      },
+      delay: i * 0.1
+    });
+    
+    // Add parallax effect to images inside mosaic containers
+    const img = container.querySelector('img');
+    if (img) {
+      gsap.to(img, {
+        yPercent: -8,
+        ease: "none",
+        scrollTrigger: {
+          trigger: container,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.5,
+        },
+      });
+    }
+  });
+
+  // Apply inset animations to wide image containers
+  wideImageContainers.forEach((container, i) => {
+    gsap.from(container, {
+      clipPath: "inset(100% 0 0 0)",
+      duration: 1.2,
+      ease: "expo.inOut",
+      scrollTrigger: {
+        trigger: container,
+        start: "top 85%",
+      },
+      delay: i * 0.1
+    });
+    
+    // Add parallax effect to images inside wide image containers
+    const img = container.querySelector('img');
+    if (img) {
+      gsap.to(img, {
+        yPercent: -8,
+        ease: "none",
+        scrollTrigger: {
+          trigger: container,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.5,
+        },
+      });
+    }
+  });
+
+  // Apply inset animations to detail image containers
+  detailImageContainers.forEach((container, i) => {
+    gsap.from(container, {
+      clipPath: "inset(100% 0 0 0)",
+      duration: 1.2,
+      ease: "expo.inOut",
+      scrollTrigger: {
+        trigger: container,
+        start: "top 85%",
+      },
+      delay: i * 0.1
+    });
+    
+    // Add parallax effect to images inside detail image containers
+    const img = container.querySelector('img');
+    if (img) {
+      gsap.to(img, {
+        yPercent: -8,
+        ease: "none",
+        scrollTrigger: {
+          trigger: container,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.5,
+        },
+      });
+    }
+  });
+
+  // Apply different animations to other containers on the about page
+  // For example, the savoir section wide image container
+  const savoirContainers = document.querySelectorAll('.savoir .wide-image');
+  savoirContainers.forEach((container, i) => {
+    gsap.from(container, {
+      rotation: 5,
+      scale: 1.2,
+      opacity: 0,
+      duration: 1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: container,
+        start: "top 85%",
+      },
+      delay: 0.2
+    });
+    
+    // Add parallax effect to images inside savoir containers
+    const img = container.querySelector('img');
+    if (img) {
+      gsap.to(img, {
+        yPercent: -8,
+        ease: "none",
+        scrollTrigger: {
+          trigger: container,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.5,
+        },
+      });
+    }
+  });
 }
 
 // ────────────────────────────────────────────────
