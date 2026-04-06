@@ -175,7 +175,11 @@
   
   /* Adjust spacing between sections */
   .archive-section {
-    padding: 80px var(--pad-x) 40px;
+    padding: 80px var(--pad-x) 20px;  /* Reduced bottom padding */
+  }
+  
+  .archive-footer {
+    margin-top: 40px;  /* Reduced margin between archive and next section */
   }
   
   .category-section {
@@ -248,7 +252,7 @@
   
   /* ── CATEGORY SECTION ── */
   .category-section {
-    padding: 60px var(--pad-x) 30px;
+    padding: 40px var(--pad-x) 20px;  /* Reduced top padding */
   }
   
   .category-text {
@@ -258,6 +262,15 @@
   /* Hide decorative frames on tablet */
   .fixed-frame {
     display: none;
+  }
+  
+  /* ── ARCHIVE SECTION ── */
+  .archive-section {
+    padding: 60px var(--pad-x) 10px;  /* Reduced bottom padding */
+  }
+  
+  .archive-footer {
+    margin-top: 30px;  /* Reduced margin between archive and next section */
   }
   
   /* ── ABOUT ── */
@@ -457,11 +470,15 @@
   
   /* ── SPACING ── */
   .archive-section {
-    padding: 60px var(--pad-x) 40px;
+    padding: 40px var(--pad-x) 5px;  /* Reduced top and bottom padding */
+  }
+  
+  .archive-footer {
+    margin-top: 20px;  /* Reduced margin between archive and next section */
   }
   
   .category-section {
-    padding: 30px var(--pad-x) 20px;
+    padding: 20px var(--pad-x) 10px;
   }
   
   .services-section,
