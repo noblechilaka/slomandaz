@@ -5,78 +5,80 @@
    DO NOT modify existing desktop styles
    ============================================ */
 
-
 /* ============================================
    LARGER SCREENS (1440px+)
    Progressive enhancement for more space
    ============================================ */
 
 @media (min-width: 1440px) {
-  
   /* Container expands */
   .container {
     max-width: 1400px;
   }
-  
+
   /* Typography fluid scale */
   :root {
     font-size: 17px;
   }
-  
+
   /* Nav breathing room */
   .global-nav {
     padding: 24px 64px;
   }
-  
+
   /* Hero: bigger title */
   .hero__brand {
     font-size: clamp(80px, 9vw, 160px);
     bottom: 60px;
   }
-  
+
   .hero__descriptor {
     width: 320px;
     font-size: 11px;
     bottom: 72px;
   }
-  
+
   /* Category: bigger text */
   .category-text {
     font-size: clamp(40px, 5.5vw, 80px);
   }
-  
+
   /* Services: more padding */
   .services-section {
     padding: 160px 120px 120px;
   }
-  
+
   .service-title {
     font-size: clamp(42px, 5vw, 80px);
   }
-  
+
   /* Process: taller images */
   .process {
     padding-block: 220px;
   }
-  
-  .step:nth-child(odd) .step-image { height: 560px; }
-  .step:nth-child(even) .step-image { height: 440px; }
-  
+
+  .step:nth-child(odd) .step-image {
+    height: 560px;
+  }
+  .step:nth-child(even) .step-image {
+    height: 440px;
+  }
+
   /* Contact: bigger headline */
   .contact-headline {
     font-size: clamp(72px, 9vw, 160px);
   }
-  
+
   /* Footer: more space */
   .site-footer {
     padding-top: 70px;
   }
-  
+
   .footer-grid {
     gap: 60px;
     margin-bottom: 120px;
   }
-  
+
   .footer-column a {
     font-size: 14px;
   }
@@ -84,47 +86,50 @@
 
 /* 4K and Ultrawide */
 @media (min-width: 1920px) {
-  
   .container {
     max-width: 1700px;
   }
-  
+
   :root {
     font-size: 18px;
   }
-  
+
   .global-nav {
     padding: 28px 100px;
   }
-  
+
   .hero__brand {
     font-size: clamp(100px, 10vw, 180px);
   }
-  
+
   .category-text {
     font-size: clamp(50px, 5vw, 90px);
   }
-  
+
   /* Prevent content from spanning too wide */
   .services-list,
   .steps {
     max-width: 1700px;
     margin-inline: auto;
   }
-  
+
   .service-row-inner {
     max-width: 1700px;
   }
-  
+
   /* Larger contact inputs */
   .form-input {
     font-size: 20px;
     padding: 16px 0;
   }
-  
+
   /* Bigger product cards */
-  .h-380 .p-card__media { height: 420px; }
-  .h-640 .p-card__media { height: 720px; }
+  .h-380 .p-card__media {
+    height: 420px;
+  }
+  .h-640 .p-card__media {
+    height: 720px;
+  }
 }
 
 /* 8K displays */
@@ -132,20 +137,19 @@
   :root {
     font-size: 20px;
   }
-  
+
   .container {
     max-width: 2200px;
   }
-  
+
   .global-nav {
     padding: 32px 140px;
   }
-  
+
   .hero__brand {
     font-size: clamp(120px, 11vw, 220px);
   }
 }
-
 
 /* ============================================
    TABLET LANDSCAPE (1024px)
@@ -153,60 +157,58 @@
    ============================================ */
 
 @media (max-width: 1024px) {
-  
   /* Products grid: 3 columns */
   .grid {
     grid-template-columns: repeat(3, 1fr);
   }
-  
+
   .span-2 {
     grid-column: span 2;
   }
-  
+
   /* Services: still 4-col process */
   .steps {
     grid-template-columns: repeat(4, 1fr);
   }
-  
+
   /* Category section */
   .category-text {
     font-size: clamp(32px, 6vw, 70px);
   }
-  
+
   /* Adjust spacing between sections */
   .archive-section {
-    padding: 80px var(--pad-x) 20px;  /* Reduced bottom padding */
+    padding: 80px var(--pad-x) 20px; /* Reduced bottom padding */
   }
-  
+
   .archive-footer {
-    margin-top: 40px;  /* Reduced margin between archive and next section */
+    margin-top: 40px; /* Reduced margin between archive and next section */
   }
-  
+
   .category-section {
     padding: 50px var(--pad-x) 20px;
   }
-  
+
   .noden-about {
     padding: 30px var(--pad-x);
-    margin-top: -20px;  /* Reduce gap between category and about sections */
+    margin-top: -20px; /* Reduce gap between category and about sections */
   }
-  
+
   .services-section {
     padding: 90px var(--pad-x) 70px;
-    margin-top: -15px;  /* Reduce gap between about and services sections */
+    margin-top: -15px; /* Reduce gap between about and services sections */
   }
-  
+
   /* About: keep 4-col */
   .noden-about__grid {
     grid-template-columns: repeat(4, 1fr);
   }
-  
+
   /* Footer: keep 4-col */
   .footer-grid {
     grid-template-columns: repeat(4, 1fr);
   }
 }
-
 
 /* ============================================
    TABLET PORTRAIT (768px)
@@ -214,122 +216,120 @@
    ============================================ */
 
 @media (max-width: 768px) {
-  
   /* ── TYPOGRAPHY ── */
   :root {
     font-size: 15px;
   }
-  
- 
+
   /* ── HERO ── */
   .hero {
     height: 80vh;
     min-height: 480px;
   }
-  
+
   .hero__brand {
     font-size: clamp(48px, 12vw, 80px);
     bottom: 80px;
   }
-  
+
   .hero__descriptor {
     bottom: 24px;
     right: var(--pad-x);
     width: 180px;
     font-size: 9px;
   }
-  .hero-cta{
+  .hero-cta {
     display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.88);
-  font-weight: 500;
-  padding: 16px 33px;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.88);
+    font-weight: 500;
+    padding: 16px 33px;
   }
-  
+
   /* ── CATEGORY SECTION ── */
   .category-section {
-    padding: 40px var(--pad-x) 20px;  /* Reduced top padding */
+    padding: 40px var(--pad-x) 20px; /* Reduced top padding */
   }
-  
+
   .category-text {
     font-size: clamp(36px, 10vw, 60px);
   }
-  
+
   /* Hide decorative frames on tablet */
   .fixed-frame {
     display: none;
   }
-  
+
   /* ── ARCHIVE SECTION ── */
   .archive-section {
-    padding: 60px var(--pad-x) 10px;  /* Reduced bottom padding */
+    padding: 60px var(--pad-x) 10px; /* Reduced bottom padding */
   }
-  
+
   .archive-footer {
-    margin-top: 30px;  /* Reduced margin between archive and next section */
+    margin-top: 30px; /* Reduced margin between archive and next section */
   }
-  
+
   /* ── ABOUT ── */
   .noden-about {
     padding: 30px var(--pad-x);
-    margin-top: -30px;  /* Reduce gap between category and about sections */
+    margin-top: -30px; /* Reduce gap between category and about sections */
   }
-  
+
   .noden-about__grid {
     grid-template-columns: repeat(2, 1fr);
     row-gap: 32px;
   }
-  
+
   .noden-about__title {
     grid-column: 1 / -1;
     font-size: clamp(36px, 8vw, 64px);
   }
-  
+
   .noden-about__intro {
     grid-column: 1 / -1;
     justify-self: start;
     max-width: 100%;
   }
-  
+
   .noden-about__empty {
     display: none;
   }
-  
+
   .noden-about__img--3 {
     grid-column: 1 / -1;
     aspect-ratio: 3/2;
   }
-  
+
   .noden-about__goal {
     grid-column: 1 / -1;
     max-width: 100%;
   }
-  
+
   .noden-about__img--4 {
     grid-column: 1 / -1;
     aspect-ratio: 3/4;
   }
-  
+
   .noden-about__blank {
     display: none;
   }
-  
+
   /* ── SERVICES ── */
   .services-section {
     padding: 80px var(--pad-x) 60px;
-    margin-top: -20px;  /* Reduce gap between about and services sections */
+    margin-top: -20px; /* Reduce gap between about and services sections */
   }
-  
+
   .services-header {
     flex-direction: column;
     gap: 16px;
     margin-bottom: 60px;
   }
-  
+
   .services-headline {
     text-align: left;
     font-size: clamp(36px, 8vw, 64px);
@@ -339,122 +339,126 @@
   .process {
     padding: 100px 40px;
   }
-  
+
   .process-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
     margin-bottom: 60px;
   }
-  
+
   .steps {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }
-  
-  .step:nth-child(odd) .step-image { height: 320px; }
-  .step:nth-child(even) .step-image { height: 260px; margin-top: 60px; }
-  
+
+  .step:nth-child(odd) .step-image {
+    height: 320px;
+  }
+  .step:nth-child(even) .step-image {
+    height: 260px;
+    margin-top: 60px;
+  }
+
   /* ── CONTACT ── */
   .contact {
     padding: 100px 40px;
   }
-  
+
   .contact-inner {
     grid-template-columns: 1fr;
     gap: 48px;
   }
-  
+
   .contact-headline {
     font-size: clamp(48px, 12vw, 96px);
   }
-  
+
   /* ── PRODUCTS ── */
   .grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }
-  
+
   .span-2 {
     grid-column: span 2;
   }
-  
+
   /* ── MODAL ── */
   .modal-container {
     grid-template-columns: 1fr;
   }
-  
+
   .modal-left img {
     height: 280px;
     min-height: auto;
   }
-  
+
   /* ── FOOTER ── */
   .footer-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 32px;
     margin-bottom: 60px;
   }
-  
+
   /* ── ABOUT PAGE ── */
   .about-top__grid {
     grid-template-columns: 1fr;
     gap: 24px;
   }
-  
+
   .mosaic__grid {
     grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
-  
+
   .tile--d {
     grid-column: 1 / -1;
     height: 280px;
   }
-  
+
   .savoir__grid {
     grid-template-columns: 1fr;
     gap: 32px;
   }
-  
+
   .details__grid {
     grid-template-columns: 1fr;
     gap: 32px;
   }
-  
+
   .newsletter__grid {
     grid-template-columns: 1fr;
     gap: 32px;
   }
-  
+
   /* ── CONTACT PAGE ── */
   .contact-hero__grid {
     grid-template-columns: 1fr;
     gap: 24px;
   }
-  
+
   .main__grid {
     grid-template-columns: 1fr;
     gap: 40px;
   }
-  
+
   /* ── CART DRAWER ── */
   #cartDrawer {
     width: 360px;
     max-width: 90vw;
   }
-  
+
   /* ── GSAP ADJUSTMENTS ── */
   /* Reduce animation distance on tablet */
   .service-title {
     font-size: clamp(32px, 6vw, 56px);
   }
-  
+
   .process-title {
     font-size: clamp(36px, 6vw, 64px);
   }
 }
-
 
 /* ============================================
    MOBILE (480px and below)
@@ -462,225 +466,232 @@
    ============================================ */
 
 @media (max-width: 480px) {
-  
   /* ── TYPOGRAPHY ── */
   :root {
     font-size: 14px;
   }
-  
+
   /* ── SPACING ── */
   .archive-section {
-    padding: 40px var(--pad-x) 5px;  /* Reduced top and bottom padding */
+    padding: 40px var(--pad-x) 5px; /* Reduced top and bottom padding */
   }
-  
+
   .archive-footer {
-    margin-top: 20px;  /* Reduced margin between archive and next section */
+    margin-top: 20px; /* Reduced margin between archive and next section */
   }
-  
+
   .category-section {
     padding: 20px var(--pad-x) 10px;
   }
-  
+
   .services-section,
   .process,
   .contact {
     padding-left: var(--pad-x);
     padding-right: var(--pad-x);
   }
- 
-  
+
   /* ── HERO ── */
   .hero {
     height: 70vh;
     min-height: 400px;
   }
-  
+
   .hero__brand {
     font-size: clamp(42px, 14vw, 72px);
     bottom: 70px;
   }
-  
+
   .hero__descriptor {
     width: 150px;
     font-size: 8px;
   }
-  
+
   /* ── CATEGORY ── */
-  
+
   .category-text {
     font-size: clamp(32px, 12vw, 52px);
   }
-  
+
   /* ── ABOUT ── */
   .noden-about {
     padding: 20px var(--pad-x);
-    margin-top: -20px;  /* Reduce gap between category and about sections */
+    margin-top: -20px; /* Reduce gap between category and about sections */
   }
-  
+
   .noden-about__grid {
     gap: 20px;
   }
-  
+
   .noden-about__img img {
     height: 220px;
   }
-  
+
   /* ── SERVICES ── */
   .services-section {
-    padding: 40px var(--pad-x) 30px;  /* Reduce top and bottom padding */
-    margin-top: -10px;  /* Reduce gap between about and services sections */
+    padding: 40px var(--pad-x) 30px; /* Reduce top and bottom padding */
+    margin-top: -10px; /* Reduce gap between about and services sections */
   }
-  
+
   .services-header {
     margin-bottom: 40px;
   }
-  
+
   .services-eyebrow {
     font-size: 9px;
   }
-  
+
   .services-headline {
     font-size: clamp(32px, 10vw, 48px);
   }
-  
+
   .service-row-inner {
     padding: 20px 0;
   }
-  
+
   .service-title {
     font-size: clamp(24px, 7vw, 36px);
   }
-  
+
   .service-desc {
     font-size: 11px;
   }
-  
+
   .services-footer {
     margin-top: 36px;
   }
-  
+
   .services-cta {
     padding: 16px 33px;
     font-size: 11px;
   }
-  
+
   /* ── PROCESS ── */
   .process {
     padding: 60px 16px;
   }
-  
+
   .steps {
     grid-template-columns: 1fr;
     gap: 48px;
   }
-  
-  .step:nth-child(odd) .step-image { height: 260px; }
-  .step:nth-child(even) .step-image { height: 220px; margin-top: 32px; }
-  
+
+  .step:nth-child(odd) .step-image {
+    height: 260px;
+  }
+  .step:nth-child(even) .step-image {
+    height: 220px;
+    margin-top: 32px;
+  }
+
   .step-name {
     font-size: clamp(20px, 5vw, 28px);
   }
-  
+
   .process-footer-quote {
     font-size: clamp(18px, 4vw, 28px);
   }
 
-  .process-cta{
+  .process-cta {
     display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.88);
-  font-weight: 500;
-  padding: 20px 44px;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.88);
+    font-weight: 500;
+    padding: 20px 44px;
   }
-  
+
   /* ── CONTACT ── */
   .contact {
     padding: 60px 16px;
   }
-  
+
   .contact-headline {
     font-size: clamp(40px, 14vw, 64px);
   }
-  
+
   .form-group {
     margin-bottom: 28px;
   }
-  
+
   .form-input {
     font-size: 15px;
     padding: 10px 0;
   }
-  
+
   /* ── PRODUCTS ── */
   .products-header {
     padding: 24px 20px;
   }
-  
+
   .products-title {
     font-size: clamp(28px, 8vw, 48px);
   }
-  
+
   .grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .span-1,
   .span-2 {
     grid-column: span 1;
   }
-  
-  .h-380 .p-card__media { height: 280px; }
-  .h-640 .p-card__media { height: 360px; }
-  
+
+  .h-380 .p-card__media {
+    height: 280px;
+  }
+  .h-640 .p-card__media {
+    height: 360px;
+  }
+
   /* ── MODAL ── */
   .modal-container {
     width: 95vw;
     border-radius: 10px;
   }
-  
+
   .modal-right {
     padding: 20px;
   }
-  
+
   .modal-title {
     font-size: 20px;
   }
-  
+
   /* ── FOOTER ── */
   .site-footer {
     padding: 32px 20px 24px;
   }
-  
+
   .footer-grid {
     grid-template-columns: 1fr 1fr;
     gap: 24px 16px;
     margin-bottom: 40px;
   }
-  
+
   .footer-column h4 {
     margin-bottom: 12px;
   }
-  
+
   .footer-column li {
     margin-bottom: 8px;
   }
-  
+
   .footer-bottom {
     flex-direction: column;
     gap: 12px;
     align-items: flex-start;
   }
-  
+
   /* ── ABOUT PAGE ── */
   .mosaic__grid {
     grid-template-columns: 1fr;
   }
-  
+
   .tile--a,
   .tile--b,
   .tile--c,
@@ -689,42 +700,41 @@
     grid-row: auto;
     height: 220px;
   }
-  
+
   .mosaic__goal {
     grid-column: auto;
     grid-row: auto;
   }
-  
+
   /* ── CONTACT PAGE ── */
   .contact-hero {
     padding: 32px 16px;
   }
-  
+
   .main {
     padding: 16px;
   }
-  
+
   .collage__grid {
     grid-template-columns: 1fr;
   }
-  
+
   /* ── CART DRAWER ── */
   #cartDrawer {
     width: 100%;
     max-width: 100%;
   }
-  
+
   /* ── FORMS ── */
   .underlineInput {
     font-size: 15px;
   }
-  
+
   .circleCta {
     width: 100%;
     justify-content: center;
   }
 }
-
 
 /* ============================================
    SMALL MOBILE (360px and below)
@@ -732,37 +742,35 @@
    ============================================ */
 
 @media (max-width: 360px) {
-  
   :root {
     font-size: 13px;
   }
-  
+
   .hero__brand {
     font-size: 36px;
   }
-  
+
   .category-text {
     font-size: 28px;
   }
-  
+
   .services-headline {
     font-size: 28px;
   }
-  
+
   .contact-headline {
     font-size: 36px;
   }
-  
+
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .modal-title {
     font-size: 18px;
   }
 }
-
 
 /* ============================================
    ORIENTATION-SPECIFIC
@@ -774,12 +782,12 @@
     height: 90vh;
     min-height: 400px;
   }
-  
+
   .hero__brand {
     font-size: 48px;
     bottom: 24px;
   }
-  
+
   .hero__descriptor {
     display: none;
   }
@@ -791,12 +799,11 @@
     grid-template-columns: 1fr;
     gap: 48px;
   }
-  
+
   .contact-headline {
     font-size: 64px;
   }
 }
-
 
 /* ============================================
    HIGH-DPI / RETINA
@@ -810,14 +817,13 @@
   .divider {
     transform: scaleY(0.5);
   }
-  
+
   /* Crisper text rendering */
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 }
-
 
 /* ============================================
    SCROLLBAR STYLING (Desktop only)
@@ -828,28 +834,26 @@
     width: 6px;
     height: 6px;
   }
-  
+
   ::-webkit-scrollbar-track {
     background: transparent;
   }
-  
+
   ::-webkit-scrollbar-thumb {
     background: rgba(20, 20, 20, 0.2);
     border-radius: 3px;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(20, 20, 20, 0.4);
   }
 }
-
 
 /* ============================================
    TOUCH DEVICE OVERRIDES
    ============================================ */
 
 @media (pointer: coarse) {
-  
   /* Restore normal cursor */
   body,
   a,
@@ -860,54 +864,52 @@
   .product-card {
     cursor: auto !important;
   }
-  
+
   /* Hide custom cursor elements */
   .cursor-dot,
   .cursor-outline,
   .cursor-preview {
     display: none !important;
   }
-  
+
   /* Larger touch targets */
-  
+
   .tab,
   .filter {
     min-height: 44px;
     display: flex;
     align-items: center;
   }
-  
+
   .service-row {
     min-height: 80px;
   }
-  
+
   .category-item {
     min-height: 56px;
   }
-  
+
   /* Remove hover-only effects */
   .service-tag,
   .service-desc {
     opacity: 1 !important;
     transform: none !important;
   }
-  
+
   .service-title {
     opacity: 1 !important;
   }
-  
+
   .step-plus {
     opacity: 0.5 !important;
   }
 }
-
 
 /* ============================================
    REDUCED MOTION
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  
   *,
   *::before,
   *::after {
@@ -916,28 +918,28 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  
+
   /* Disable GSAP-driven parallax via class */
   .hero__media {
     transform: none !important;
   }
-  
+
   .tile img,
   .step-image img {
     transform: none !important;
   }
-  
+
   /* Show service content by default */
   .service-desc,
   .service-tag {
     opacity: 1 !important;
     transform: none !important;
   }
-  
+
   .service-title {
     opacity: 1 !important;
   }
-  
+
   /* Hide cursor entirely */
   .cursor-dot,
   .cursor-outline,
@@ -946,19 +948,17 @@
   }
 }
 
-
 /* ============================================
    PRINT STYLES
    ============================================ */
 
 @media print {
-  
   * {
     color: #000 !important;
     background: transparent !important;
     box-shadow: none !important;
   }
-  
+
   .global-nav,
   .cursor-dot,
   .cursor-outline,
@@ -971,49 +971,48 @@
   .nav-toggle {
     display: none !important;
   }
-  
+
   .hero {
     height: auto;
     min-height: auto;
     page-break-after: always;
   }
-  
+
   .hero__media {
     position: relative;
     transform: none;
     max-height: 300px;
   }
-  
+
   .services-section,
   .process,
   .contact,
   .noden-about {
     page-break-inside: avoid;
   }
-  
+
   .service-row,
   .step {
     page-break-inside: avoid;
   }
-  
+
   .grid,
   .steps {
     display: block;
   }
-  
+
   .p-card,
   .step {
     margin-bottom: 24px;
     page-break-inside: avoid;
   }
-  
+
   a[href]::after {
     content: " (" attr(href) ")";
     font-size: 0.8em;
     color: #666;
   }
 }
-
 
 /* ============================================
    DEBUG OVERLAY (Development only - remove for production)
