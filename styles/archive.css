@@ -23,6 +23,7 @@
   display: flex;
   justify-content: center;
   gap: clamp(20px, 4vw, 50px);
+  z-index: 9999;
 }
 
 .tab {
