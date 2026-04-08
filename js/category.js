@@ -49,7 +49,7 @@ function initCategoryAnimations() {
       const cat = item.getAttribute("data-cat");
       if (cat) {
         localStorage.setItem("activeFilter", cat);
-        window.location.href = `products.html?filter=${cat}`;
+        window.location.href = `/products/index.html?filter=${cat}`;
       }
     });
   });
