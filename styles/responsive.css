@@ -1065,32 +1065,4 @@ body {
   max-width: 100%;
 }
 
-/* ── FIX 1: Nav matrix margin causes horizontal blowout ── */
-@media (max-width: 900px) {
-  .link-matrix {
-    margin-left: 0 !important;
-  }
 
-  /* ── FIX 2: service-title min-width blows out mobile ── */
-  .service-title {
-    min-width: 0 !important;
-    white-space: normal;
-  }
-
-  /* ── FIX 3: Archive tabs clip on left ── */
-  .tabs-container {
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 4px;
-  }
-  .tabs-container::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* ── Safety: no fixed-width children escape the screen ── */
-  .service-row-inner {
-    overflow: hidden;
-  }
-}
