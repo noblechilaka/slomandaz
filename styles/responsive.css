@@ -248,7 +248,7 @@
     width: 180px;
     font-size: 9px;
   }
-  .hero-cta {
+  .hero-cta{
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -618,7 +618,7 @@
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.88);
     font-weight: 500;
-    padding: 20px 44px;
+    padding: 16px 33px;
   }
 
   /* ── CONTACT ── */
@@ -638,7 +638,10 @@
     font-size: 15px;
     padding: 10px 0;
   }
-
+.contact-cta{
+  padding: 16px 33px;
+  font-size: 11px;
+}
   /* ── PRODUCTS ── */
   .products-header {
     padding: 24px 20px;

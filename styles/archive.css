@@ -227,6 +227,10 @@
     height: 320px;
     margin-top: 0;
   }
+  .archive-cta{
+    padding: 16px 33px;
+    font-size: 11px;
+  }
 }
 
 

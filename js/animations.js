@@ -156,18 +156,21 @@ function initAboutReveal() {
 // ────────────────────────────────────────────────
 function initAboutPageAnimations() {
   // Check if we're on the about page by looking for about-specific elements
-  const isAboutPage = document.querySelector('.about-top') || 
-                     document.querySelector('.mosaic') || 
-                     document.querySelector('.savoir') || 
-                     document.querySelector('.details');
-  
+  const isAboutPage =
+    document.querySelector(".about-top") ||
+    document.querySelector(".mosaic") ||
+    document.querySelector(".savoir") ||
+    document.querySelector(".details");
+
   if (!isAboutPage) return; // Only run on about page
 
   // Apply inset style animations to containers in the about page
   // Targeting mosaic containers, wide image container, and detail image containers
-  const mosaicContainers = document.querySelectorAll('.tile');
-  const wideImageContainers = document.querySelectorAll('.wide-image');
-  const detailImageContainers = document.querySelectorAll('.small-photo, .details__bigPhoto');
+  const mosaicContainers = document.querySelectorAll(".tile");
+  const wideImageContainers = document.querySelectorAll(".wide-image");
+  const detailImageContainers = document.querySelectorAll(
+    ".small-photo, .details__bigPhoto"
+  );
 
   // Apply inset animations to mosaic containers
   mosaicContainers.forEach((container, i) => {
@@ -179,11 +182,11 @@ function initAboutPageAnimations() {
         trigger: container,
         start: "top 85%",
       },
-      delay: i * 0.1
+      delay: i * 0.1,
     });
-    
+
     // Add parallax effect to images inside mosaic containers
-    const img = container.querySelector('img');
+    const img = container.querySelector("img");
     if (img) {
       gsap.to(img, {
         yPercent: -8,
@@ -208,11 +211,11 @@ function initAboutPageAnimations() {
         trigger: container,
         start: "top 85%",
       },
-      delay: i * 0.1
+      delay: i * 0.1,
     });
-    
+
     // Add parallax effect to images inside wide image containers
-    const img = container.querySelector('img');
+    const img = container.querySelector("img");
     if (img) {
       gsap.to(img, {
         yPercent: -8,
@@ -237,11 +240,11 @@ function initAboutPageAnimations() {
         trigger: container,
         start: "top 85%",
       },
-      delay: i * 0.1
+      delay: i * 0.1,
     });
-    
+
     // Add parallax effect to images inside detail image containers
-    const img = container.querySelector('img');
+    const img = container.querySelector("img");
     if (img) {
       gsap.to(img, {
         yPercent: -8,
@@ -258,7 +261,7 @@ function initAboutPageAnimations() {
 
   // Apply different animations to other containers on the about page
   // For example, the savoir section wide image container
-  const savoirContainers = document.querySelectorAll('.savoir .wide-image');
+  const savoirContainers = document.querySelectorAll(".savoir .wide-image");
   savoirContainers.forEach((container, i) => {
     gsap.from(container, {
       rotation: 5,
@@ -270,11 +273,11 @@ function initAboutPageAnimations() {
         trigger: container,
         start: "top 85%",
       },
-      delay: 0.2
+      delay: 0.2,
     });
-    
+
     // Add parallax effect to images inside savoir containers
-    const img = container.querySelector('img');
+    const img = container.querySelector("img");
     if (img) {
       gsap.to(img, {
         yPercent: -8,
