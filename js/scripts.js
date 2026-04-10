@@ -155,3 +155,92 @@ Object.assign(window.ProductsLib, {
     });
   },
 });
+
+(function () {
+  const header = document.querySelector(".global-nav");
+  const menuToggle = document.getElementById("menuToggle");
+  const navLinks = document.getElementById("navLinks");
+  const SCROLL_THRESHOLD = 50; // px before collapsing
+
+  let isCollapsed = false;
+  let isMenuOpen = false;
+  let scrollTicking = false;
+
+  // ─── Handle Scroll ───
+  function onScroll() {
+    const scrollY = window.scrollY || window.pageYOffset;
+
+    if (scrollY > SCROLL_THRESHOLD && !isCollapsed) {
+      // Collapse the nav
+      isCollapsed = true;
+      isMenuOpen = false;
+      header.classList.add("nav-collapsed");
+      header.classList.remove("menu-open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    } else if (scrollY <= SCROLL_THRESHOLD && isCollapsed) {
+      // Expand the nav (back at top)
+      isCollapsed = false;
+      isMenuOpen = false;
+      header.classList.remove("nav-collapsed", "menu-open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollTicking) {
+        requestAnimationFrame(function () {
+          onScroll();
+          scrollTicking = false;
+        });
+        scrollTicking = true;
+      }
+    },
+    { passive: true }
+  );
+
+  // ─── Menu Toggle Click ───
+  menuToggle.addEventListener("click", function (e) {
+    e.stopPropagation();
+
+    if (!isCollapsed) return; // Only works when collapsed
+
+    isMenuOpen = !isMenuOpen;
+    header.classList.toggle("menu-open", isMenuOpen);
+    menuToggle.setAttribute("aria-expanded", String(isMenuOpen));
+  });
+
+  // ─── Close menu when clicking outside ───
+  document.addEventListener("click", function (e) {
+    if (isMenuOpen && !header.contains(e.target)) {
+      isMenuOpen = false;
+      header.classList.remove("menu-open");
+      menuToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // ─── Close menu when a navlink is clicked ───
+  navLinks.querySelectorAll(".navlink").forEach(function (link) {
+    link.addEventListener("click", function () {
+      if (isMenuOpen) {
+        isMenuOpen = false;
+        header.classList.remove("menu-open");
+        menuToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  });
+
+  // ─── Close menu on Escape key ───
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && isMenuOpen) {
+      isMenuOpen = false;
+      header.classList.remove("menu-open");
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.focus();
+    }
+  });
+
+  // ─── Initial state check (in case page loads already scrolled) ───
+  onScroll();
+})();
