@@ -424,20 +424,32 @@
     grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
-
-  .tile--d {
-    grid-column: 1 / -1;
-    height: 280px;
+  .tile,
+  .wide-image{
+    width: 100%;
   }
 
+  /* .tile--d {
+    grid-column: 1 / -1;
+    height: 280px;
+  } */
+.tile:nth-child(3){
+  display: none;
+}
+.small-photo:nth-child(3){
+  display: none;
+}
   .savoir__grid {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 0px;
   }
 
   .details__grid {
     grid-template-columns: 1fr;
     gap: 32px;
+  }
+  .details__right figure{
+    display: none;
   }
 
   .newsletter__grid {
