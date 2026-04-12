@@ -890,7 +890,9 @@ body.cursor-product-details .cursor-outline::before {
   opacity: 1;
   transform: rotate(45deg);
 }
-
+.cta:hover{
+  transform:translateX(4px);
+}
 .hero__tools {
   display: flex;
   gap: 18px;

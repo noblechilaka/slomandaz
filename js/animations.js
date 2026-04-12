@@ -468,7 +468,7 @@ function initContactReveal() {
   });
 
   // Button Micro-interaction
-  const cta = document.querySelector(".contact-cta");
+  const cta = document.querySelector(".contact-cta",);
   if (cta) {
     cta.addEventListener("mouseenter", () =>
       gsap.to(cta, { x: 8, duration: 0.4, ease: "power2.out" })
