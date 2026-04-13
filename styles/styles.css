@@ -695,6 +695,11 @@ body.scrolled .global-nav {
   gap: 12px;
   overflow: hidden;
 }
+.menu-toggle{
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
 
 /* ─── Navlink Base ─── */
 .link-col {
