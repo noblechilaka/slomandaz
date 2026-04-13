@@ -330,9 +330,6 @@ body.cursor-product-details .cursor-outline::before {
 ========================================= */
 
 #cartCount {
-  position: absolute;
-  top: 26px;
-  right: 50px;
   background: var(--copper);
   color: #fff;
   border-radius: 50%;
@@ -343,7 +340,8 @@ body.cursor-product-details .cursor-outline::before {
   justify-content: center;
   font-size: 10px;
   font-weight: bold;
-  z-index: 10;
+  
+  
 }
 
 #cartOverlay {
@@ -649,192 +647,121 @@ body.cursor-product-details .cursor-outline::before {
   padding: var(--pad-y) var(--pad-x);
   display: flex;
   justify-content: space-between;
-  align-items: start;
-  column-gap: 28px;
-  backdrop-filter: none;
-  box-shadow: none;
-  mix-blend-mode: difference;
-  transition: padding 0.3s ease;
+  align-items: center;
+  background: rgba(237, 230, 218, 0.95);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+}
+body.scrolled .global-nav {
+  background: rgba(237, 230, 218, 0.88);
 }
 
 /* ─── Mini Logo ─── */
 .mini-logo {
-  font-size: 12px;
-  letter-spacing: 0.02em;
-  font-weight: 500;
-  color: var(--bone);
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  font-family: var(--font-heading);
+  font-weight: 400;
+  color: var(--ink);
   white-space: nowrap;
 }
 .mini-logo sup {
-  font-size: 9px;
-  top: -0.45em;
+  font-size: 10px;
+  top: -0.5em;
   position: relative;
   margin-left: 1px;
 }
 
 /* ─── Link Matrix / Nav Container ─── */
 .link-matrix {
-  justify-content: start;
+  justify-content: center;
   padding-top: 2px;
   position: relative;
 }
 
-/* ─── Menu Toggle Button ─── */
-.menu-toggle {
-  display: flex;
-  align-items: center;
-  gap: 1px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  text-transform: capitalize;
-  font-family: inherit;
-  opacity: 0;
-  visibility: hidden;
-  height: 0;
-  overflow: hidden;
-  transition:
-    opacity 0.3s ease,
-    visibility 0.3s ease,
-    height 0.3s ease;
-  mix-blend-mode: normal;
-}
-
-.menu-toggle__label {
-  line-height: 1;
-}
-
-.menu-toggle__icon {
-  font-size: 18px;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  line-height: 1;
-}
-
-/* When nav is collapsed (scrolled), show the toggle */
-.nav-collapsed .menu-toggle {
-  opacity: 1;
-  visibility: visible;
-  height: auto;
-  overflow: visible;
-}
-
-/* Rotate arrow when menu is open */
-.menu-toggle[aria-expanded="true"] .menu-toggle__icon {
-  transform: rotate(180deg);
-}
 
 /* ─── Link Column ─── */
 .link-col {
   display: flex;
-  flex-direction: column;
-  gap: 5px;
+  flex-direction: row;
+  gap: 12px;
   overflow: hidden;
 }
 
 /* ─── Navlink Base ─── */
+.link-col {
+  gap: 16px;
+}
+
 .navlink {
   font-size: 12px;
   text-transform: capitalize;
   letter-spacing: -0.02em;
-  font-weight: 500;
-  color: white;
-  opacity: 1;
-  width: fit-content;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  color: var(--ink);
   position: relative;
-  display: flex;
-  align-items: baseline;
-  gap: 4px;
-  transform: translateY(0);
-  transition:
-    opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  transition-delay: calc(var(--i, 0) * 0.05s);
-  max-height: 40px;
+  display: block;
+  transition: color 0.3s ease;
+}
+.navlink:hover {
+  color: #666;
 }
 
 .navlink::after {
   content: "";
   position: absolute;
+  top: 50%;
   left: 0;
-  bottom: -4px;
-  width: 0%;
-  height: 0.5px;
-  background: rgba(255, 255, 255, 0.66);
-  transition: width 0.32s ease;
+  right: 0;
+  height: 1.5px;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: opacity 0.3s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .navlink:hover::after {
-  width: 100%;
-}
-.navlink::before {
-  content: "+";
-  font-size: 16px;
-  font-weight: 600;
-  opacity: 0.7;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  transform: rotate(0deg);
-  line-height: 1;
-  flex-shrink: 0;
-}
-.navlink:hover::before {
   opacity: 1;
-  transform: rotate(45deg);
+  transform: scaleX(1);
 }
-.navlink:hover {
+
+
+
+/* Navbar always visible - no collapsed states */
+
+
+.menu-toggle {
+  background: none !important;
+  border: none !important;
+  padding: 4px !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--ink);
+  opacity: 0.85;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.menu-toggle:hover {
   opacity: 1;
-}
-
-/* ─── Collapsed State: Hide navlinks ─── */
-.nav-collapsed .link-col .navlink {
-  opacity: 0;
-  transform: translateY(-15px);
-  max-height: 0;
-  pointer-events: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  /* Reverse stagger: last items disappear first */
-  transition-delay: calc((3 - var(--i, 0)) * 0.04s);
-}
-
-/* ─── Collapsed BUT menu is open: show navlinks staggered ─── */
-.nav-collapsed.menu-open .link-col .navlink {
-  opacity: 1;
-  transform: translateY(0);
-  max-height: 40px;
-  pointer-events: auto;
-  /* Forward stagger: first items appear first */
-  transition-delay: calc(var(--i, 0) * 0.07s + 0.05s);
-}
-
-/* ─── Link column gap adjustment when collapsed ─── */
-.nav-collapsed .link-col {
-  gap: 0;
-  transition: gap 0.3s ease;
-}
-.nav-collapsed.menu-open .link-col {
-  gap: 5px;
-  transition-delay: 0.05s;
-}
-
-/* ─── Tools ─── */
-.mini-logo,
-.navlink,
-.tool {
-  color: #fff;
+  color: #666;
 }
 
 .cart-button {
   background: none;
+  display: flex;
   border: none;
-  color: #fff;
   cursor: pointer;
-
   opacity: 0.9;
   transition: opacity 0.3s ease;
 }
@@ -890,8 +817,8 @@ body.cursor-product-details .cursor-outline::before {
   opacity: 1;
   transform: rotate(45deg);
 }
-.cta:hover{
-  transform:translateX(4px);
+.cta:hover {
+  transform: translateX(4px);
 }
 .hero__tools {
   display: flex;
@@ -1059,7 +986,7 @@ body.cursor-product-details .cursor-outline::before {
   display: flex;
   align-items: center;
   justify-content: center;
- 
+
   overflow: hidden;
 }
 

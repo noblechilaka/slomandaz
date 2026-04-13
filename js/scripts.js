@@ -156,91 +156,62 @@ Object.assign(window.ProductsLib, {
   },
 });
 
-(function () {
-  const header = document.querySelector(".global-nav");
-  const menuToggle = document.getElementById("menuToggle");
-  const navLinks = document.getElementById("navLinks");
-  const SCROLL_THRESHOLD = 50; // px before collapsing
-
-  let isCollapsed = false;
-  let isMenuOpen = false;
-  let scrollTicking = false;
-
-  // ─── Handle Scroll ───
-  function onScroll() {
-    const scrollY = window.scrollY || window.pageYOffset;
-
-    if (scrollY > SCROLL_THRESHOLD && !isCollapsed) {
-      // Collapse the nav
-      isCollapsed = true;
-      isMenuOpen = false;
-      header.classList.add("nav-collapsed");
-      header.classList.remove("menu-open");
-      menuToggle.setAttribute("aria-expanded", "false");
-    } else if (scrollY <= SCROLL_THRESHOLD && isCollapsed) {
-      // Expand the nav (back at top)
-      isCollapsed = false;
-      isMenuOpen = false;
-      header.classList.remove("nav-collapsed", "menu-open");
-      menuToggle.setAttribute("aria-expanded", "false");
+// Navbar scroll transparency
+let navScrollTicking = false;
+function handleNavScroll() {
+  const scrolled = window.scrollY > 0;
+  document.body.classList.toggle("scrolled", scrolled);
+  navScrollTicking = false;
+}
+window.addEventListener(
+  "scroll",
+  () => {
+    if (!navScrollTicking) {
+      requestAnimationFrame(handleNavScroll);
+      navScrollTicking = true;
     }
-  }
+  },
+  { passive: true }
+);
 
-  window.addEventListener(
-    "scroll",
-    function () {
-      if (!scrollTicking) {
-        requestAnimationFrame(function () {
-          onScroll();
-          scrollTicking = false;
-        });
-        scrollTicking = true;
-      }
-    },
-    { passive: true }
-  );
+// Mobile menu toggle
+(function() {
+  const header = document.querySelector('.global-nav');
+  const toggle = document.querySelector('.menu-toggle');
+  const linkCol = document.querySelector('.link-col');
+  let isOpen = false;
 
-  // ─── Menu Toggle Click ───
-  menuToggle.addEventListener("click", function (e) {
+  toggle?.addEventListener('click', (e) => {
     e.stopPropagation();
-
-    if (!isCollapsed) return; // Only works when collapsed
-
-    isMenuOpen = !isMenuOpen;
-    header.classList.toggle("menu-open", isMenuOpen);
-    menuToggle.setAttribute("aria-expanded", String(isMenuOpen));
+    isOpen = !isOpen;
+    header.classList.toggle('menu-open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen);
   });
 
-  // ─── Close menu when clicking outside ───
-  document.addEventListener("click", function (e) {
-    if (isMenuOpen && !header.contains(e.target)) {
-      isMenuOpen = false;
-      header.classList.remove("menu-open");
-      menuToggle.setAttribute("aria-expanded", "false");
+  document.addEventListener('click', (e) => {
+    if (isOpen && !header.contains(e.target)) {
+      isOpen = false;
+      header.classList.remove('menu-open');
+      toggle.setAttribute('aria-expanded', false);
     }
   });
 
-  // ─── Close menu when a navlink is clicked ───
-  navLinks.querySelectorAll(".navlink").forEach(function (link) {
-    link.addEventListener("click", function () {
-      if (isMenuOpen) {
-        isMenuOpen = false;
-        header.classList.remove("menu-open");
-        menuToggle.setAttribute("aria-expanded", "false");
-      }
+  linkCol?.querySelectorAll('.navlink').forEach(link => {
+    link.addEventListener('click', () => {
+      isOpen = false;
+      header.classList.remove('menu-open');
+      toggle.setAttribute('aria-expanded', false);
     });
   });
 
-  // ─── Close menu on Escape key ───
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && isMenuOpen) {
-      isMenuOpen = false;
-      header.classList.remove("menu-open");
-      menuToggle.setAttribute("aria-expanded", "false");
-      menuToggle.focus();
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen) {
+      isOpen = false;
+      header.classList.remove('menu-open');
+      toggle.setAttribute('aria-expanded', false);
+      toggle.focus();
     }
   });
-
-  // ─── Initial state check (in case page loads already scrolled) ───
-  onScroll();
 })();
+
+

@@ -1,1 +1,18 @@
-**Completed ✅**\n\n- ✅ Added `updateCategoryCounts()` to ProductsLib in js/scripts.js (updates category counts from products.json)\n- ✅ Added click handlers in js/category.js (sets localStorage.activeFilter + redirects to products.html)\n- ✅ Simplified index.html inline script (loads products, updates counts, inits category animations/clicks)\n- ✅ Exposed initCategoryAnimations globally\n\n**Test:**\nOpen index.html → click category (e.g. \"Sofas\") → redirects to products.html?filter=sofas with Sofas filtered.\nCounts now dynamic (Singles:2, Complimentary:2, Sofas:2, Fittings:4, Beds:0).
+# Navbar Enhancement TODO
+
+## Completed
+
+- [x] Created detailed edit plan
+
+## Completed
+
+- [x] Created detailed edit plan
+- [x] Edit styles.css - Applied frosted glass navbar, absolute dropdown, strikethrough hover on navlinks
+- [x] Edit styles/responsive.css - Mobile navbar adjustments
+
+## Pending
+
+1. **Test changes** - Run `open index.html` to verify glass effect, dropdown behavior, responsiveness, strikethrough.
+2. **attempt_completion**
+
+Progress: 3/5 ✅
