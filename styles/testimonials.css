@@ -174,7 +174,7 @@
   }
 
   .marquee-inner {
-    animation-duration: 35s; /* Slower on mobile */
+    animation-duration: 10s; /* Slower on mobile */
     gap: 16px;
   }
 
@@ -193,9 +193,9 @@
   }
 
   .marquee-inner {
-    flex-direction: column;
-    min-height: 200%;
-    animation-name: marqueeScrollVertical;
+    /* flex-direction: column;
+    min-height: 200%; */
+
   }
 
   @keyframes marqueeScrollVertical {
@@ -207,9 +207,7 @@
     }
   }
 
-  .marquee-reverse {
-    animation-direction: normal;
-  }
+  
 }
 
 /* Performance & Accessibility */

@@ -1180,9 +1180,9 @@ body {
   .global-nav.menu-open .link-col {
     display: flex !important;
     flex-direction: column;
-    position: absolute;
+    /* position: absolute;
     top: 100%;
-  transform: translateX(-60%);
+  transform: translateX(-60%); */
   margin-top: 10px;
     width: 280px;
     max-width: 90vw;
