@@ -2967,6 +2967,50 @@ textarea.underlineInput {
   padding: 0 auto;
 }
 
+/* Grid Wrapper for Products Loader */
+.grid-wrapper {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+/* Products Loader (same exact style as archive) */
+.products-page-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff; /* Match products page grid background */
+  z-index: 10;
+  opacity: 1;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  visibility: visible;
+}
+
+.products-page-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Exact same Newton gooey styles as archive */
+.products-page-loader .gooey {
+  position: relative;
+  width: 142px;
+  height: 40px;
+  margin: 0;
+  background: transparent;
+  filter: contrast(15);
+}
+
+.products-page-loader .dot, .products-page-loader .dots span {
+  background: var(--copper); /* Brand color */
+  filter: blur(4px);
+}
+
 /* Header */
 .products-header {
   padding-top: 36px;

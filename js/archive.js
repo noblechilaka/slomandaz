@@ -1,80 +1,81 @@
-// archive.js — Upgraded with Quick Add Overlay
-
 document.addEventListener("DOMContentLoaded", async () => {
+  // Get loader and grid elements
+  const archiveLoader = document.getElementById("archiveLoader");
+  const grid = document.getElementById("archiveGrid");
+
   try {
+    // Show loader immediately on page load
+    archiveLoader.classList.remove("hidden");
+
+    // Wait for ProductsLib to load
     if (!window.ProductsLib) await new Promise((r) => setTimeout(r, 200));
     await window.ProductsLib.loadProducts();
 
-    const grid = document.getElementById("archiveGrid");
-    if (!grid) {
-      console.warn("Archive grid element not found");
-      return;
-    }
-
     const products = window.ProductsLib.products;
-    console.log("Products loaded:", products); // Debug log
-    
+    console.log("Products loaded:", products);
+
     if (!products || products.length === 0) {
-      console.warn("No products found");
+      // Show empty state if no products
+      grid.innerHTML = `
+        <div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">
+          No products available at this time.
+        </div>
+      `;
+      archiveLoader.classList.add("hidden");
       return;
     }
 
-    // Group products
+    // Group products (your existing logic)
     const collections = {
       new: products.filter(
-        (p) => p.collections?.includes("new") || p.condition?.toLowerCase() === "new"
+        (p) =>
+          p.collections?.includes("new") || p.condition?.toLowerCase() === "new"
       ),
       best: products.filter(
         (p) =>
-          p.collections?.includes("bestseller") || p.condition?.toLowerCase() === "bestseller"
+          p.collections?.includes("bestseller") ||
+          p.condition?.toLowerCase() === "bestseller"
       ),
       sale: products.filter(
         (p) =>
-          p.collections?.includes("discounted") || p.condition?.toLowerCase() === "discounted"
+          p.collections?.includes("discounted") ||
+          p.condition?.toLowerCase() === "discounted"
       ),
     };
-    
-    console.log("Collections:", collections); // Debug log
 
-    // Update Tab Counts
-    const tabs = document.querySelectorAll(".tab");
-    tabs.forEach((tab) => {
+    // Update tab counts (your existing logic)
+    document.querySelectorAll(".tab").forEach((tab) => {
       const key = tab.dataset.tab;
-      const list = collections[key] || [];
-      console.log(`Tab ${key} count: ${list.length}`); // Debug log
+      const count = collections[key]?.length || 0;
       const sup = tab.querySelector("sup");
-      if (sup) sup.textContent = `(${list.length})`;
+      if (sup) sup.textContent = `(${count})`;
     });
 
-    // Render Grid Function
+    // Render grid (your existing logic)
     function renderGrid(key) {
       const items = collections[key] || collections.new;
-      console.log(`Rendering ${items.length} items for ${key} collection`); // Debug log
-
       grid.innerHTML = items
         .map(
           (product) => `
-      <article class="archive-item" data-id="${product.id}">
-        <div class="archive-item-img">
-          <img src="${product.image}" alt="${product.alt}" loading="lazy" />
-          
-          <!-- NEW BUTTON OVERLAY -->
-          <button class="archive-add-btn" onclick="quickAddToCart('${
-            product.id
-          }')">
-            Add to Bag
-          </button>
-        </div>
-        
-        <div class="archive-item-info">
-          <span class="archive-item-name">${product.name}</span>
-          <span class="archive-item-price">₦${product.price.toLocaleString()}</span>
-        </div>
-      </article>
-    `
+        <article class="archive-item" data-id="${product.id}">
+          <div class="archive-item-img">
+            <img src="${product.image}" alt="${product.alt}" loading="lazy" />
+            <button class="archive-add-btn" onclick="quickAddToCart('${
+              product.id
+            }')">
+              Add to Bag
+            </button>
+          </div>
+          <div class="archive-item-info">
+            <span class="archive-item-name">${product.name}</span>
+            <span class="archive-item-price">₦${product.price.toLocaleString()}</span>
+          </div>
+        </article>
+      `
         )
         .join("");
 
+      // GSAP animation
       gsap.fromTo(
         ".archive-item",
         { opacity: 0, y: 30 },
@@ -82,58 +83,39 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
     }
 
-    // Initial Render
+    // Initial render
     renderGrid("new");
 
-    // Tab Clicks
-    tabs.forEach((tab) => {
+    // Tab click handlers (your existing logic)
+    document.querySelectorAll(".tab").forEach((tab) => {
       tab.addEventListener("click", () => {
-        tabs.forEach((t) => t.classList.remove("active"));
+        document
+          .querySelectorAll(".tab")
+          .forEach((t) => t.classList.remove("active"));
         tab.classList.add("active");
         renderGrid(tab.dataset.tab);
       });
     });
 
-    // Fallback: Clicking the Card still redirects to products.html
-    grid.addEventListener("click", (e) => {
-      const item = e.target.closest(".archive-item");
-      if (item && !e.target.classList.contains("archive-add-btn")) {
-        const id = item.dataset.id;
-        window.location.href = `products.html?id=${id}`;
-      }
-    });
+    // Hide loader after successful render
+    archiveLoader.classList.add("hidden");
   } catch (error) {
-    console.error("Error in archive script:", error);
+    console.error("Archive load error:", error);
+    // Show error state
+    grid.innerHTML = `
+      <div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">
+        Failed to load products. Please refresh the page or try again later.
+      </div>
+    `;
+    archiveLoader.classList.add("hidden");
   }
-});
 
-// GLOBAL HELPER FOR THE BUTTON CLICK
-window.quickAddToCart = (id) => {
-  try {
-    // Find the full product data from our loaded library
-    const product = window.ProductsLib.products.find((p) => p.id == id);
-
-    if (product && window.addToCart) {
-      window.addToCart({
-        ...product,
-        selectedColor:
-          product.colors && product.colors[0] ? product.colors[0] : "Standard",
-      });
-
-      // Optional: Give visual feedback on the button itself
-      const clickedBtn = event.target;
-      const originalText = clickedBtn.innerText;
-      clickedBtn.innerText = "Added!";
-      clickedBtn.style.background = "var(--ink)";
-      clickedBtn.style.color = "#fff";
-
-      setTimeout(() => {
-        clickedBtn.innerText = originalText;
-        clickedBtn.style.background = "rgba(255, 255, 255, 0.95)";
-        clickedBtn.style.color = "var(--ink)";
-      }, 1500);
+  // Your existing grid click handler
+  grid.addEventListener("click", (e) => {
+    const item = e.target.closest(".archive-item");
+    if (item && !e.target.classList.contains("archive-add-btn")) {
+      const id = item.dataset.id;
+      window.location.href = `products.html?id=${id}`;
     }
-  } catch (error) {
-    console.error("Error in quick add to cart:", error);
-  }
-};
+  });
+});

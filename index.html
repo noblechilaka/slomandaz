@@ -127,31 +127,41 @@ arrow_drop_down
   ========================= -->
     <!-- Archive Section (replace existing) -->
     <section class="archive-section" id="archive">
-      <a href="/products/index.html" class="hero-cta cta">View Catalog</a>
-      <!-- Tabs -->
-      <div class="archive-header">
-        <span class="section-label">Products</span>
-        <div class="tabs-container">
-          <div class="tab active" data-tab="new">
-            New Arrivals <sup>(12)</sup>
-          </div>
-          <div class="tab" data-tab="best">Bestsellers <sup>(08)</sup></div>
-          <div class="tab" data-tab="sale">Discounted <sup>(04)</sup></div>
+  <a href="/products/index.html" class="hero-cta cta">View Catalog</a>
+  <!-- Tabs -->
+  <div class="archive-header">
+    <span class="section-label">Products</span>
+    <div class="tabs-container">
+      <div class="tab active" data-tab="new">New Arrivals <sup>(12)</sup></div>
+      <div class="tab" data-tab="best">Bestsellers <sup>(08)</sup></div>
+      <div class="tab" data-tab="sale">Discounted <sup>(04)</sup></div>
+    </div>
+  </div>
+
+  <!-- Grid Container with Loader (only covers grid area) -->
+  <div class="grid-wrapper">
+    <div class="archive-loader" id="archiveLoader">
+      <div class="gooey">
+        <span class="dot"></span>
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
       </div>
+    </div>
+    <div class="archive-grid" id="archiveGrid">
+      <!-- Products injected here by JS -->
+    </div>
+  </div>
 
-      <!-- Grid -->
-      <div class="archive-grid" id="archiveGrid">
-        <!-- Products injected here by JS -->
-      </div>
-
-      <!-- CTA -->
-      <div class="archive-footer">
-        <a href="products.html" class="archive-cta">
-          <span>+</span> View Catalogue
-        </a>
-      </div>
-    </section>
+  <!-- CTA -->
+  <div class="archive-footer">
+    <a href="products.html" class="archive-cta">
+      <span>+</span> View Catalogue
+    </a>
+  </div>
+</section>
     <section class="category-section">
       <!-- LEFT IMAGE CONTAINER -->
       <div class="fixed-frame frame-left">

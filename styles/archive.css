@@ -233,4 +233,133 @@
   }
 }
 
+  /* Gooey Loader */
+  .mosaic {
+    position: relative;
+  }
 
+  .gooey-loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.9);
+    
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .gooey-loader.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .gooey {
+    position: relative;
+    width: 142px;
+    height: 40px;
+    margin: -20px 0 0 -71px;
+    background: transparent;
+    filter: contrast(20);
+  }
+
+  .gooey .dot {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    top: 12px;
+    left: 15px;
+    
+    background: #000;
+    border-radius: 50%;
+    transform: translateX(0);
+    animation: dot 2.8s infinite;
+  }
+
+  .gooey .dots {
+    transform: translateX(0);
+    margin-top: 12px;
+    margin-left: 31px;
+    animation: dots 2.8s infinite;
+  }
+
+  .gooey .dots span {
+    display: block;
+    float: left;
+    width: 12px;
+    height: 12px;
+    margin-left: 16px;
+    background: #000;
+    border-radius: 50%;
+  }
+
+  @keyframes dot {
+    50% {
+      transform: translateX(96px);
+    }
+  }
+
+  @keyframes dots {
+    50% {
+      transform: translateX(-31px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .gooey {
+      width: 120px;
+      height: 34px;
+      margin: -17px 0 0 -60px;
+    }
+  }
+
+
+/* Grid Wrapper for Loader */
+.grid-wrapper {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Archive Loader (only covers grid area) */
+.archive-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bone-2); /* Match grid background */
+  z-index: 10;
+  opacity: 1;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  visibility: visible;
+}
+
+.archive-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Keep your existing Newton gooey styles, just update to use grid wrapper context */
+.archive-loader .gooey {
+  position: relative;
+  width: 142px;
+  height: 40px;
+  margin: 0;
+  background: transparent;
+  filter: contrast(15);
+}
+
+.archive-loader .dot, .archive-loader .dots span {
+  background: var(--copper); /* Brand color */
+  filter: blur(4px);
+}
+
+
+  
