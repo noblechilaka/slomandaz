@@ -131,8 +131,20 @@ arrow_drop_down
 
       <section class="mosaic">
         <div class="container">
-          <div class="grid" id="productGrid" aria-label="Products grid">
-            <!-- Products load here dynamically -->
+<div class="grid-wrapper">
+            <div id="productsLoader" class="archive-loader">
+              <div class="gooey">
+                <div class="dot"></div>
+                <div class="dots">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div>
+            <div class="grid" id="productGrid" aria-label="Products grid">
+              <!-- Products load here dynamically -->
+            </div>
           </div>
           <div class="learn-more-wrap">
             <div
@@ -200,67 +212,92 @@ arrow_drop_down
     <script src="/js/cursor.js"></script>
     <script src="/js/previews.js"></script>
     <script src="/js/products.js"></script>
-    <script>
-      // Initialize products page
+<script>
       document.addEventListener("DOMContentLoaded", async () => {
-        await window.ProductsLib.loadProducts();
+        // Get loader and grid elements
+        const productsLoader = document.getElementById("productsLoader");
         const grid = document.getElementById("productGrid");
 
-        if (!grid) return;
+        try {
+          // Show loader immediately on page load
+          productsLoader.classList.remove("hidden");
 
-        window.ProductsLib.generateGridProducts(grid, null, (globalIndex) =>
-          window.openProductModal?.(globalIndex)
-        );
+          // Wait for ProductsLib to load if needed
+          if (!window.ProductsLib) await new Promise((r) => setTimeout(r, 200));
+          await window.ProductsLib.loadProducts();
 
-        window.ProductsLib.initFilters(grid);
-        // initAnimations not defined, skip
-        window.ProductsLib.initFilters =
-          window.ProductsLib.initFilters || (() => {}); // noop
+          const products = window.ProductsLib.products;
+          console.log("Products loaded:", products);
 
-        // Deep link filter
-        const urlParams = new URLSearchParams(window.location.search);
-        const filterFromUrl = urlParams.get("filter");
-
-        if (filterFromUrl) {
-          window.setActiveFilter(decodeURIComponent(filterFromUrl));
-        } else {
-          const savedFilter = localStorage.getItem("activeFilter");
-          if (savedFilter && savedFilter.toLowerCase() !== "all") {
-            window.setActiveFilter(savedFilter);
-          } else {
-            window.setActiveFilter("all");
+          if (!products || products.length === 0) {
+            // Show empty state if no products
+            grid.innerHTML = `
+              <div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">
+                No products available at this time.
+              </div>
+            `;
+            productsLoader.classList.add("hidden");
+            return;
           }
-        }
 
-        // Check URL params for product ID to open modal
-        const productId = urlParams.get("id");
-        const selectedColor = urlParams.get("color");
-
-        if (productId) {
-          // Find the product by ID
-          const product = window.ProductsLib.products.find(
-            (p) => p.id == productId
+          // Generate grid products
+          window.ProductsLib.generateGridProducts(grid, null, (globalIndex) =>
+            window.openProductModal?.(globalIndex)
           );
 
-          if (product) {
-            // Find the index of the product in the array
-            const productIndex = window.ProductsLib.products.indexOf(product);
+          // Init filters
+          window.ProductsLib.initFilters(grid);
 
-            // Wait a moment for everything to load, then open the modal
-            setTimeout(() => {
-              window.openProductModal(productIndex);
+          // Deep link filter
+          const urlParams = new URLSearchParams(window.location.search);
+          const filterFromUrl = urlParams.get("filter");
 
-              // If a color was specified in the URL, select it
-              if (selectedColor) {
-                const colorChips = document.querySelectorAll(".color-chip");
-                colorChips.forEach((chip) => {
-                  if (chip.textContent.trim() === selectedColor) {
-                    chip.click(); // This will select the color
-                  }
-                });
-              }
-            }, 500);
+          if (filterFromUrl) {
+            window.setActiveFilter(decodeURIComponent(filterFromUrl));
+          } else {
+            const savedFilter = localStorage.getItem("activeFilter");
+            if (savedFilter && savedFilter.toLowerCase() !== "all") {
+              window.setActiveFilter(savedFilter);
+            } else {
+              window.setActiveFilter("all");
+            }
           }
+
+          // Check URL params for product ID to open modal
+          const productId = urlParams.get("id");
+          const selectedColorParam = urlParams.get("color");
+
+          if (productId) {
+            const product = products.find((p) => p.id == productId);
+            if (product) {
+              const productIndex = products.indexOf(product);
+              // Wait a bit more for render, then open modal
+              setTimeout(() => {
+                window.openProductModal(productIndex);
+                if (selectedColorParam) {
+                  const colorChips = document.querySelectorAll(".color-chip");
+                  colorChips.forEach((chip) => {
+                    if (chip.textContent.trim() === selectedColorParam) {
+                      chip.click();
+                    }
+                  });
+                }
+              }, 800);
+            }
+          }
+
+          // Hide loader after successful render
+          productsLoader.classList.add("hidden");
+
+        } catch (error) {
+          console.error("Products load error:", error);
+          // Show error state
+          grid.innerHTML = `
+            <div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">
+              Failed to load products. Please refresh the page or try again later.
+            </div>
+          `;
+          productsLoader.classList.add("hidden");
         }
       });
     </script>
