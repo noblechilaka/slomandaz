@@ -366,6 +366,7 @@
   .noden-about {
     padding: 30px var(--pad-x);
     margin-top: -30px; /* Reduce gap between category and about sections */
+    margin-bottom: 30px;
   }
 
   .noden-about__grid {
@@ -391,6 +392,7 @@
   .noden-about__img--3 {
     grid-column: 1 / -1;
     aspect-ratio: 3/2;
+    display: none;
   }
 
   .noden-about__goal {
