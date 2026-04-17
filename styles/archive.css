@@ -262,7 +262,7 @@
     height: 40px;
     margin: -20px 0 0 -71px;
     background: transparent;
-    filter: contrast(20);
+    filter: contrast(5);
   }
 
   .gooey .dot {
@@ -353,7 +353,7 @@
   height: 40px;
   margin: 0;
   background: transparent;
-  filter: contrast(15);
+ ;
 }
 
 .archive-loader .dot, .archive-loader .dots span {
