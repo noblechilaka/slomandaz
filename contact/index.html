@@ -13,7 +13,10 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
-     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
 
     <!-- GSAP (KEEP) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -26,34 +29,37 @@
     <!-- CURSOR ELEMENTS -->
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
-<header class="global-nav" role="banner" aria-label="Primary navigation">
-   <div class="mini-logo">Slomandaz <sup>®</sup></div>
+    <header class="global-nav" role="banner" aria-label="Primary navigation">
+      <div class="mini-logo">Slomandaz <sup>®</sup></div>
 
-  <!-- Mobile Menu Toggle (visible only on mobile) -->
+      <!-- Mobile Menu Toggle (visible only on mobile) -->
 
- <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="navLinks">
-      <span class="menu-toggle__label">menu</span>
-      <span class="material-symbols-outlined">
-arrow_drop_down
-</span>
-    </button>
-  <nav class="link-matrix" aria-label="Site links">
-    <div class="link-col" id="navLinks">
-      <a class="navlink" href="/index.html" style="--i: 0">Home</a>
-      <a href="/about/" class="navlink" style="--i: 1">About</a>
-      <a class="navlink" href="/products/" style="--i: 2">Catalog</a>
-      <a class="navlink" href="/contact/" style="--i: 3">Contact</a>
-    </div>
-  </nav>
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-expanded="false"
+        aria-controls="navLinks"
+      >
+        <span class="menu-toggle__label">menu</span>
+        <span class="material-symbols-outlined"> arrow_drop_down </span>
+      </button>
+      <nav class="link-matrix" aria-label="Site links">
+        <div class="link-col" id="navLinks">
+          <a class="navlink" href="/index.html" style="--i: 0">Home</a>
+          <a href="/about/" class="navlink" style="--i: 1">About</a>
+          <a class="navlink" href="/products/" style="--i: 2">Catalog</a>
+          <a class="navlink" href="/contact/" style="--i: 3">Contact</a>
+        </div>
+      </nav>
 
-  <!-- Tools -->
-  <div class="hero__tools" aria-label="Tools">
-    <button id="cartBtn" aria-label="Open Cart" class="cart-button">
-      <span class="material-symbols-outlined">shopping_bag</span>
-      <sup id="cartCount" class="cart-count-sup">0</sup>
-    </button>
-  </div>
-</header>
+      <!-- Tools -->
+      <div class="hero__tools" aria-label="Tools">
+        <button id="cartBtn" aria-label="Open Cart" class="cart-button">
+          <span class="material-symbols-outlined">shopping_bag</span>
+          <sup id="cartCount" class="cart-count-sup">0</sup>
+        </button>
+      </div>
+    </header>
     <!-- THE SLIDE-IN DRAWER (Fixed Position) - Moved outside header to avoid mix-blend-mode -->
     <div id="cartOverlay"></div>
     <div id="cartDrawer">
@@ -125,7 +131,9 @@ arrow_drop_down
               <div class="collage__grid">
                 <div class="contactTile contactTile--a" data-speed="1.05">
                   <div class="contactTile__label">PHONE</div>
-                  <div class="contactTile__value">+234 803 455 0910</div>
+                  <div class="contactTile__value">
+                    <a href="tel:+2348034550910">+234 803 455 0910</a>
+                  </div>
                   <div class="contactTile__meta">
                     Appointments by request • Private viewing only
                   </div>
@@ -133,7 +141,11 @@ arrow_drop_down
 
                 <div class="contactTile contactTile--b" data-speed="0.85">
                   <div class="contactTile__label">EMAIL</div>
-                  <div class="contactTile__value">chilakaanayo91@gmail.com</div>
+                  <div class="contactTile__value">
+                    <a href="mailto:chilakaanayo91@gmail.com"
+                      >chilakaanayo91@gmail.com</a
+                    >
+                  </div>
                   <div class="contactTile__meta">
                     Replies within 1–2 business days
                   </div>
@@ -142,11 +154,29 @@ arrow_drop_down
                 <div class="contactTile contactTile--c" data-speed="1.0">
                   <div class="contactTile__label">ADDRESS / HOURS</div>
                   <div class="contactTile__value">
-                    Victoria Island, Lagos • Nigeria
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&amp;query=Victoria+Island%2C+Lagos%2C+Nigeria"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >Victoria Island, Lagos • Nigeria</a
+                    >
                   </div>
                   <div class="contactTile__meta">
                     Mon–Sat · 10:00–18:00<br />
                     Closed Sundays & Public Holidays
+                  </div>
+
+                  <div class="map-embed">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13258.172906983835!2d3.4085874!3d6.430685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2a45e9472b%3A0x2f51e5d1b9b3f4a!2sVictoria%20Island%2C%20Lagos%2C%20Nigeria!5e0!3m2!1sen!2sus!4v1729123456789!5m2!1sen!2sus"
+                      width="100%"
+                      height="250"
+                      style="border: 0; border-radius: 8px"
+                      allowfullscreen=""
+                      loading="lazy"
+                      referrerpolicy="no-referrer-when-downgrade"
+                    >
+                    </iframe>
                   </div>
                 </div>
               </div>
