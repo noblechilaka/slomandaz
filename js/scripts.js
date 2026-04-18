@@ -1,31 +1,37 @@
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
 
-// Initialize Lenis smooth scroll
-// Check if device supports touch for mobile optimizations
-const isTouchDevice = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+// Minimal Lenis + ScrollTrigger controller
+(function initSmoothScrollController() {
+  const isTouchDevice =
+    "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
-const lenis = new Lenis({
-  duration: isTouchDevice ? 0.8 : 1.2, // Faster on mobile for better responsiveness
-  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  orientation: "vertical",
-  gestureOrientation: "vertical",
-  smoothWheel: true,
-  wheelMultiplier: 1,
-  touchMultiplier: isTouchDevice ? 3 : 2, // More sensitive on touch devices
-  lerp: isTouchDevice ? 0.08 : 0.1, // Lower lerp on mobile for smoother feel
-  smoothTouch: isTouchDevice, // Enable smooth touch on mobile
-  maxDuration: isTouchDevice ? 1.5 : 2,
-});
+  const lenis = new Lenis({
+    duration: isTouchDevice ? 0.8 : 1.1,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    smoothTouch: isTouchDevice,
+    touchMultiplier: isTouchDevice ? 2.2 : 1.6,
+    lerp: isTouchDevice ? 0.09 : 0.1,
+    autoRaf: false,
+  });
 
-// Integrate Lenis with GSAP ScrollTrigger
-lenis.on("scroll", ScrollTrigger.update);
+  window.lenis = lenis;
+  window.refreshSmoothScroll = () => ScrollTrigger.refresh();
 
-gsap.ticker.add((time) => {
-  lenis.raf(time * 1000);
-});
+  lenis.on("scroll", ScrollTrigger.update);
 
-gsap.ticker.lagSmoothing(0);
+  gsap.ticker.add((time) => {
+    lenis.raf(time * 1000);
+  });
+
+  gsap.ticker.lagSmoothing(0);
+
+  window.addEventListener("load", () => {
+    lenis.resize();
+    ScrollTrigger.refresh();
+  });
+})();
 
 // ── EXTEND PRODUCTS LIBRARY (Only add/update specific methods) ──
 window.ProductsLib = window.ProductsLib || { data: [], products: [] };
@@ -213,5 +219,3 @@ window.addEventListener(
     }
   });
 })();
-
-

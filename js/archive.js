@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       `;
       archiveLoader.classList.add("hidden");
+      afterArchiveRender();
       return;
     }
 
@@ -51,6 +52,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (sup) sup.textContent = `(${count})`;
     });
 
+    function afterArchiveRender() {
+      requestAnimationFrame(() => {
+        window.runArchiveReveal?.();
+        window.refreshSmoothScroll?.();
+      });
+    }
+
     // Render grid (your existing logic)
     function renderGrid(key) {
       const items = collections[key] || collections.new;
@@ -75,12 +83,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         )
         .join("");
 
-      // GSAP animation
-      gsap.fromTo(
-        ".archive-item",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, stagger: 0.08, duration: 0.7, ease: "power2.out" }
-      );
+      const images = grid.querySelectorAll("img");
+      images.forEach((img) => {
+        if (!img.complete) {
+          img.addEventListener("load", afterArchiveRender, { once: true });
+          img.addEventListener("error", afterArchiveRender, { once: true });
+        }
+      });
+
+      afterArchiveRender();
     }
 
     // Initial render
@@ -99,6 +110,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Hide loader after successful render
     archiveLoader.classList.add("hidden");
+    afterArchiveRender();
   } catch (error) {
     console.error("Archive load error:", error);
     // Show error state
