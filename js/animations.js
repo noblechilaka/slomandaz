@@ -22,6 +22,8 @@ function initAnimations() {
   initContactReveal();
   initFooterReveal();
   initAboutPageAnimations();
+  initContactPageAnimations();
+  initProductsPageAnimations();
   initArchiveReveal();
 }
 
@@ -82,6 +84,95 @@ function clipReveal(target, options = {}) {
   });
 }
 
+function textMaskReveal(targets, options = {}) {
+  const elements = gsap.utils.toArray(targets);
+  if (!elements.length) return null;
+
+  const {
+    trigger = elements[0],
+    start = "top 82%",
+    yPercent = 100,
+    stagger = 0.08,
+    duration = 1,
+    ease = "power3.out",
+    wrapperClass = "text-reveal-mask",
+  } = options;
+
+  const innerTargets = [];
+
+  elements.forEach((element) => {
+    if (!element) return;
+
+    let wrapper = element.parentElement;
+    if (!wrapper || !wrapper.classList.contains(wrapperClass)) {
+      wrapper = document.createElement("span");
+      wrapper.className = wrapperClass;
+      wrapper.style.display = "block";
+      wrapper.style.overflow = "hidden";
+      element.parentNode.insertBefore(wrapper, element);
+      wrapper.appendChild(element);
+    }
+
+    gsap.set(element, {
+      display: "block",
+      yPercent,
+      opacity: 1,
+      willChange: "transform",
+    });
+
+    innerTargets.push(element);
+  });
+
+  return gsap.to(innerTargets, {
+    yPercent: 0,
+    duration,
+    stagger,
+    ease,
+    clearProps: "transform,willChange",
+    scrollTrigger: {
+      trigger,
+      start,
+      once: true,
+    },
+  });
+}
+
+function initUnifiedTextAnimations() {
+  textMaskReveal(
+    [
+      ".noden-about__title",
+      ".services-headline",
+      ".process-title",
+      ".about-title",
+      ".products-title",
+      ".details__title",
+      ".savoir .h2",
+    ].join(", ")
+  );
+
+  revealTo(
+    [
+      ".section-label",
+      ".services-eyebrow",
+      ".noden-about__intro",
+      ".noden-about__goal",
+      ".about-intro",
+      ".mosaic__goal",
+      ".savoir .sub",
+      ".details__caption",
+      ".contact-lead",
+      ".kicker",
+      ".sigLine",
+      ".submitHelper",
+    ].join(", "),
+    {
+      y: 18,
+      duration: 0.8,
+      stagger: 0.08,
+    }
+  );
+}
+
 // 1. HERO
 function initHeroTimeline() {
   const hero = document.querySelector(".hero");
@@ -91,7 +182,7 @@ function initHeroTimeline() {
 
   gsap.set(
     [
-      ".hero__brand",
+     
       ".hero__descriptor",
       ".mini-logo",
       ".navlink",
@@ -106,7 +197,7 @@ function initHeroTimeline() {
     .to(".mini-logo", { opacity: 1, y: 0, duration: 0.9 }, 0.1)
     .to(".navlink", { opacity: 1, y: 0, duration: 0.9, stagger: 0.05 }, 0.25)
     .to(".hero__pager", { opacity: 1, y: 0, duration: 0.9 }, 0.35)
-    .to(".hero__brand", { opacity: 1, y: 0, duration: 1.1 }, 0.45)
+    
     .to(".hero__descriptor", { opacity: 1, y: 0, duration: 1 }, 0.6);
 
   gsap.to(".hero__media", {
@@ -119,7 +210,45 @@ function initHeroTimeline() {
       scrub: true,
     },
   });
+
+  //  textMaskReveal(".hero__brand", {
+  //    trigger: hero,
+
+  //    start: "top 95%",
+  //    duration: 1.05,
+  //    stagger: 0,
+  //  });
 }
+// Duplicate of textMaskReveal for hero brand
+function heroBrandMaskReveal(selector, options = {}) {
+  const elements = document.querySelectorAll(selector);
+  elements.forEach((el) => {
+    // Example GSAP mask reveal logic (adjust as per your original textMaskReveal)
+    gsap.fromTo(
+      el,
+      { yPercent: 100, opacity: 0 },
+      {
+        yPercent: 0,
+        opacity: 1,
+        duration: options.duration || 1.05,
+        ease: "power2.out",
+        stagger: options.stagger || 0,
+        delay: options.delay || 0,
+        // Add scrollTrigger if needed
+        // scrollTrigger: options.trigger || el,
+      }
+    );
+  });
+}
+
+// Usage for hero brand
+heroBrandMaskReveal(".hero__brand", {
+  duration: 1.05,
+  stagger: 0,
+  delay: 0.2,
+  // trigger: hero, // Uncomment and set if you want scroll-based reveal
+  // start: "top 95%",
+});
 
 // 2. CATEGORY PARALLAX
 function initCategoryAnimations() {
@@ -169,18 +298,16 @@ function initAboutReveal() {
   const section = document.querySelector(".noden-about");
   if (!section) return;
 
-  revealTo(".noden-about__title", {
+  textMaskReveal(".noden-about__title", {
     trigger: section,
     start: "top 75%",
-    y: 40,
-    duration: 1,
   });
 
   revealTo(".noden-about__intro", {
     trigger: section,
     start: "top 77%",
-    y: 24,
-    duration: 0.9,
+    y: 20,
+    duration: 0.85,
   });
 
   revealTo(".noden-about__img", {
@@ -194,8 +321,8 @@ function initAboutReveal() {
   revealTo(".noden-about__goal", {
     trigger: section,
     start: "top 82%",
-    y: 24,
-    duration: 0.9,
+    y: 20,
+    duration: 0.85,
   });
 }
 
@@ -240,12 +367,10 @@ function initServicesEntrance() {
     duration: 0.7,
   });
 
-  revealTo(".services-headline", {
+  textMaskReveal(".services-headline", {
     trigger: section,
     start: "top 72%",
-    y: 28,
-    duration: 0.9,
-    ease: "expo.out",
+    duration: 0.95,
   });
 
   revealTo(".service-row", {
@@ -334,13 +459,11 @@ function initContactReveal() {
   const form = document.querySelector(".contact-form");
   if (!section || !form) return;
 
-  revealTo(".contact-headline span", {
+  textMaskReveal(".contact-headline span", {
     trigger: section,
     start: "top 80%",
-    y: 80,
-    stagger: 0.15,
-    duration: 1.1,
-    ease: "expo.out",
+    stagger: 0.12,
+    duration: 0.95,
   });
 
   gsap.set(".form-line", { scaleX: 0, transformOrigin: "left center" });
@@ -400,18 +523,17 @@ function initAboutPageAnimations() {
 
   if (!isAboutPage) return;
 
-  revealTo(".about-title", {
+  textMaskReveal(".about-title", {
     trigger: ".about-top",
     start: "top 78%",
-    y: 36,
     duration: 1,
   });
 
   revealTo(".about-intro", {
     trigger: ".about-top",
     start: "top 80%",
-    y: 24,
-    duration: 0.9,
+    y: 20,
+    duration: 0.85,
   });
 
   document
@@ -442,28 +564,103 @@ function initAboutPageAnimations() {
   revealTo(".mosaic__goal", {
     trigger: ".mosaic",
     start: "top 82%",
-    y: 24,
-    duration: 0.9,
+    y: 20,
+    duration: 0.85,
   });
 
-  revealTo(".savoir .h2, .savoir .sub", {
+  textMaskReveal(".savoir .h2", {
     trigger: ".savoir",
     start: "top 80%",
-    y: 24,
-    stagger: 0.08,
-    duration: 0.9,
+    duration: 0.95,
   });
 
-  revealTo(".details__title, .details .sub, .details__caption", {
+  revealTo(".savoir .sub", {
+    trigger: ".savoir",
+    start: "top 82%",
+    y: 20,
+    stagger: 0.08,
+    duration: 0.85,
+  });
+
+  textMaskReveal(".details__title", {
     trigger: ".details",
     start: "top 82%",
-    y: 24,
+    duration: 0.95,
+  });
+
+  revealTo(".details .sub, .details__caption", {
+    trigger: ".details",
+    start: "top 84%",
+    y: 20,
     stagger: 0.08,
-    duration: 0.9,
+    duration: 0.85,
   });
 }
 
-// 11. ARCHIVE PRODUCTS
+// 11. CONTACT PAGE
+function initContactPageAnimations() {
+  const section = document.querySelector(".contact-hero");
+  if (!section) return;
+
+  revealTo(".kicker", {
+    trigger: section,
+    start: "top 82%",
+    y: 16,
+    duration: 0.7,
+  });
+
+  textMaskReveal(".contact-hero .about-title", {
+    trigger: section,
+    start: "top 80%",
+    duration: 1,
+  });
+
+  revealTo(".contact-hero .contact-lead, .sigLine", {
+    trigger: section,
+    start: "top 82%",
+    y: 20,
+    stagger: 0.08,
+    duration: 0.85,
+  });
+
+  revealTo(".contactTile", {
+    trigger: ".collage",
+    start: "top 82%",
+    y: 24,
+    stagger: 0.1,
+    duration: 0.85,
+  });
+
+  revealTo(".field, .consentRow, .submitRow", {
+    trigger: ".formWrap",
+    start: "top 82%",
+    y: 18,
+    stagger: 0.08,
+    duration: 0.8,
+  });
+}
+
+// 12. PRODUCTS PAGE
+function initProductsPageAnimations() {
+  const header = document.querySelector(".products-header");
+  if (!header) return;
+
+  textMaskReveal(".products-title", {
+    trigger: header,
+    start: "top 82%",
+    duration: 0.95,
+  });
+
+  revealTo(".filter", {
+    trigger: header,
+    start: "top 84%",
+    y: 16,
+    stagger: 0.06,
+    duration: 0.7,
+  });
+}
+
+// 13. ARCHIVE PRODUCTS
 function initArchiveReveal() {
   const grid = document.getElementById("archiveGrid");
   if (!grid) return;
