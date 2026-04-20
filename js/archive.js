@@ -111,6 +111,42 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Hide loader after successful render
     archiveLoader.classList.add("hidden");
     afterArchiveRender();
+
+    // Define quickAddToCart for archive add buttons (missing function)
+    window.quickAddToCart = (id) => {
+      if (!window.ProductsLib?.products?.length) {
+        console.error('Products not loaded for quick add');
+        return;
+      }
+
+      const product = window.ProductsLib.products.find(p => p.id === id);
+      if (!product) {
+        console.error('Product not found:', id);
+        return;
+      }
+
+      window.addToCart({
+        id: product.id,
+        name: product.name,
+        price: parseFloat(product.price),
+        image: product.image,
+        color: product.color || 'Standard',
+        condition: product.condition || 'New'
+      });
+
+      // Visual feedback - use event for btn access
+      const btn = document.querySelector(`button[onclick="quickAddToCart('${id}')"]`) || event?.target;
+      if (btn) {
+        const originalText = btn.textContent;
+        const originalBg = btn.style.background;
+        btn.style.background = '#4ade80';
+        btn.textContent = 'Added!';
+        setTimeout(() => {
+          btn.style.background = originalBg;
+          btn.textContent = originalText;
+        }, 1200);
+      }
+    };
   } catch (error) {
     console.error("Archive load error:", error);
     // Show error state
