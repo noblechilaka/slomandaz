@@ -298,10 +298,10 @@ function initAboutReveal() {
   const section = document.querySelector(".noden-about");
   if (!section) return;
 
-  textMaskReveal(".noden-about__title", {
-    trigger: section,
-    start: "top 75%",
-  });
+  // textMaskReveal(".noden-about__title", {
+  //   trigger: section,
+  //   start: "top 75%",
+  // });
 
   revealTo(".noden-about__intro", {
     trigger: section,

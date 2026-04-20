@@ -203,6 +203,19 @@
   .noden-about__grid {
     grid-template-columns: repeat(4, 1fr);
   }
+  .noden-about__intro{
+    margin-top: 50px;
+  }
+
+  .noden-about__img--1,
+.noden-about__img--2 {
+  width: 40vw;
+  height: auto;
+}
+.noden-about__img--3{
+  display: none;
+}
+
 
   /* Footer: keep 4-col */
   .footer-grid {
@@ -381,6 +394,7 @@
 
   .noden-about__intro {
     grid-column: 1 / -1;
+    margin-top: 50px;
     justify-self: start;
     max-width: 100%;
   }
@@ -388,6 +402,14 @@
   .noden-about__empty {
     display: none;
   }
+
+  .noden-about__img--1,
+.noden-about__img--2 {
+  aspect-ratio: 3/4;
+  width: 40vw;
+  height: auto;
+}
+
 
   .noden-about__img--3 {
     grid-column: 1 / -1;
