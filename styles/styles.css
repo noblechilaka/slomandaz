@@ -45,6 +45,14 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
 }
+/* Disable text selection and tap highlight globally */
+html, body {
+    /* Standard property */
+    user-select: none; 
+    /* Webkit browsers (Safari, Chrome, iOS) */
+    -webkit-user-select: none; 
+    -webkit-tap-highlight-color: transparent; 
+}
 
 a {
   color: inherit;
