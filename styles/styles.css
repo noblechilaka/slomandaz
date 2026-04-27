@@ -1,15 +1,4 @@
-/*
-  ==========================================================
-  NODEN® HERO — “Macro Materiality + Heritage Minimalism”
-  Key decisions:
-  - Full-bleed macro hero image
-  - Header segmented into utility zones with ultra-small uppercase text
-  - Oversized bottom-left wordmark
-  - Bottom-right descriptor block
-  - Far-right vertical pagination
-  - Below: products band with category tabs + product row
-  ==========================================================
-*/
+
 
 :root {
   --bone: #ede6da; /* bone-white wordmark */
@@ -920,10 +909,9 @@ body.scrolled .global-nav {
   bottom: 56px; */
   z-index: 3;
   width: 260px;
-  font-size: 10px;
-  line-height: 1.45;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-size: 13px;
+  line-height: 1.65;
+  
   color: rgba(255, 255, 255, 0.8);
   text-align: left; /* feels more “technical” than center */
 }
