@@ -227,6 +227,70 @@
    Key adaptation point
    ============================================ */
 
+   /* --- Fix for About Stats on Mobile --- */
+@media (max-width: 900px) {
+  
+  /* 1. Make the container visible and full width */
+  .noden-about__empty {
+    display: block !important; 
+    grid-column: 1 / -1 !important; /* Forces it to span the whole width */
+    width: 100%;
+    margin: 20px 0;
+  }
+
+  /* 2. Force Horizontal Layout */
+  .noden-about__stats {
+    display: flex !important;
+    flex-direction: row !important; /* Ensures horizontal */
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 30px 0;
+    border-top: 1px solid var(--divider);
+    border-bottom: 1px solid var(--divider);
+  }
+
+  /* 3. Style individual stat blocks */
+  .noden-about__stat {
+    flex: 1;
+    text-align: center;
+    border-right: 1px solid var(--divider);
+    padding: 0 10px;
+  }
+
+  .noden-about__stat:last-child {
+    border-right: none;
+  }
+
+  /* 4. Hide vertical dividers from desktop */
+  .noden-about__statDivider {
+    display: none !important;
+  }
+
+  /* 5. Size numbers for mobile horizontal fit */
+  .noden-about__statNum {
+    font-size: clamp(30px, 8vw, 48px) !important;
+    margin-bottom: 5px;
+  }
+
+  .noden-about__statLbl {
+    font-size: 8px !important;
+    letter-spacing: 0.1em;
+    max-width: 80px;
+    margin: 0 auto;
+  }
+
+  /* 6. Fix the "Pointless" Image Vibe */
+  .noden-about__img--1 {
+    grid-column: 1 / -1 !important; /* First image stays big and wide */
+    aspect-ratio: 16 / 9;
+    width: 100% !important;
+  }
+
+  .noden-about__img--2 {
+    grid-column: 1 / 2 !important; /* Second image sits small on left */
+    width: 100% !important;
+  }
+}
 @media (max-width: 768px) {
   /* ── TYPOGRAPHY & NAVBAR ── */
   :root {
@@ -406,16 +470,9 @@
     max-width: 100%;
   }
 
-  .noden-about__empty {
-    display: none;
-  }
 
-  .noden-about__img--1,
-  .noden-about__img--2 {
-    aspect-ratio: 3/4;
-    width: 40vw;
-    height: auto;
-  }
+
+  
 
   .noden-about__img--3 {
     grid-column: 1 / -1;
@@ -433,9 +490,7 @@
     aspect-ratio: 3/4;
   }
 
-  .noden-about__blank {
-    display: none;
-  }
+ 
 
   /* ── SERVICES ── */
   .services-section {
