@@ -1430,9 +1430,7 @@ body.scrolled .global-nav {
     grid-column: 2 / 3;
     grid-row: auto;
   }
-  .noden-about__empty {
-    display: none;
-  }
+ 
   .noden-about__img--3 {
     grid-column: 1 / -1;
     grid-row: auto;
