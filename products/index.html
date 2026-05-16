@@ -30,35 +30,69 @@
     <!-- CURSOR ELEMENTS -->
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
-    <header class="global-nav" role="banner" aria-label="Primary navigation">
-   <div class="mini-logo">Slomandaz <sup>®</sup></div>
+<header class="global-nav" role="banner">
+  <div class="mini-logo">Slomandaz <sup>®</sup></div>
 
-  <!-- Mobile Menu Toggle (visible only on mobile) -->
-
- <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="navLinks">
-      <span class="menu-toggle__label">menu</span>
-      <span class="material-symbols-outlined">
-arrow_drop_down
-</span>
-    </button>
-
-  <nav class="link-matrix" aria-label="Site links">
-    <div class="link-col" id="navLinks">
-      <a class="navlink" href="/index.html" style="--i: 0">Home</a>
-      <a href="/about/" class="navlink" style="--i: 1">About</a>
-      <a class="navlink" href="/products/" style="--i: 2">Catalog</a>
-      <a class="navlink" href="/contact/" style="--i: 3">Contact</a>
+  <nav class="link-matrix" aria-label="Desktop navigation">
+    <div class="link-col">
+      <a class="navlink" href="/index.html">Home</a>
+      <a class="navlink" href="/about/">About</a>
+      <a class="navlink" href="/products/">Catalog</a>
+      <a class="navlink" href="/contact/">Contact</a>
     </div>
   </nav>
 
-  <!-- Tools -->
-  <div class="hero__tools" aria-label="Tools">
-    <button id="cartBtn" aria-label="Open Cart" class="cart-button">
+  <div class="hero__tools">
+    <button id="cartBtn" class="cart-button">
       <span class="material-symbols-outlined">shopping_bag</span>
       <sup id="cartCount" class="cart-count-sup">0</sup>
     </button>
+    
+    <!-- Drag Handle Toggle -->
+    <button id="menuToggle" class="menu-toggle" aria-label="Open Menu">
+      <span class="material-symbols-outlined">
+menu
+</span>
+    </button>
   </div>
 </header>
+
+<!-- THE HARDCORE DRAWER -->
+<div id="mobileDrawer" class="mobile-drawer">
+  <div class="drawer-bg"></div>
+  
+  <!-- Close Button Inside Drawer -->
+  <button id="drawerClose" class="drawer-close-btn" aria-label="Close Menu">
+    <span class="material-symbols-outlined">close</span>
+  </button>
+
+  <div class="drawer-inner">
+    <div class="drawer-grid">
+      <div class="drawer-left">
+        <span class="drawer-label">Navigation</span>
+        <nav class="drawer-links">
+          <a href="/index.html" class="d-link"><span>01</span> Home</a>
+          <a href="/about/" class="d-link"><span>02</span> About</a>
+          <a href="/products/" class="d-link"><span>03</span> Catalog</a>
+          <a href="/contact/" class="d-link"><span>04</span> Contact</a>
+        </nav>
+      </div>
+      
+      <div class="drawer-right">
+        <div class="drawer-info">
+          <span class="drawer-label">Socials</span>
+          <a href="#">Instagram</a>
+          <a href="#">Pinterest</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="drawer-footer">
+      <div class="footer-logo">Slomandaz <sup>®</sup></div>
+      <div class="footer-copy">©2026 Design for Living.</div>
+    </div>
+  </div>
+</div>
 
     <!-- THE SLIDE-IN DRAWER (Fixed Position) - Moved outside header to avoid mix-blend-mode -->
     <div id="cartOverlay"></div>

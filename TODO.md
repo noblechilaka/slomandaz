@@ -1,18 +1,16 @@
-# Navbar Enhancement TODO
+# Mobile Menu Replacement TODO
 
-## Completed
+## Plan Summary
+Replace entire mobile menu system with new drawer-based implementation.
 
-- [x] Created detailed edit plan
+## Steps (0/7 complete)
 
-## Completed
+### 1. [ ] Create TODO.md ✅
+### 2. [ ] Update index.html (header toggle + add mobile-drawer HTML)
+### 3. [ ] Update js/scripts.js (remove old IIFE + add new drawer JS)
+### 4. [ ] Update styles/responsive.css (remove old CSS + add new drawer styles)
+### 5. [ ] Cleanup styles/styles.css (remove conflicting .menu-toggle)
+### 6. [ ] Test mobile functionality
+### 7. [ ] Mark complete & cleanup TODO.md
 
-- [x] Created detailed edit plan
-- [x] Edit styles.css - Applied frosted glass navbar, absolute dropdown, strikethrough hover on navlinks
-- [x] Edit styles/responsive.css - Mobile navbar adjustments
-
-## Pending
-
-1. **Test changes** - Run `open index.html` to verify glass effect, dropdown behavior, responsiveness, strikethrough.
-2. **attempt_completion**
-
-Progress: 3/5 ✅
+**Next Step:** Update index.html
