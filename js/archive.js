@@ -1,50 +1,72 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  // Get loader and grid elements
   const archiveLoader = document.getElementById("archiveLoader");
   const grid = document.getElementById("archiveGrid");
 
   try {
-    // Show loader immediately on page load
     archiveLoader.classList.remove("hidden");
 
-    // Wait for ProductsLib to load
-    if (!window.ProductsLib) await new Promise((r) => setTimeout(r, 200));
     await window.ProductsLib.loadProducts();
-
     const products = window.ProductsLib.products;
-    console.log("Products loaded:", products);
+
+    console.log("📦 Archive products loaded:", products.length);
 
     if (!products || products.length === 0) {
-      // Show empty state if no products
       grid.innerHTML = `
         <div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">
           No products available at this time.
         </div>
       `;
       archiveLoader.classList.add("hidden");
-      afterArchiveRender();
       return;
     }
 
-    // Group products (your existing logic)
-    const collections = {
-      new: products.filter(
-        (p) =>
-          p.collections?.includes("new") || p.condition?.toLowerCase() === "new"
-      ),
-      best: products.filter(
-        (p) =>
-          p.collections?.includes("bestseller") ||
-          p.condition?.toLowerCase() === "bestseller"
-      ),
-      sale: products.filter(
-        (p) =>
-          p.collections?.includes("discounted") ||
-          p.condition?.toLowerCase() === "discounted"
-      ),
+    // SMART FILTERING with AUTO-ASSIGNMENT
+    const filterByTag = (tag) => {
+      return products.filter((p) => {
+        // Has collections array with the tag
+        if (p.collections?.includes(tag)) return true;
+        // Has condition field matching the tag
+        if (p.condition === tag) return true;
+        // FALLBACK: If product has NO collections at all, assign to "new"
+        if (tag === "new" && (!p.collections || p.collections.length === 0)) {
+          console.log(
+            `📌 Auto-assigned "${p.name}" to New Arrivals (no collections)`
+          );
+          return true;
+        }
+        return false;
+      });
     };
 
-    // Update tab counts (your existing logic)
+    const collections = {
+      new: filterByTag("new"),
+      best: filterByTag("bestseller"),
+      sale: filterByTag("discounted"),
+    };
+
+    console.log("📊 Collections:", {
+      new: collections.new.length,
+      best: collections.best.length,
+      sale: collections.sale.length,
+      untagged: products.filter(
+        (p) => !p.collections || p.collections.length === 0
+      ).length,
+    });
+
+    // EMERGENCY FALLBACK: If all tabs are empty, distribute products
+    if (
+      collections.new.length === 0 &&
+      collections.best.length === 0 &&
+      collections.sale.length === 0
+    ) {
+      console.warn("⚠️ No tagged products - distributing all products evenly");
+      // Put everything in "new" as default
+      collections.new = products;
+      collections.best = []; // Keep these empty to show they need tagging
+      collections.sale = [];
+    }
+
+    // Update tab counts
     document.querySelectorAll(".tab").forEach((tab) => {
       const key = tab.dataset.tab;
       const count = collections[key]?.length || 0;
@@ -59,9 +81,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
-    // Render grid (your existing logic)
     function renderGrid(key) {
-      const items = collections[key] || collections.new;
+      const items = collections[key] || [];
+
+      if (items.length === 0) {
+        grid.innerHTML = `
+          <div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">
+            <p style="font-size: 1.1em; margin-bottom: 10px;">No products in this collection yet.</p>
+            <p style="font-size: 0.9em; opacity: 0.7;">Check back soon or browse other categories.</p>
+          </div>
+        `;
+        afterArchiveRender();
+        return;
+      }
+
       grid.innerHTML = items
         .map(
           (product) => `
@@ -84,20 +117,35 @@ document.addEventListener("DOMContentLoaded", async () => {
         .join("");
 
       const images = grid.querySelectorAll("img");
+      let loadedCount = 0;
+      const totalImages = images.length;
+
+      if (totalImages === 0) {
+        afterArchiveRender();
+        return;
+      }
+
       images.forEach((img) => {
-        if (!img.complete) {
-          img.addEventListener("load", afterArchiveRender, { once: true });
-          img.addEventListener("error", afterArchiveRender, { once: true });
+        const checkLoaded = () => {
+          loadedCount++;
+          if (loadedCount === totalImages) {
+            afterArchiveRender();
+          }
+        };
+
+        if (img.complete) {
+          checkLoaded();
+        } else {
+          img.addEventListener("load", checkLoaded, { once: true });
+          img.addEventListener("error", checkLoaded, { once: true });
         }
       });
-
-      afterArchiveRender();
     }
 
     // Initial render
     renderGrid("new");
 
-    // Tab click handlers (your existing logic)
+    // Tab switching
     document.querySelectorAll(".tab").forEach((tab) => {
       tab.addEventListener("click", () => {
         document
@@ -108,39 +156,32 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
 
-    // Hide loader after successful render
     archiveLoader.classList.add("hidden");
-    afterArchiveRender();
 
-    // Define quickAddToCart for archive add buttons (missing function)
+    // Quick add to cart
     window.quickAddToCart = (id) => {
-      if (!window.ProductsLib?.products?.length) {
-        console.error('Products not loaded for quick add');
+      const product = window.ProductsLib.products.find((p) => p.id === id);
+      if (!product) {
+        console.error("Product not found:", id);
         return;
       }
 
-      const product = window.ProductsLib.products.find(p => p.id === id);
-      if (!product) {
-        console.error('Product not found:', id);
+      if (typeof window.addToCart !== "function") {
+        console.error("addToCart function not found - is cart.js loaded?");
         return;
       }
 
       window.addToCart({
-        id: product.id,
-        name: product.name,
-        price: parseFloat(product.price),
-        image: product.image,
-        color: product.color || 'Standard',
-        condition: product.condition || 'New'
+        ...product,
+        selectedColor: product.colors?.[0] || "Standard",
       });
 
-      // Visual feedback - use event for btn access
-      const btn = document.querySelector(`button[onclick="quickAddToCart('${id}')"]`) || event?.target;
+      const btn = event?.target;
       if (btn) {
         const originalText = btn.textContent;
         const originalBg = btn.style.background;
-        btn.style.background = '#4ade80';
-        btn.textContent = 'Added!';
+        btn.style.background = "#4ade80";
+        btn.textContent = "Added!";
         setTimeout(() => {
           btn.style.background = originalBg;
           btn.textContent = originalText;
@@ -148,22 +189,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     };
   } catch (error) {
-    console.error("Archive load error:", error);
-    // Show error state
+    console.error("❌ Archive load error:", error);
     grid.innerHTML = `
       <div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">
-        Failed to load products. Please refresh the page or try again later.
+        Failed to load products. Please refresh.
+        <br><small style="opacity: 0.6;">${error.message}</small>
       </div>
     `;
     archiveLoader.classList.add("hidden");
   }
 
-  // Your existing grid click handler
+  // Click handler for product cards
   grid.addEventListener("click", (e) => {
     const item = e.target.closest(".archive-item");
     if (item && !e.target.classList.contains("archive-add-btn")) {
       const id = item.dataset.id;
-      window.location.href = `products.html?id=${id}`;
+      window.location.href = `/products/index.html?id=${id}`;
     }
   });
 });

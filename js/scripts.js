@@ -33,107 +33,137 @@ gsap.registerPlugin(ScrollTrigger);
   });
 })();
 
-// ── EXTEND PRODUCTS LIBRARY (Only add/update specific methods) ──
-window.ProductsLib = window.ProductsLib || { data: [], products: [] };
+// ── PRODUCTS LIBRARY (Single Source of Truth) ──
+window.ProductsLib = {
+  data: [],
+  products: [],
+  loaded: false,
+  loadPromise: null,
 
-// Add or update specific methods without replacing the whole object
-Object.assign(window.ProductsLib, {
   async loadProducts() {
-    if (this.data.length > 0) return this.data;
+    // Return existing promise if already loading
+    if (this.loadPromise) return this.loadPromise;
+
+    // Return cached data if already loaded
+    if (this.loaded && this.data.length > 0) {
+      console.log("Using cached products:", this.data.length);
+      return this.data;
+    }
+
+    // Create new load promise
+    this.loadPromise = this._fetchProducts();
+    return this.loadPromise;
+  },
+
+  async _fetchProducts() {
     try {
-      // Load products from Contentful instead of local JSON
-      const SPACE = "msu81v2q0bom";
-      const TOKEN = "PtLVHaTuvyaqqizfEjyaYtio7Mj-fwzkGpZH60pbE9Q";
+      const OPEN_SHEET_PRODUCTS_URL =
+        "https://opensheet.elk.sh/1V_aY7C02cGRBpoq51k1KPIWoyvCf2MNKgiy4dz4XdSQ/Products";
 
-      // Include parameter fetches linked assets (like images) in the same request
-      const url = `https://cdn.contentful.com/spaces/${SPACE}/environments/master/entries?access_token=${TOKEN}&content_type=product&include=10`;
+      console.log("🔄 Fetching from OpenSheet...");
+      const res = await fetch(OPEN_SHEET_PRODUCTS_URL);
 
-      const res = await fetch(url);
-      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
 
-      // Transform Contentful response → Your Exact JSON Format
-      const productsFromContentful = data.items.map((item) => {
-        const f = item.fields;
+      const productsFromSheet = await res.json();
+      console.log("📦 Raw OpenSheet data:", productsFromSheet?.length, "rows");
 
-        // Handle Image URL with multiple fallback options
-        let imageUrl = "";
-
-        // Option 1: Standard Contentful asset structure (with includes)
-        if (
-          f.image &&
-          f.image.fields &&
-          f.image.fields.file &&
-          f.image.fields.file.url
-        ) {
-          imageUrl = `https:${f.image.fields.file.url}`;
+      const normalizeStringArray = (v) => {
+        if (!v) return [];
+        if (Array.isArray(v))
+          return v.map((x) => String(x).trim()).filter(Boolean);
+        if (typeof v === "string") {
+          return v
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean);
         }
-        // Option 2: Check if image is an array (multiple assets)
-        else if (
-          f.image &&
-          Array.isArray(f.image) &&
-          f.image[0] &&
-          f.image[0].fields &&
-          f.image[0].fields.file &&
-          f.image[0].fields.file.url
-        ) {
-          imageUrl = `https:${f.image[0].fields.file.url}`;
-        }
-        // Option 3: Check if image has a direct URL property (if stored differently)
-        else if (f.image && typeof f.image === "object" && f.image.url) {
-          imageUrl = f.image.url.startsWith("http")
-            ? f.image.url
-            : `https:${f.image.url}`;
-        }
-        // Option 4: Direct URL as string (less common but possible)
-        else if (typeof f.image === "string") {
-          imageUrl = f.image.startsWith("http") ? f.image : `https:${f.image}`;
-        }
+        return [String(v)];
+      };
+
+      // Map OpenSheet rows
+      const products = (
+        Array.isArray(productsFromSheet) ? productsFromSheet : []
+      ).map((row, idx) => {
+        const rawPrice = row.price ?? row.Price ?? 0;
+        const priceNumber =
+          Number(String(rawPrice).replace(/[^0-9.]/g, "")) || 0;
+
+        const inStockRaw = row.inStock ?? row.InStock ?? true;
+        const inStock =
+          typeof inStockRaw === "boolean"
+            ? inStockRaw
+            : String(inStockRaw).toUpperCase() === "TRUE";
+
+        const imageUrl = row.image ?? row["image "] ?? row.imageUrl ?? "";
+        const colorsValue = row.colors ?? row.Colors ?? "";
+        const colors = normalizeStringArray(colorsValue);
+
+        const collectionsRaw =
+          row.collections ??
+          row.collection ??
+          row.Collections ??
+          row.Collection ??
+          "";
+        const collections = normalizeStringArray(collectionsRaw);
 
         return {
-          id: item.sys.id, // Contentful auto-ID
-          name: f.name || "",
-          slug: f.slug || "",
-          price: f.price || 0,
-          currency: f.currency || "NGN",
+          id: row.id || row.ID || String(idx + 1),
+          name: row.name || row.Name || "",
+          slug: row.slug || row.Slug || "",
+          price: priceNumber,
+          currency: row.currency || row.Currency || "NGN",
           image: imageUrl,
-          alt: f.alt || f.name || "",
-          category: f.category || "",
-          condition: f.condition || "new",
-          span: f.span || "span-1",
-          height: f.height || "h-380",
-          size: f.size || "",
-          dimensions: f.dimensions || "",
-          colors: Array.isArray(f.colors)
-            ? f.colors
-            : f.colors
-            ? [f.colors]
-            : [],
-          description: f.description || "",
-          inStock: f.inStock ?? true,
-          stockCount: f.stockCount ?? 0,
+          alt: row.alt || row.Alt || row.name || "",
+          category: (row.category || row.Category || "").toLowerCase(),
+          condition: (row.condition || row.Condition || "new").toLowerCase(),
+          span: row.span || row.Span || "span-1",
+          height: row.height || row.Height || "h-380",
+          size: row.size || row.Size || "",
+          dimensions: row.dimensions || row.Dimensions || "",
+          colors,
+          description: row.description || row.Description || "",
+          inStock,
+          stockCount:
+            Number(row.stockCount ?? row.StockCount ?? row.stock ?? 0) || 0,
+          collections: collections.map((c) => c.toLowerCase()), // Normalize to lowercase
         };
       });
 
-      this.data = productsFromContentful;
-      // Also update the products property that products.js uses
-      this.products = this.data;
-      window.allProducts = this.data;
-      console.log("Products loaded in scripts.js:", this.data); // Debug log
+      // Filter blank rows
+      const cleanedProducts = products.filter(
+        (p) => String(p.name ?? "").trim() !== ""
+      );
+
+      console.log("✅ Products cleaned:", cleanedProducts.length);
+
+      // Update all references
+      this.data = cleanedProducts;
+      this.products = cleanedProducts;
+      window.allProducts = cleanedProducts;
+      this.loaded = true;
+
+      console.log("✅ Products loaded globally:", this.data.length);
 
       return this.data;
     } catch (err) {
-      console.error("Failed to load products:", err);
+      console.error("❌ Failed to load products:", err);
+      this.loadPromise = null; // Reset promise on error
       return [];
     }
   },
 
-  updateCategoryCounts: function () {
-    console.log("Updating category counts"); // Debug log
-    // Use the products array that's consistent with the rest of the app
-    const productsToCount = window.allProducts || this.products || this.data;
-    console.log("Data used for counting:", productsToCount); // Debug log
+  updateCategoryCounts() {
+    console.log("🔢 Updating category counts...");
+    const productsToCount = this.products;
 
-    // Map data-cat to category (case-insensitive match)
+    if (!productsToCount.length) {
+      console.warn("⚠️ No products available for counting");
+      return;
+    }
+
     const catMap = {
       singles: "singles",
       complimentary: "complimentary",
@@ -143,24 +173,21 @@ Object.assign(window.ProductsLib, {
     };
 
     Object.entries(catMap).forEach(([dataCat, catLower]) => {
-      console.log(`Processing category: ${dataCat}`); // Debug log
       const count = productsToCount.filter(
-        (p) => p.category?.toLowerCase() === catLower
+        (p) => p.category === catLower
       ).length;
-      console.log(`Count for ${dataCat}: ${count}`); // Debug log
 
       const countEl = document.querySelector(
         `[data-cat="${dataCat}"] .category-count`
       );
-      console.log(`Element for ${dataCat}:`, countEl); // Debug log
 
       if (countEl) {
         countEl.textContent = `(${count})`;
-        console.log(`${dataCat} category count: ${count}`); // Debug log
+        console.log(`✅ ${dataCat}: ${count}`);
       }
     });
   },
-});
+};
 
 // Navbar scroll transparency
 let navScrollTicking = false;
@@ -180,13 +207,11 @@ window.addEventListener(
   { passive: true }
 );
 
-// 5. THE HARDCORE MENU (GSAP + LENIS INTEGRATION)
-// We wrap this in a block to keep variables clean and avoid conflicts
+// MENU
 {
   const select = (s) => document.querySelector(s);
   const selectAll = (s) => document.querySelectorAll(s);
 
-  // Define Elements
   const burger = select("#menuToggle");
   const closeBtn = document.querySelector("#drawerClose");
   const drawer = select("#mobileDrawer");
@@ -196,9 +221,6 @@ window.addEventListener(
     ".drawer-label, .drawer-info, .drawer-footer"
   );
 
-  let menuOpen = false;
-
-  // Create the Animation Timeline
   const menuTimeline = gsap.timeline({ paused: true, reversed: true });
 
   menuTimeline
@@ -233,26 +255,15 @@ window.addEventListener(
     )
     .from(
       closeBtn,
-      {
-        y: 20,
-        opacity: 0,
-
-        duration: 0.1,
-        ease: "power2.out",
-      },
+      { y: 20, opacity: 0, duration: 0.1, ease: "power2.out" },
       "-=0.6"
     )
     .to(
       closeBtn,
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.1,
-        ease: "power2.out",
-      },
+      { y: 0, opacity: 1, duration: 0.1, ease: "power2.out" },
       "-=0.6"
     );
-  // Toggle Function
+
   const openMenu = () => {
     menuTimeline.play();
     window.lenis?.stop();
@@ -267,17 +278,13 @@ window.addEventListener(
 
   burger?.addEventListener("click", openMenu);
   closeBtn?.addEventListener("click", closeMenu);
-
-  // Close when clicking a link
   dLinks.forEach((link) => link.addEventListener("click", closeMenu));
 
-  // Close on Escape key
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && menuOpen) toggleMenu();
+    if (e.key === "Escape") closeMenu();
   });
 }
 
-// 6. REFRESH ON LOAD
 window.addEventListener("load", () => {
   ScrollTrigger.refresh();
 });

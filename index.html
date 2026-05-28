@@ -692,20 +692,28 @@ menu
     <script src="js/cursor.js"></script>
     <script src="js/previews.js"></script>
     <script src="js/testimonials.js"></script>
-    <script>
-      // Category sync for index.html - simplified
-      document.addEventListener("DOMContentLoaded", async () => {
-
-        // Load products and update counts
-        await window.ProductsLib.loadProducts();
-        window.ProductsLib.updateCategoryCounts();
-        
-        // Init category section (defined in category.js)
-        if (window.initCategorySection) {
-          window.initCategorySection();
-        }
-      });
-    </script>
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      console.log("🚀 Index page initializing...");
+      
+      // Load products first
+      await window.ProductsLib.loadProducts();
+      
+      // Update category counts
+      window.ProductsLib.updateCategoryCounts();
+      
+      // Init category section
+      if (window.initCategorySection) {
+        window.initCategorySection();
+      }
+      
+      console.log("✅ Index page ready");
+    } catch (error) {
+      console.error("❌ Index init error:", error);
+    }
+  });
+</script>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {

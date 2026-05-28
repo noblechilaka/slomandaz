@@ -1,108 +1,12 @@
-// js/products.js
 // Global state references
 let currentProductIndex = -1;
-let selectedColor = null; // Stores the clicked color name
+let selectedColor = null;
 
-// Initialize ProductsLib as a complete object
+// ONLY UI/Modal logic - NO loadProducts override
 window.ProductsLib = window.ProductsLib || { data: [], products: [] };
 
-// Extend the ProductsLib with the necessary functions
 Object.assign(window.ProductsLib, {
-  async loadProducts() {
-    // ⚠️ PASTE YOUR KEYS HERE
-    const SPACE = "msu81v2q0bom";
-    const TOKEN = "PtLVHaTuvyaqqizfEjyaYtio7Mj-fwzkGpZH60pbE9Q";
-
-    // Include parameter fetches linked assets (like images) in the same request
-    const url = `https://cdn.contentful.com/spaces/${SPACE}/environments/master/entries?access_token=${TOKEN}&content_type=product&include=10`;
-
-    try {
-      const res = await fetch(url);
-      const data = await res.json();
-
-      // Process each product and handle images
-      const processedProducts = [];
-
-      for (const item of data.items) {
-        const f = item.fields;
-        console.log(`Processing product: ${f.name}`, f.image); // Debug log
-
-        // Initialize imageUrl to empty string for each product
-        let imageUrl = "";
-
-        if (
-          f.image &&
-          f.image.fields &&
-          f.image.fields.file &&
-          f.image.fields.file.url
-        ) {
-          // Image data is already included
-          imageUrl = `https:${f.image.fields.file.url}`;
-          console.log(`Direct image URL for ${f.name}: ${imageUrl}`); // Debug log
-        } else if (f.image && f.image.sys) {
-          // Need to fetch asset details separately
-          const assetId = f.image.sys.id;
-          const assetUrl = `https://cdn.contentful.com/spaces/${SPACE}/environments/master/assets/${assetId}?access_token=${TOKEN}`;
-
-          console.log(`Fetching separate asset for ${f.name}: ${assetId}`); // Debug log
-
-          try {
-            const assetRes = await fetch(assetUrl);
-            const assetData = await assetRes.json();
-
-            if (
-              assetData.fields &&
-              assetData.fields.file &&
-              assetData.fields.file.url
-            ) {
-              imageUrl = `https:${assetData.fields.file.url}`;
-              console.log(
-                `Separate fetch image URL for ${f.name}: ${imageUrl}`
-              ); // Debug log
-            }
-          } catch (assetError) {
-            console.error(`Failed to fetch asset ${assetId}:`, assetError);
-          }
-        } else {
-          console.log(`No image found for product: ${f.name}`); // Debug log
-        }
-
-        processedProducts.push({
-          id: item.sys.id, // Contentful auto-ID
-          name: f.name || "",
-          slug: f.slug || "",
-          price: f.price || 0,
-          currency: f.currency || "NGN",
-          image: imageUrl,
-          alt: f.alt || f.name || "",
-          category: f.category || "",
-          condition: f.condition || "new",
-          span: f.span || "span-1",
-          height: f.height || "h-380",
-          size: f.size || "",
-          dimensions: f.dimensions || "",
-          colors: Array.isArray(f.colors)
-            ? f.colors
-            : f.colors
-            ? [f.colors]
-            : [],
-          description: f.description || "",
-          inStock: f.inStock ?? true,
-          stockCount: f.stockCount ?? 0,
-        });
-      }
-
-      this.products = processedProducts;
-      window.allProducts = this.products;
-      console.log("Final products array:", this.products); // Debug log
-      return this.products;
-    } catch (error) {
-      console.error("Failed to load products from Contentful:", error);
-      return [];
-    }
-  },
-
-  generateGridProducts: function (gridEl, products = null, onCardClick = null) {
+  generateGridProducts(gridEl, products = null, onCardClick = null) {
     const prods = products || this.products;
     gridEl.innerHTML = "";
 
@@ -111,13 +15,12 @@ Object.assign(window.ProductsLib, {
 
       const card = document.createElement("article");
       card.className = `archive-item ${product.span} ${product.height} reveal`;
-      card.dataset.cat = product.category.toLowerCase();
+      card.dataset.cat = product.category;
       card.dataset.previewText = `${
         product.name
       } — ₦${product.price.toLocaleString()}`;
       card.dataset.productIndex = globalIndex;
 
-      // Pass index to open modal
       if (onCardClick) {
         card.addEventListener("click", () => onCardClick(globalIndex));
       }
@@ -140,7 +43,7 @@ Object.assign(window.ProductsLib, {
     });
   },
 
-  initFilters: function (gridEl, filtersSelector = ".filter") {
+  initFilters(gridEl, filtersSelector = ".filter") {
     const filters = Array.from(document.querySelectorAll(filtersSelector));
 
     window.setActiveFilter = (filterKey) => {
@@ -150,18 +53,19 @@ Object.assign(window.ProductsLib, {
           f.dataset.filter?.toLowerCase() === filterKey.toLowerCase()
         )
       );
+
       const filterLower = filterKey.toLowerCase();
       let filteredProds;
 
-      if (filterLower === "all") filteredProds = this.products;
-      else if (["new", "bestseller", "discounted"].includes(filterLower))
+      if (filterLower === "all") {
+        filteredProds = this.products;
+      } else if (["new", "bestseller", "discounted"].includes(filterLower)) {
         filteredProds = this.products.filter(
-          (p) => p.condition.toLowerCase() === filterLower
+          (p) => p.condition === filterLower
         );
-      else
-        filteredProds = this.products.filter(
-          (p) => p.category.toLowerCase() === filterLower
-        );
+      } else {
+        filteredProds = this.products.filter((p) => p.category === filterLower);
+      }
 
       gsap.to(gridEl.querySelectorAll(".archive-item"), {
         opacity: 0,
@@ -254,7 +158,7 @@ window.closeProductModal = () => {
 };
 
 window.openProductModal = (index) => {
-  const products = window.allProducts; // Use the global populated array
+  const products = window.allProducts;
   const product = products[index];
   if (!product) return;
 
@@ -273,7 +177,6 @@ window.openProductModal = (index) => {
   const colorsWrap = backdrop.querySelector("#modalColors");
   colorsWrap.innerHTML = "";
 
-  // Default first color or empty
   selectedColor = (product.colors && product.colors[0]) || "Standard";
 
   (product.colors || []).forEach((c, i) => {
@@ -307,19 +210,18 @@ document.addEventListener("click", (e) => {
   if (e.target.closest(".modal-close") || e.target === backdrop)
     window.closeProductModal();
 });
+
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") window.closeProductModal();
 });
 
-// --- CRITICAL FIX FOR ADD TO CART ---
+// Add to Cart
 document.addEventListener("click", async (e) => {
   const btn = e.target.closest("#addToCartBtn");
   if (!btn) return;
   if (currentProductIndex < 0) return;
 
   const products = window.allProducts;
-  if (!products) await window.ProductsLib.loadProducts();
-
   const product = products[currentProductIndex];
   if (!product) return;
 
@@ -328,14 +230,12 @@ document.addEventListener("click", async (e) => {
     return;
   }
 
-  // FIX: Send full object including the currently selected color
   if (window.addToCart) {
     window.addToCart({
       ...product,
       selectedColor: selectedColor,
     });
 
-    // Feedback Animation
     btn.textContent = "Added!";
     btn.classList.add("added");
     gsap.fromTo(
@@ -344,7 +244,6 @@ document.addEventListener("click", async (e) => {
       { scale: 0.98, duration: 0.1, yoyo: true, repeat: 1 }
     );
 
-    // FIX: Auto-Close Modal
     setTimeout(() => {
       window.closeProductModal();
       btn.textContent = "Add to Cart";

@@ -247,93 +247,202 @@ menu
     <script src="/js/previews.js"></script>
     <script src="/js/products.js"></script>
 <script>
-      document.addEventListener("DOMContentLoaded", async () => {
-        // Get loader and grid elements
-        const productsLoader = document.getElementById("productsLoader");
-        const grid = document.getElementById("productGrid");
+  document.addEventListener("DOMContentLoaded", async () => {
+    const productsLoader = document.getElementById("productsLoader");
+    const grid = document.getElementById("productGrid");
 
-        try {
-          // Show loader immediately on page load
-          productsLoader.classList.remove("hidden");
+    try {
+      // Show loader
+      productsLoader.classList.remove("hidden");
 
-          // Wait for ProductsLib to load if needed
-          if (!window.ProductsLib) await new Promise((r) => setTimeout(r, 200));
-          await window.ProductsLib.loadProducts();
+      // Wait for ProductsLib to load
+      if (!window.ProductsLib) await new Promise((r) => setTimeout(r, 200));
+      await window.ProductsLib.loadProducts();
 
-          const products = window.ProductsLib.products;
-          console.log("Products loaded:", products);
+      const products = window.ProductsLib.products;
+      console.log("📦 Products page loaded:", products.length);
 
-          if (!products || products.length === 0) {
-            // Show empty state if no products
-            grid.innerHTML = `
-              <div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">
-                No products available at this time.
-              </div>
-            `;
-            productsLoader.classList.add("hidden");
-            return;
-          }
+      if (!products || products.length === 0) {
+        grid.innerHTML = `
+          <div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">
+            No products available at this time.
+          </div>
+        `;
+        productsLoader.classList.add("hidden");
+        return;
+      }
 
-          // Generate grid products
-          window.ProductsLib.generateGridProducts(grid, null, (globalIndex) =>
-            window.openProductModal?.(globalIndex)
-          );
+      // ASSIGN DEFAULT CATEGORY to products missing one
+      const normalizedProducts = products.map(p => ({
+        ...p,
+        category: p.category || "uncategorized" // Default category if blank
+      }));
 
-          // Init filters
-          window.ProductsLib.initFilters(grid);
+      // Update the global products array
+      window.ProductsLib.products = normalizedProducts;
+      window.allProducts = normalizedProducts;
 
-          // Deep link filter
-          const urlParams = new URLSearchParams(window.location.search);
-          const filterFromUrl = urlParams.get("filter");
-
-          if (filterFromUrl) {
-            window.setActiveFilter(decodeURIComponent(filterFromUrl));
-          } else {
-            const savedFilter = localStorage.getItem("activeFilter");
-            if (savedFilter && savedFilter.toLowerCase() !== "all") {
-              window.setActiveFilter(savedFilter);
-            } else {
-              window.setActiveFilter("all");
-            }
-          }
-
-          // Check URL params for product ID to open modal
-          const productId = urlParams.get("id");
-          const selectedColorParam = urlParams.get("color");
-
-          if (productId) {
-            const product = products.find((p) => p.id == productId);
-            if (product) {
-              const productIndex = products.indexOf(product);
-              // Wait a bit more for render, then open modal
-              setTimeout(() => {
-                window.openProductModal(productIndex);
-                if (selectedColorParam) {
-                  const colorChips = document.querySelectorAll(".color-chip");
-                  colorChips.forEach((chip) => {
-                    if (chip.textContent.trim() === selectedColorParam) {
-                      chip.click();
-                    }
-                  });
-                }
-              }, 800);
-            }
-          }
-
-          // Hide loader after successful render
-          productsLoader.classList.add("hidden");
-
-        } catch (error) {
-          console.error("Products load error:", error);
-          // Show error state
-          grid.innerHTML = `
-            <div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">
-              Failed to load products. Please refresh the page or try again later.
-            </div>
-          `;
-          productsLoader.classList.add("hidden");
-        }
+      console.log("🔍 Products by category:", {
+        singles: normalizedProducts.filter(p => p.category === "singles").length,
+        complimentary: normalizedProducts.filter(p => p.category === "complimentary").length,
+        sofas: normalizedProducts.filter(p => p.category === "sofas").length,
+        beds: normalizedProducts.filter(p => p.category === "beds").length,
+        fittings: normalizedProducts.filter(p => p.category === "fittings").length,
+        uncategorized: normalizedProducts.filter(p => p.category === "uncategorized").length,
       });
-    </script>
+
+      // Generate grid products
+      window.ProductsLib.generateGridProducts(grid, null, (globalIndex) =>
+        window.openProductModal?.(globalIndex)
+      );
+
+      // Init filters with SMART filtering
+      const filters = Array.from(document.querySelectorAll(".filter"));
+
+      window.setActiveFilter = (filterKey) => {
+        filters.forEach((f) =>
+          f.classList.toggle(
+            "is-active",
+            f.dataset.filter?.toLowerCase() === filterKey.toLowerCase()
+          )
+        );
+
+        const filterLower = filterKey.toLowerCase();
+        let filteredProds;
+
+        if (filterLower === "all") {
+          // Show ALL products including uncategorized
+          filteredProds = normalizedProducts;
+        } else if (["new", "bestseller", "discounted"].includes(filterLower)) {
+          // Filter by condition (still works)
+          filteredProds = normalizedProducts.filter(
+            (p) => p.condition === filterLower
+          );
+        } else {
+          // Filter by category
+          filteredProds = normalizedProducts.filter(
+            (p) => p.category === filterLower
+          );
+          
+          // FALLBACK: If filter returns 0 results, show uncategorized products
+          if (filteredProds.length === 0 && filterLower !== "uncategorized") {
+            console.warn(`⚠️ No products in "${filterLower}" - checking uncategorized`);
+            const uncategorized = normalizedProducts.filter(p => p.category === "uncategorized");
+            if (uncategorized.length > 0) {
+              filteredProds = uncategorized;
+              console.log(`📌 Showing ${uncategorized.length} uncategorized products`);
+            }
+          }
+        }
+
+        // Animate out
+        gsap.to(grid.querySelectorAll(".archive-item"), {
+          opacity: 0,
+          scale: 0.95,
+          duration: 0.4,
+          stagger: 0.05,
+          ease: "power2.out",
+          onComplete: () => {
+            // Re-generate grid
+            window.ProductsLib.generateGridProducts(
+              grid,
+              filteredProds.length > 0 ? filteredProds : normalizedProducts, // Fallback to all
+              (globalIndex) => window.openProductModal?.(globalIndex)
+            );
+
+            // Show empty state if truly empty
+            if (filteredProds.length === 0) {
+              grid.innerHTML = `
+                <div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">
+                  <p style="font-size: 1.1em; margin-bottom: 10px;">No products in this category.</p>
+                  <p style="font-size: 0.9em; opacity: 0.7;">Try browsing "All Products" or another category.</p>
+                </div>
+              `;
+            }
+
+            // Animate in
+            gsap.fromTo(
+              grid.querySelectorAll(".archive-item"),
+              { opacity: 0, y: 30, scale: 0.95 },
+              {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.6,
+                stagger: 0.08,
+                ease: "back.out(1.7)",
+                onComplete: () => ScrollTrigger.refresh(),
+              }
+            );
+          },
+        });
+
+        localStorage.setItem("activeFilter", filterKey);
+        const newUrl = new URL(window.location);
+        if (filterLower === "all") newUrl.searchParams.delete("filter");
+        else newUrl.searchParams.set("filter", filterLower);
+        window.history.replaceState({}, "", newUrl);
+      };
+
+      // Attach filter click handlers
+      filters.forEach((f) => {
+        f.addEventListener("click", () => window.setActiveFilter(f.dataset.filter));
+        f.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") window.setActiveFilter(f.dataset.filter);
+        });
+      });
+
+      // Deep link filter from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const filterFromUrl = urlParams.get("filter");
+
+      if (filterFromUrl) {
+        window.setActiveFilter(decodeURIComponent(filterFromUrl));
+      } else {
+        const savedFilter = localStorage.getItem("activeFilter");
+        if (savedFilter && savedFilter.toLowerCase() !== "all") {
+          window.setActiveFilter(savedFilter);
+        } else {
+          window.setActiveFilter("all");
+        }
+      }
+
+      // Check URL params for product ID to open modal
+      const productId = urlParams.get("id");
+      const selectedColorParam = urlParams.get("color");
+
+      if (productId) {
+        const product = normalizedProducts.find((p) => p.id == productId);
+        if (product) {
+          const productIndex = normalizedProducts.indexOf(product);
+          setTimeout(() => {
+            window.openProductModal(productIndex);
+            if (selectedColorParam) {
+              const colorChips = document.querySelectorAll(".color-chip");
+              colorChips.forEach((chip) => {
+                if (chip.textContent.trim() === selectedColorParam) {
+                  chip.click();
+                }
+              });
+            }
+          }, 800);
+        }
+      }
+
+      // Hide loader
+      productsLoader.classList.add("hidden");
+
+    } catch (error) {
+      console.error("❌ Products load error:", error);
+      grid.innerHTML = `
+        <div style="text-align:center; padding: 60px 20px; color: var(--text-muted);">
+          Failed to load products. Please refresh the page.
+          <br><small style="opacity: 0.6;">${error.message}</small>
+        </div>
+      `;
+      productsLoader.classList.add("hidden");
+    }
+  });
+</script>
   </body>
 </html>
