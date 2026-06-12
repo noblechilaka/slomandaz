@@ -139,10 +139,26 @@ window.ProductsLib = {
 
       console.log("✅ Products cleaned:", cleanedProducts.length);
 
+      // Sort so newest items appear on top.
+      // Assumption: newly added items have higher `id` values.
+      // (Also robust if `id` is missing/non-numeric.)
+      const sortedProducts = [...cleanedProducts].sort((a, b) => {
+        const aId = Number(a?.id);
+        const bId = Number(b?.id);
+
+        const aValid = Number.isFinite(aId);
+        const bValid = Number.isFinite(bId);
+
+        if (aValid && bValid) return bId - aId; // desc
+        if (aValid && !bValid) return -1;
+        if (!aValid && bValid) return 1;
+        return 0; // keep original relative order for non-numeric ids
+      });
+
       // Update all references
-      this.data = cleanedProducts;
-      this.products = cleanedProducts;
-      window.allProducts = cleanedProducts;
+      this.data = sortedProducts;
+      this.products = sortedProducts;
+      window.allProducts = sortedProducts;
       this.loaded = true;
 
       console.log("✅ Products loaded globally:", this.data.length);
